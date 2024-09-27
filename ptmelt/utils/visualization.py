@@ -64,8 +64,8 @@ def point_cloud_plot(
     ax,
     y_real,
     y_pred,
-    r_squared,
-    rmse,
+    r_squared: Optional[float] = None,
+    rmse: Optional[float] = None,
     label: Optional[str] = None,
     marker: Optional[str] = "o",
     color: Optional[str] = "blue",
@@ -92,12 +92,13 @@ def point_cloud_plot(
     # Add text annotation for R-squared and RMSE
     # TODO: Add more metrics to the text annotation similar to the UQ plot
     # TODO: Add ability to change the formatting of the text annotation
-    ax.text(
-        *text_pos,
-        rf"R$^2$ = {r_squared:0.3f}, RMSE = {rmse:0.3f}",
-        transform=ax.transAxes,
-        color=color,
-    )
+    if r_squared is not None and rmse is not None:
+        ax.text(
+            *text_pos,
+            rf"R$^2$ = {r_squared:0.3f}, RMSE = {rmse:0.3f}",
+            transform=ax.transAxes,
+            color=color,
+        )
     ax.legend()
     ax.set_xlabel("truth")
     ax.set_ylabel("prediction")
