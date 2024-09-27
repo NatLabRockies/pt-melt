@@ -1,4 +1,5 @@
 import warnings
+from contextlib import nullcontext
 from typing import Optional
 
 import torch
@@ -83,6 +84,9 @@ class MELTModel(nn.Module):
         if self.node_list:
             self.num_layers = len(self.node_list)
             self.layer_width = self.node_list
+        elif self.depth is None:
+            self.num_layers = 0
+            self.layer_width = []
         else:
             self.num_layers = self.depth
             self.layer_width = [self.width for i in range(self.depth)]
@@ -113,7 +117,11 @@ class MELTModel(nn.Module):
             self.layer_dict.update(
                 {
                     "output": MixtureDensityOutput(
-                        input_features=self.layer_width[-1],
+                        input_features=(
+                            self.layer_width[-1]
+                            if self.num_layers > 0
+                            else self.num_features
+                        ),
                         num_mixtures=self.num_mixtures,
                         num_outputs=self.num_outputs,
                         activation=self.output_activation,
@@ -127,7 +135,11 @@ class MELTModel(nn.Module):
             self.layer_dict.update(
                 {
                     "output": DefaultOutput(
-                        input_features=self.layer_width[-1],
+                        input_features=(
+                            self.layer_width[-1]
+                            if self.num_layers > 0
+                            else self.num_features
+                        ),
                         output_features=self.num_outputs,
                         activation=self.output_activation,
                         initializer=self.initializer,
@@ -193,7 +205,58 @@ class MELTModel(nn.Module):
         else:
             raise ValueError(f"Loss function {loss} not recognized.")
 
-    def fit(self, train_dl, val_dl, optimizer, criterion, num_epochs: int):
+    def step(self, dataloader, optimizer, criterion, device="cpu", training=True):
+        """
+        Perform a single step either in training or validation mode.
+
+        """
+        self.train() if training else self.eval()
+
+        # Use torch.no_grad() only if not training
+        context_manager = torch.no_grad() if not training else nullcontext()
+
+        running_loss = 0.0
+        with context_manager:
+            for x_in, y_in in dataloader:
+                # Move data to device
+                x_in, y_in = x_in.to(device), y_in.to(device)
+
+                # Forward pass
+                pred = self(x_in)
+                loss = criterion(pred, y_in)
+
+                if training:
+                    # Add L1 and L2 regularization if present
+                    if self.l1_reg > 0:
+                        loss += self.l1_regularization(lambda_l1=self.l1_reg)
+                    if self.l2_reg > 0:
+                        loss += self.l2_regularization(lambda_l2=self.l2_reg)
+
+                    # Zero the parameter gradients
+                    optimizer.zero_grad()
+                    # Backward pass
+                    loss.backward()
+                    # Optimize
+                    optimizer.step()
+
+                # Accumulate running loss
+                running_loss += loss.item()
+
+        # Normalize loss
+        running_loss /= len(dataloader)
+
+        return running_loss
+
+    def fit(
+        self,
+        train_dl,
+        val_dl,
+        optimizer,
+        criterion,
+        num_epochs: int,
+        device="cpu",
+        verbose=False,
+    ):
         """
         Perform the model training loop.
 
@@ -203,63 +266,36 @@ class MELTModel(nn.Module):
             optimizer (Optimizer): The optimizer to use.
             criterion (Loss): The loss function to use.
             num_epochs (int): The number of epochs to train the model.
+            device (str, optional): The device to use for training. Defaults to 'cpu'.
+            verbose (bool, optional): Whether to print training statistics. Defaults to
+                                      False.
         """
+        # Move model to device
+        self.to(device)
 
         # Create history dictionary
         if not hasattr(self, "history"):
             self.history = {"loss": [], "val_loss": []}
 
-        for epoch in tqdm(range(num_epochs)):
-            # Put model in training mode
-            self.train()
-            running_loss = 0.0
-
-            for x_in, y_in in train_dl:
-
-                # Forward pass
-                pred = self(x_in)
-                loss = criterion(pred, y_in)
-
-                # Add L1 and L2 regularization if present
-                if self.l1_reg > 0:
-                    loss += self.l1_regularization(lambda_l1=self.l1_reg)
-                if self.l2_reg > 0:
-                    loss += self.l2_regularization(lambda_l2=self.l2_reg)
-
-                # Zero the parameter gradients
-                optimizer.zero_grad()
-                # Backward pass
-                loss.backward()
-                # Optimize
-                optimizer.step()
-                # Print statistics
-                running_loss += loss.item()
-
-            # Normalize loss
-            running_loss /= len(train_dl)
-
-            # Put model in evaluation mode
-            self.eval()
-            # Compute validation loss
-            running_val_loss = 0.0
-            with torch.no_grad():
-                for x_val, y_val in val_dl:
-                    pred_val = self(x_val)
-                    val_loss = criterion(pred_val, y_val)
-                    running_val_loss += val_loss.item()
-
-            running_val_loss /= len(val_dl)
+        for epoch in tqdm(range(num_epochs), disable=not verbose):
+            # Perform a training and validation step
+            train_loss = self.step(
+                train_dl, optimizer, criterion, device=device, training=True
+            )
+            val_loss = self.step(
+                val_dl, optimizer, criterion, device=device, training=False
+            )
 
             # Print statistics
-            if (epoch + 1) % 10 == 0:
+            if (epoch + 1) % 10 == 0 and verbose:
                 print(
-                    f"Epoch {epoch + 1}, Loss: {running_loss:.4f}, "
-                    f"Val Loss: {running_val_loss:.4f}"
+                    f"Epoch {epoch + 1}, Loss: {train_loss:.4f}, "
+                    f"Val Loss: {val_loss:.4f}"
                 )
 
             # Save history
-            self.history["loss"].append(running_loss)
-            self.history["val_loss"].append(running_val_loss)
+            self.history["loss"].append(train_loss)
+            self.history["val_loss"].append(val_loss)
 
 
 class ArtificialNeuralNetwork(MELTModel):

@@ -2,7 +2,19 @@ import platform
 
 from setuptools import find_packages, setup
 
-install_requires = ["pytest", "tqdm", "scikit-learn", "matplotlib"]
+install_requires = [
+    "pytest",
+    "tqdm",
+    "scikit-learn",
+    "matplotlib",
+    "ray[data,train,tune,serve]",
+    "hyperopt",
+    "optuna",
+    "hpbandster",
+    "ConfigSpace",
+    "bayesian-optimization",
+    "ax-platform",
+]
 print(f"Platform: {platform.system()}")
 
 if platform.system() == "Linux":
@@ -21,7 +33,7 @@ else:
 
 setup(
     name="ptmelt",
-    version="0.1.1",
+    version="0.1.2",
     description="PyTorch Machine Learning Toolbox (PT-MELT)",
     url="https://github.com/NREL/pt-melt",
     author="Nicholas T. Wimer",
