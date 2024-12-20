@@ -1,12 +1,19 @@
 import warnings
 from contextlib import nullcontext
-from typing import Optional
+from itertools import groupby
+from typing import List, Optional
 
 import torch
 import torch.nn as nn
 from tqdm import tqdm
 
-from ptmelt.blocks import DefaultOutput, DenseBlock, MixtureDensityOutput, ResidualBlock
+from ptmelt.blocks import (
+    BayesianBlock,
+    DefaultOutput,
+    DenseBlock,
+    MixtureDensityOutput,
+    ResidualBlock,
+)
 from ptmelt.losses import MixtureDensityLoss
 
 
@@ -438,3 +445,239 @@ class ResidualNeuralNetwork(MELTModel):
 
         # Apply the output layer(s) and return
         return self.layer_dict["output"](x)
+
+
+class BayesianNeuralNetwork(MELTModel):
+    """
+    Bayesian Neural Network (BNN) model.
+
+    Args:
+        num_points (int, optional): Number of Monte Carlo samples. Defaults to 1.
+        do_aleatoric (bool, optional): Flag to perform aleatoric output. Defaults to False.
+        do_bayesian_output (bool, optional): Flag to perform Bayesian output. Defaults to True.
+        aleatoric_scale_factor (float, optional): Scale factor for aleatoric uncertainty. Defaults to 5e-2.
+        scale_epsilon (float, optional): Epsilon value for the scale of the aleatoric uncertainty. Defaults to 1e-3.
+        bayesian_mask (list, optional): List of booleans to determine which layers are Bayesian and which are Dense. Defaults to None.
+        **kwargs: Additional keyword arguments.
+    """
+
+    def __init__(
+        self,
+        num_points: Optional[int] = 1,
+        do_aleatoric: Optional[bool] = False,
+        do_bayesian_output: Optional[bool] = True,
+        aleatoric_scale_factor: Optional[float] = 5e-2,
+        scale_epsilon: Optional[float] = 1e-3,
+        bayesian_mask: Optional[List[bool]] = None,
+        **kwargs,
+    ):
+        super(BayesianNeuralNetwork, self).__init__(**kwargs)
+
+        self.num_points = num_points
+        self.do_aleatoric = do_aleatoric
+        self.do_bayesian_output = do_bayesian_output
+        self.aleatoric_scale_factor = aleatoric_scale_factor
+        self.scale_epsilon = scale_epsilon
+        self.bayesian_mask = bayesian_mask
+        # self.bayesian_mask = (
+        #     bayesian_mask if bayesian_mask is not None else [True] * self.num_layers
+        # )
+
+        # # Checks on bayesian mask and number of layers
+        # if len(self.bayesian_mask) > self.num_layers:
+        #     warnings.warn(
+        #         "Bayesian mask is longer than the number of layers, so truncating."
+        #     )
+        #     self.bayesian_mask = self.bayesian_mask[: self.num_layers]
+        # elif len(self.bayesian_mask) < self.num_layers:
+        #     raise ValueError(
+        #         "Bayesian mask is shorter than the number of layers."
+        #         "Please provide a mask for each layer."
+        #     )
+
+        # # Update config with new attributes
+        # self.config.update(
+        #     {
+        #         "num_points": self.num_points,
+        #         "do_aleatoric": self.do_aleatoric,
+        #         "aleatoric_scale_factor": self.aleatoric_scale_factor,
+        #         "scale_epsilon": self.scale_epsilon,
+        #         "bayesian_mask": self.bayesian_mask,
+        #     }
+        # )
+
+    def create_output_layer(self):
+        """Create output layer for the Bayesian Neural Network."""
+        if self.do_bayesian_output:
+            self.layer_dict.update(
+                {
+                    "output": DefaultOutput(
+                        input_features=(
+                            self.layer_width[-1]
+                            if self.num_layers > 0
+                            else self.num_features
+                        ),
+                        output_features=self.num_outputs,
+                        activation=self.output_activation,
+                        initializer=self.initializer,
+                    )
+                }
+            )
+            self.sub_layer_names.append("output")
+        else:
+            self.layer_dict.update(
+                {
+                    "output": DefaultOutput(
+                        input_features=(
+                            self.layer_width[-1]
+                            if self.num_layers > 0
+                            else self.num_features
+                        ),
+                        output_features=self.num_outputs,
+                        activation=self.output_activation,
+                        initializer=self.initializer,
+                    )
+                }
+            )
+            self.sub_layer_names.append("output")
+
+    def build(self):
+        """Build the BNN."""
+        self.initialize_layers()
+        super(BayesianNeuralNetwork, self).build()
+
+    def initialize_layers(self):
+        """Initialize the layers of the BNN."""
+        super(BayesianNeuralNetwork, self).initialize_layers()
+
+        # Create the Bayesian and Dense blocks based on the mask
+        if self.bayesian_mask is None:
+            self.num_dense_layers = 0
+            self.dense_block = None
+            self.bayesian_block = BayesianBlock(
+                num_points=self.num_points,
+                input_features=self.num_features,
+                node_list=self.layer_width,
+                activation=self.act_fun,
+                dropout=self.dropout,
+                batch_norm=self.batch_norm,
+                batch_norm_type=self.batch_norm_type,
+                use_batch_renorm=self.use_batch_renorm,
+                initializer=self.initializer,
+            )
+            self.layer_dict.update({"full_bayesian_block": self.bayesian_block})
+            self.sub_layer_names.append("full_bayesian_block")
+        else:
+            self.dense_block = []
+            self.bayesian_block = []
+
+            bayes_block_idx = 0
+            dense_block_idx = 0
+
+            # Loop through the Bayesian mask and create the blocks
+            idx = 0
+            for is_bayesian, group in groupby(self.bayesian_mask):
+                # Get the group and layer width
+                group_list = list(group)
+                group_len = len(group_list)
+                layer_width = self.layer_width[idx : idx + group_len]
+                idx += group_len
+
+                # Create a Bayesian block or Dense block
+                if is_bayesian:
+                    bayesian_block = BayesianBlock(
+                        num_points=self.num_points,
+                        input_features=(
+                            self.num_features
+                            if bayes_block_idx == 0
+                            else layer_width[0]
+                        ),
+                        node_list=layer_width,
+                        activation=self.act_fun,
+                        dropout=self.dropout,
+                        batch_norm=self.batch_norm,
+                        batch_norm_type=self.batch_norm_type,
+                        use_batch_renorm=self.use_batch_renorm,
+                        initializer=self.initializer,
+                    )
+                    self.bayesian_block.append(bayesian_block)
+                    self.layer_dict.update(
+                        {f"bayesian_block_{bayes_block_idx}": bayesian_block}
+                    )
+                    self.sub_layer_names.append(f"bayesian_block_{bayes_block_idx}")
+                    bayes_block_idx += 1
+                else:
+                    dense_block = DenseBlock(
+                        input_features=(
+                            self.num_features
+                            if dense_block_idx == 0
+                            else layer_width[0]
+                        ),
+                        node_list=layer_width,
+                        activation=self.act_fun,
+                        dropout=self.dropout,
+                        batch_norm=self.batch_norm,
+                        batch_norm_type=self.batch_norm_type,
+                        use_batch_renorm=self.use_batch_renorm,
+                        initializer=self.initializer,
+                    )
+                    self.dense_block.append(dense_block)
+                    self.layer_dict.update(
+                        {f"dense_block_{dense_block_idx}": dense_block}
+                    )
+                    self.sub_layer_names.append(f"dense_block_{dense_block_idx}")
+                    dense_block_idx += 1
+
+    def forward(self, inputs: torch.Tensor):
+        """
+        Perform the forward pass of the BNN.
+
+        Args:
+            inputs (torch.Tensor): The input data.
+        """
+        # Apply input dropout
+        x = (
+            self.layer_dict["input_dropout"](inputs)
+            if self.input_dropout > 0
+            else inputs
+        )
+
+        # Apply the full Bayesian block
+        x = self.layer_dict["full_bayesian_block"](x)
+
+        # # Apply the blocks according to the Bayesian mask
+        # dense_idx, bayes_idx = 0, 0
+        # for is_bayesian, _ in groupby(self.bayesian_mask):
+        #     if is_bayesian:
+        #         x = self.layer_dict[f"bayesian_block_{bayes_idx}"](x)
+        #         bayes_idx += 1
+        #     else:
+        #         x = self.layer_dict[f"dense_block_{dense_idx}"](x)
+        #         dense_idx += 1
+
+        # Apply the output layer(s) and return
+        return self.layer_dict["output"](x)
+
+    # def kl_divergence(self):
+    #     """Calculate the KL divergence for all Bayesian layers."""
+    #     kl_div = 0
+    #     for is_bayesian, _ in groupby(self.bayesian_mask):
+    #         if is_bayesian:
+    #             for block in self.bayesian_block:
+    #                 kl_div += block.kl_divergence()
+    #     return kl_div
+
+    def negative_log_likelihood(self, y_true, y_pred):
+        """Calculate the negative log likelihood."""
+        return -y_pred.log_prob(y_true)
+
+    def compile(self, optimizer="adam", loss="mse", metrics=None, **kwargs):
+        """Compile the model with the appropriate loss function."""
+        if self.do_aleatoric:
+            warnings.warn(
+                "Loss function is overridden when using aleatoric uncertainty. "
+                "Using the negative log likelihood loss function."
+            )
+            loss = self.negative_log_likelihood
+
+        super(BayesianNeuralNetwork, self).compile(optimizer, loss, metrics, **kwargs)

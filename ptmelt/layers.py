@@ -2,6 +2,93 @@ from typing import Optional
 
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
+from torch.distributions import Normal, kl_divergence
+
+
+class MELTBayesianLinear(nn.Module):
+    """
+    Custom Bayesian Linear Layer for PT-MELT.
+    """
+
+    def __init__(self, in_features: int, out_features: int, prior_std: float = 1.0):
+        """
+        Initialize the Bayesian Linear Layer.
+
+        """
+        super(MELTBayesianLinear, self).__init__()
+
+        self.in_features = in_features
+        self.out_features = out_features
+        self.prior_std = prior_std
+
+        # Initialize learnable parameters for the posterior
+        self.weight_mu = nn.Parameter(
+            torch.Tensor(out_features, in_features).uniform_(-0.2, 0.2)
+        )
+        self.weight_log_sigma = nn.Parameter(
+            torch.Tensor(out_features, in_features).uniform_(-5, -4)
+        )
+        self.bias_mu = nn.Parameter(torch.Tensor(out_features).uniform_(-0.2, 0.2))
+        self.bias_log_sigma = nn.Parameter(torch.Tensor(out_features).uniform_(-5, -4))
+
+        # Define prior distributions
+        self.prior = Normal(0, self.prior_std)
+        self.posterior_weight = None
+        self.posterior_bias = None
+
+    def forward(self, input: torch.Tensor):
+        """
+        Perform the forward pass of the Bayesian Linear Layer.
+
+        """
+        # Sample epsilon for weights and biases
+        weight_epsilon = torch.randn_like(self.weight_mu)
+        bias_epsilon = torch.randn_like(self.bias_mu)
+
+        # Reparameterization trick
+        weight = self.weight_mu + torch.exp(self.weight_log_sigma) * weight_epsilon
+        bias = self.bias_mu + torch.exp(self.bias_log_sigma) * bias_epsilon
+
+        # Flipout Variational Inference
+        batch_size = input.size(0)
+        input_sign = (
+            torch.randint(
+                0, 2, (batch_size, 1, self.in_features), device=input.device
+            ).float()
+            * 2
+            - 1
+        )
+        output_sign = (
+            torch.randint(
+                0, 2, (batch_size, self.out_features, 1), device=input.device
+            ).float()
+            * 2
+            - 1
+        )
+
+        # TODO: This needs to be fixed... the einsum is not correct
+        # Apply Flipout perturbations
+        perturb_weight = torch.einsum(
+            "bi,bo->bio", input_sign.squeeze(1), output_sign.squeeze(1)
+        ) * torch.exp(self.weight_log_sigma)
+        perturb_bias = output_sign.squeeze(1) * torch.exp(self.bias_log_sigma)
+
+        # Compute output with perturbations
+        output = F.linear(
+            input, weight + perturb_weight.mean(0), bias + perturb_bias.mean(0)
+        )
+
+        # Store posterior distributions for KL divergence
+        self.posterior_weight = Normal(self.weight_mu, torch.exp(self.weight_log_sigma))
+        self.posterior_bias = Normal(self.bias_mu, torch.exp(self.bias_log_sigma))
+
+        return output
+
+    def _kl_divergence(self):
+        kl_w = kl_divergence(self.posterior_weight, self.prior).sum()
+        kl_b = kl_divergence(self.posterior_bias, self.prior).sum()
+        return kl_w + kl_b
 
 
 class MELTBatchNorm(nn.Module):

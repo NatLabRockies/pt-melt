@@ -3,8 +3,10 @@ from typing import Any, List, Optional
 
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
+from torch.distributions import Normal
 
-from ptmelt.layers import MELTBatchNorm
+from ptmelt.layers import MELTBatchNorm, MELTBayesianLinear
 from ptmelt.nn_utils import get_activation, get_initializer
 
 
@@ -249,6 +251,100 @@ class ResidualBlock(MELTBlock):
                 )
 
         return x
+
+
+# class BayesianDenseLayer(nn.Module):
+#     def __init__(self, in_features, out_features, prior_std=0.1):
+#         super(BayesianDenseLayer, self).__init__()
+#         self.in_features = in_features
+#         self.out_features = out_features
+#         self.prior_std = prior_std
+
+#         self.weight_mu = nn.Parameter(
+#             torch.Tensor(out_features, in_features).normal_(0, 0.1)
+#         )
+#         self.weight_rho = nn.Parameter(
+#             torch.Tensor(out_features, in_features).normal_(0, 0.1)
+#         )
+#         self.bias_mu = nn.Parameter(torch.Tensor(out_features).normal_(0, 0.1))
+#         self.bias_rho = nn.Parameter(torch.Tensor(out_features).normal_(0, 0.1))
+
+#     def forward(self, x):
+#         weight = self.weight_mu + torch.log1p(torch.exp(self.weight_rho))
+#         bias = self.bias_mu + torch.log1p(torch.exp(self.bias_rho))
+#         return F.linear(x, weight, bias)
+
+#     def kl_divergence(self):
+#         weight = self.weight_mu + torch.log1p(torch.exp(self.weight_rho))
+#         bias = self.bias_mu + torch.log1p(torch.exp(self.bias_rho))
+#         prior = Normal(0, self.prior_std)
+#         posterior_weight = Normal(
+#             self.weight_mu, torch.log1p(torch.exp(self.weight_rho))
+#         )
+#         posterior_bias = Normal(self.bias_mu, torch.log1p(torch.exp(self.bias_rho)))
+#         kl_div_weight = torch.distributions.kl_divergence(posterior_weight, prior).sum()
+#         kl_div_bias = torch.distributions.kl_divergence(posterior_bias, prior).sum()
+#         return kl_div_weight + kl_div_bias
+
+
+class BayesianBlock(MELTBlock):
+    """
+    Bayesian block for the MELT architecture using custom Bayesian layers.
+    """
+
+    def __init__(
+        self,
+        num_points,
+        **kwargs: Any,
+    ):
+        super(BayesianBlock, self).__init__(**kwargs)
+        # self.num_points = num_points
+
+        # Initialize Bayesian layers
+        self.layer_dict.update(
+            {
+                f"bayesian_{i}": MELTBayesianLinear(
+                    in_features=(
+                        self.input_features if i == 0 else self.node_list[i - 1]
+                    ),
+                    out_features=self.node_list[i],
+                )
+                for i in range(self.num_layers)
+            }
+        )
+
+        # # Initialize Bayesian layers
+        # self.layer_dict.update(
+        #     {
+        #         f"bayesian_{i}": BayesianDenseLayer(
+        #             in_features=(
+        #                 self.input_features if i == 0 else self.node_list[i - 1]
+        #             ),
+        #             out_features=self.node_list[i],
+        #         )
+        #         for i in range(self.num_layers)
+        #     }
+        # )
+
+    def forward(self, inputs: torch.Tensor):
+        """Perform the forward pass of the Bayesian block."""
+        x = inputs
+
+        for i in range(self.num_layers):
+            # bayesian -> batch norm -> activation -> dropout
+            x = self.layer_dict[f"bayesian_{i}"](x)
+            x = self.layer_dict[f"batch_norm_{i}"](x) if self.batch_norm else x
+            x = self.layer_dict[f"activation_{i}"](x) if self.activation else x
+            x = self.layer_dict[f"dropout_{i}"](x) if self.dropout > 0 else x
+
+        return x
+
+    def kl_loss(self):
+        """Calculate the KL divergence loss for all Bayesian layers."""
+        kl_div = 0
+        for i in range(self.num_layers):
+            kl_div += self.layer_dict[f"bayesian_{i}"]._kl_divergence()
+        return kl_div
 
 
 class DefaultOutput(nn.Module):
