@@ -2,6 +2,7 @@ from typing import Optional
 
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
 
 class MELTBatchNorm(nn.Module):
@@ -200,3 +201,29 @@ class MELTBatchRenorm(MELTBatchNorm):
             )
 
         return self.weight * x_hat + self.bias
+
+
+class Reparameterization(nn.Module):
+    """Reparameterization trick for Gaussian Mixture Models."""
+
+    def forward(self, mix_coeffs, means, log_vars):
+        # Ensure mix_coeffs is a valid probability distribution
+        mix_coeffs = F.softmax(mix_coeffs, dim=-1)
+
+        # Sample component indices from the categorical distribution
+        component_indices = torch.multinomial(mix_coeffs, num_samples=1).squeeze(-1)
+
+        # Select the means and log variances of the sampled components
+        batch_size = means.size(0)
+        latent_dim = means.size(-1)
+
+        # Gather the means and log_vars based on sampled indices
+        selected_means = means[torch.arange(batch_size), component_indices, :]
+        selected_log_vars = log_vars[torch.arange(batch_size), component_indices, :]
+
+        # Reparameterization trick
+        stds = torch.exp(0.5 * selected_log_vars)
+        eps = torch.randn_like(stds)
+        z = selected_means + eps * stds
+
+        return z

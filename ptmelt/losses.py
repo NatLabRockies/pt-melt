@@ -1,4 +1,5 @@
 import torch
+import torch.nn as nn
 
 
 def safe_exp(x):
@@ -7,7 +8,7 @@ def safe_exp(x):
     return torch.exp(x)
 
 
-class MixtureDensityLoss(torch.nn.Module):
+class MixtureDensityLoss(nn.Module):
     """
     Custom loss function for a Gaussian mixture model.
 
@@ -57,3 +58,19 @@ class MixtureDensityLoss(torch.nn.Module):
 
         # Return the negative log likelihood
         return -log_likelihood
+
+
+class VAELoss(nn.Module):
+    def __init__(self, reconstruction_loss_fn=nn.MSELoss()):
+        super(VAELoss, self).__init__()
+        self.reconstruction_loss_fn = reconstruction_loss_fn
+
+    def forward(self, x, x_reconstructed, mix_coeffs, means, log_vars):
+        # Reconstruction loss
+        reconstruction_loss = self.reconstruction_loss_fn(x_reconstructed, x)
+
+        # KL Divergence for Gaussian Mixtures
+        kl_div = -0.5 * torch.sum(1 + log_vars - means.pow(2) - log_vars.exp(), dim=-1)
+        kl_div = torch.mean(torch.sum(mix_coeffs * kl_div, dim=-1))
+
+        return reconstruction_loss + kl_div
