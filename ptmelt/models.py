@@ -508,16 +508,18 @@ class BayesianNeuralNetwork(MELTModel):
 
     def create_output_layer(self):
         """Create output layer for the Bayesian Neural Network."""
-        if self.do_bayesian_output:
+
+        if self.num_mixtures > 0:
             self.layer_dict.update(
                 {
-                    "output": DefaultOutput(
+                    "output": MixtureDensityOutput(
                         input_features=(
                             self.layer_width[-1]
                             if self.num_layers > 0
                             else self.num_features
                         ),
-                        output_features=self.num_outputs,
+                        num_mixtures=self.num_mixtures,
+                        num_outputs=self.num_outputs,
                         activation=self.output_activation,
                         initializer=self.initializer,
                     )
@@ -536,6 +538,7 @@ class BayesianNeuralNetwork(MELTModel):
                         output_features=self.num_outputs,
                         activation=self.output_activation,
                         initializer=self.initializer,
+                        do_bayesian=self.do_bayesian_output,
                     )
                 }
             )
@@ -645,39 +648,51 @@ class BayesianNeuralNetwork(MELTModel):
         # Apply the full Bayesian block
         x = self.layer_dict["full_bayesian_block"](x)
 
-        # # Apply the blocks according to the Bayesian mask
-        # dense_idx, bayes_idx = 0, 0
-        # for is_bayesian, _ in groupby(self.bayesian_mask):
-        #     if is_bayesian:
-        #         x = self.layer_dict[f"bayesian_block_{bayes_idx}"](x)
-        #         bayes_idx += 1
-        #     else:
-        #         x = self.layer_dict[f"dense_block_{dense_idx}"](x)
-        #         dense_idx += 1
-
         # Apply the output layer(s) and return
         return self.layer_dict["output"](x)
 
-    # def kl_divergence(self):
-    #     """Calculate the KL divergence for all Bayesian layers."""
-    #     kl_div = 0
-    #     for is_bayesian, _ in groupby(self.bayesian_mask):
-    #         if is_bayesian:
-    #             for block in self.bayesian_block:
-    #                 kl_div += block.kl_divergence()
-    #     return kl_div
+    def step(self, dataloader, optimizer, criterion, device="cpu", training=True):
+        """
+        Perform a single step either in training or validation mode.
 
-    def negative_log_likelihood(self, y_true, y_pred):
-        """Calculate the negative log likelihood."""
-        return -y_pred.log_prob(y_true)
+        """
+        self.train() if training else self.eval()
+        dataset_size = len(dataloader.dataset)
 
-    def compile(self, optimizer="adam", loss="mse", metrics=None, **kwargs):
-        """Compile the model with the appropriate loss function."""
-        if self.do_aleatoric:
-            warnings.warn(
-                "Loss function is overridden when using aleatoric uncertainty. "
-                "Using the negative log likelihood loss function."
-            )
-            loss = self.negative_log_likelihood
+        # Use torch.no_grad() only if not training
+        context_manager = torch.no_grad() if not training else nullcontext()
 
-        super(BayesianNeuralNetwork, self).compile(optimizer, loss, metrics, **kwargs)
+        running_loss = 0.0
+        with context_manager:
+            for x_in, y_in in dataloader:
+                # Move data to device
+                x_in, y_in = x_in.to(device), y_in.to(device)
+
+                # Forward pass
+                pred = self(x_in)
+                loss = criterion(pred, y_in)
+
+                # Add in kl divergence for the Bayesian block
+                loss += self.layer_dict["full_bayesian_block"].kl_loss() / dataset_size
+
+                if training:
+                    # Add L1 and L2 regularization if present
+                    if self.l1_reg > 0:
+                        loss += self.l1_regularization(lambda_l1=self.l1_reg)
+                    if self.l2_reg > 0:
+                        loss += self.l2_regularization(lambda_l2=self.l2_reg)
+
+                    # Zero the parameter gradients
+                    optimizer.zero_grad()
+                    # Backward pass
+                    loss.backward()
+                    # Optimize
+                    optimizer.step()
+
+                # Accumulate running loss
+                running_loss += loss.item()
+
+        # Normalize loss
+        running_loss /= len(dataloader)
+
+        return running_loss

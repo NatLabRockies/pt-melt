@@ -6,7 +6,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.distributions import Normal
 
-from ptmelt.layers import MELTBatchNorm, MELTBayesianLinear
+from ptmelt.layers import MELTBatchNorm, MELTBayesianDenseFlipOut
 from ptmelt.nn_utils import get_activation, get_initializer
 
 
@@ -253,40 +253,6 @@ class ResidualBlock(MELTBlock):
         return x
 
 
-# class BayesianDenseLayer(nn.Module):
-#     def __init__(self, in_features, out_features, prior_std=0.1):
-#         super(BayesianDenseLayer, self).__init__()
-#         self.in_features = in_features
-#         self.out_features = out_features
-#         self.prior_std = prior_std
-
-#         self.weight_mu = nn.Parameter(
-#             torch.Tensor(out_features, in_features).normal_(0, 0.1)
-#         )
-#         self.weight_rho = nn.Parameter(
-#             torch.Tensor(out_features, in_features).normal_(0, 0.1)
-#         )
-#         self.bias_mu = nn.Parameter(torch.Tensor(out_features).normal_(0, 0.1))
-#         self.bias_rho = nn.Parameter(torch.Tensor(out_features).normal_(0, 0.1))
-
-#     def forward(self, x):
-#         weight = self.weight_mu + torch.log1p(torch.exp(self.weight_rho))
-#         bias = self.bias_mu + torch.log1p(torch.exp(self.bias_rho))
-#         return F.linear(x, weight, bias)
-
-#     def kl_divergence(self):
-#         weight = self.weight_mu + torch.log1p(torch.exp(self.weight_rho))
-#         bias = self.bias_mu + torch.log1p(torch.exp(self.bias_rho))
-#         prior = Normal(0, self.prior_std)
-#         posterior_weight = Normal(
-#             self.weight_mu, torch.log1p(torch.exp(self.weight_rho))
-#         )
-#         posterior_bias = Normal(self.bias_mu, torch.log1p(torch.exp(self.bias_rho)))
-#         kl_div_weight = torch.distributions.kl_divergence(posterior_weight, prior).sum()
-#         kl_div_bias = torch.distributions.kl_divergence(posterior_bias, prior).sum()
-#         return kl_div_weight + kl_div_bias
-
-
 class BayesianBlock(MELTBlock):
     """
     Bayesian block for the MELT architecture using custom Bayesian layers.
@@ -295,19 +261,23 @@ class BayesianBlock(MELTBlock):
     def __init__(
         self,
         num_points,
+        perturbation_type="multiplicative",
         **kwargs: Any,
     ):
         super(BayesianBlock, self).__init__(**kwargs)
         # self.num_points = num_points
 
+        self.perturbation_type = perturbation_type
+
         # Initialize Bayesian layers
         self.layer_dict.update(
             {
-                f"bayesian_{i}": MELTBayesianLinear(
+                f"bayesian_{i}": MELTBayesianDenseFlipOut(
                     in_features=(
                         self.input_features if i == 0 else self.node_list[i - 1]
                     ),
                     out_features=self.node_list[i],
+                    perturbation_type=self.perturbation_type,
                 )
                 for i in range(self.num_layers)
             }
@@ -365,6 +335,7 @@ class DefaultOutput(nn.Module):
         output_features: int,
         activation: Optional[str] = "linear",
         initializer: Optional[str] = "glorot_uniform",
+        do_bayesian: Optional[bool] = False,
         **kwargs: Any,
     ):
         super(DefaultOutput, self).__init__(**kwargs)
@@ -378,11 +349,16 @@ class DefaultOutput(nn.Module):
         self.initializer_fn = get_initializer(self.initializer)
 
         # Initialize output layer
-        self.output_layer = nn.Linear(
-            in_features=self.input_features, out_features=self.output_features
-        )
-        # Initialize the weights
-        self.initializer_fn(self.output_layer.weight)
+        if do_bayesian:
+            self.output_layer = MELTBayesianDenseFlipOut(
+                in_features=self.input_features, out_features=self.output_features
+            )
+        else:
+            self.output_layer = nn.Linear(
+                in_features=self.input_features, out_features=self.output_features
+            )
+            # Initialize the weights
+            self.initializer_fn(self.output_layer.weight)
 
         # Initialize activation layer
         self.activation_layer = get_activation(self.activation)
