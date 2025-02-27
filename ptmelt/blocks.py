@@ -431,13 +431,15 @@ class MixtureDensityOutput(nn.Module):
     def forward(self, inputs: torch.Tensor):
         """Perform the forward pass of the multiple mixture output layer."""
         mix_coeffs = self.mix_coeffs_layer(inputs)
+        mix_coeffs = torch.clamp(mix_coeffs, min=-10, max=10)
         mix_coeffs = self.softmax_layer(mix_coeffs)
 
         mean = self.mean_layer(inputs)
         mean = self.activation_layer(mean)
 
         log_var = self.log_var_layer(inputs)
-        log_var = self.activation_layer(log_var)
+        # log_var = self.activation_layer(log_var)
+        log_var = torch.clamp(log_var, min=-10, max=10)
 
         # return concatenated output
         return torch.cat([mix_coeffs, mean, log_var], dim=-1)

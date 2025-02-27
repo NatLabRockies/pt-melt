@@ -3,7 +3,7 @@ import torch
 
 def safe_exp(x):
     """Prevents overflow by clipping input range to reasonable values."""
-    x = torch.clamp(x, min=-20, max=20)
+    x = torch.clamp(x, min=-10, max=10)
     return torch.exp(x)
 
 
