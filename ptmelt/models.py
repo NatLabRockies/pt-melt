@@ -66,6 +66,7 @@ class MELTModel(nn.Module):
         l2_reg: Optional[float] = 0.0,
         num_mixtures: Optional[int] = 0,
         node_list: Optional[list] = None,
+        seed: Optional[int] = None,
         **kwargs,
     ):
         super(MELTModel, self).__init__(**kwargs)
@@ -86,6 +87,7 @@ class MELTModel(nn.Module):
         self.l2_reg = l2_reg
         self.num_mixtures = num_mixtures
         self.node_list = node_list
+        self.seed = seed
 
         # Determine if network should be defined based on depth/width or node_list
         if self.node_list:
@@ -133,6 +135,7 @@ class MELTModel(nn.Module):
                         num_outputs=self.num_outputs,
                         activation=self.output_activation,
                         initializer=self.initializer,
+                        seed=self.seed,
                     )
                 }
             )
@@ -150,6 +153,7 @@ class MELTModel(nn.Module):
                         output_features=self.num_outputs,
                         activation=self.output_activation,
                         initializer=self.initializer,
+                        seed=self.seed,
                     )
                 }
             )
@@ -336,6 +340,7 @@ class ArtificialNeuralNetwork(MELTModel):
                     batch_norm_type=self.batch_norm_type,
                     use_batch_renorm=self.use_batch_renorm,
                     initializer=self.initializer,
+                    seed=self.seed,
                 )
             }
         )
@@ -421,6 +426,7 @@ class ResidualNeuralNetwork(MELTModel):
                     batch_norm_type=self.batch_norm_type,
                     use_batch_renorm=self.use_batch_renorm,
                     initializer=self.initializer,
+                    seed=self.seed,
                 )
             }
         )
@@ -522,6 +528,7 @@ class BayesianNeuralNetwork(MELTModel):
                         num_outputs=self.num_outputs,
                         activation=self.output_activation,
                         initializer=self.initializer,
+                        seed=self.seed,
                     )
                 }
             )
@@ -539,6 +546,7 @@ class BayesianNeuralNetwork(MELTModel):
                         activation=self.output_activation,
                         initializer=self.initializer,
                         do_bayesian=self.do_bayesian_output,
+                        seed=self.seed,
                     )
                 }
             )
@@ -567,6 +575,7 @@ class BayesianNeuralNetwork(MELTModel):
                 batch_norm_type=self.batch_norm_type,
                 use_batch_renorm=self.use_batch_renorm,
                 initializer=self.initializer,
+                seed=self.seed,
             )
             self.layer_dict.update({"full_bayesian_block": self.bayesian_block})
             self.sub_layer_names.append("full_bayesian_block")
@@ -602,6 +611,7 @@ class BayesianNeuralNetwork(MELTModel):
                         batch_norm_type=self.batch_norm_type,
                         use_batch_renorm=self.use_batch_renorm,
                         initializer=self.initializer,
+                        seed=self.seed,
                     )
                     self.bayesian_block.append(bayesian_block)
                     self.layer_dict.update(
@@ -623,6 +633,7 @@ class BayesianNeuralNetwork(MELTModel):
                         batch_norm_type=self.batch_norm_type,
                         use_batch_renorm=self.use_batch_renorm,
                         initializer=self.initializer,
+                        seed=self.seed,
                     )
                     self.dense_block.append(dense_block)
                     self.layer_dict.update(

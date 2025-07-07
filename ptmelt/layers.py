@@ -18,6 +18,7 @@ class MELTBayesianDenseFlipOut(nn.Module):
         prior_mean: float = 0.0,
         prior_std: float = 10.0,
         perturbation_type: str = "additive",
+        seed: Optional[int] = None,
     ):
         """
         Initialize the Bayesian layer using a Dense Flipout type approach.
@@ -39,6 +40,7 @@ class MELTBayesianDenseFlipOut(nn.Module):
         self.prior_mean = prior_mean
         self.prior_std = prior_std
         self.perturbation_type = perturbation_type
+        self.seed = seed
 
         # Initialize learnable parameters for the posterior (zeros? or random?)
         self.weight_mu = nn.Parameter(torch.zeros(out_features, in_features))
@@ -46,6 +48,8 @@ class MELTBayesianDenseFlipOut(nn.Module):
         self.bias_mu = nn.Parameter(torch.zeros(out_features))
         self.bias_rho = nn.Parameter(torch.zeros(out_features))
 
+        # Initialize the parameters
+        torch.manual_seed(self.seed) if self.seed is not None else None
         nn.init.xavier_uniform_(self.weight_mu)
         nn.init.zeros_(self.bias_mu)
         nn.init.constant_(self.weight_rho, -3.0)

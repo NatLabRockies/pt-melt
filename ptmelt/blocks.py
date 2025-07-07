@@ -40,6 +40,7 @@ class MELTBlock(nn.Module):
         batch_norm_type: Optional[str] = "ema",
         use_batch_renorm: Optional[bool] = False,
         initializer: Optional[str] = "glorot_uniform",
+        seed: Optional[int] = None,
         **kwargs: Any,
     ):
         super(MELTBlock, self).__init__(**kwargs)
@@ -52,6 +53,7 @@ class MELTBlock(nn.Module):
         self.batch_norm_type = batch_norm_type
         self.use_batch_renorm = use_batch_renorm
         self.initializer = initializer
+        self.seed = seed
 
         # Get the initializer function
         self.initializer_fn = get_initializer(self.initializer)
@@ -143,6 +145,7 @@ class DenseBlock(MELTBlock):
             }
         )
         # Initialize the weights
+        torch.manual_seed(self.seed) if self.seed is not None else None
         [
             self.initializer_fn(self.layer_dict[f"dense_{i}"].weight)
             for i in range(self.num_layers)
@@ -213,6 +216,7 @@ class ResidualBlock(MELTBlock):
             }
         )
         # Initialize the weights
+        torch.manual_seed(self.seed) if self.seed is not None else None
         [
             self.initializer_fn(self.layer_dict[f"dense_{i}"].weight)
             for i in range(self.num_layers)
@@ -262,12 +266,14 @@ class BayesianBlock(MELTBlock):
         self,
         num_points,
         perturbation_type="multiplicative",
+        seed: Optional[int] = None,
         **kwargs: Any,
     ):
         super(BayesianBlock, self).__init__(**kwargs)
         # self.num_points = num_points
 
         self.perturbation_type = perturbation_type
+        self.seed = seed
 
         # Initialize Bayesian layers
         self.layer_dict.update(
@@ -278,6 +284,7 @@ class BayesianBlock(MELTBlock):
                     ),
                     out_features=self.node_list[i],
                     perturbation_type=self.perturbation_type,
+                    seed=self.seed,
                 )
                 for i in range(self.num_layers)
             }
@@ -336,6 +343,7 @@ class DefaultOutput(nn.Module):
         activation: Optional[str] = "linear",
         initializer: Optional[str] = "glorot_uniform",
         do_bayesian: Optional[bool] = False,
+        seed: Optional[int] = None,
         **kwargs: Any,
     ):
         super(DefaultOutput, self).__init__(**kwargs)
@@ -344,6 +352,7 @@ class DefaultOutput(nn.Module):
         self.output_features = output_features
         self.activation = activation
         self.initializer = initializer
+        self.seed = seed
 
         # Get the initializer function
         self.initializer_fn = get_initializer(self.initializer)
@@ -351,13 +360,16 @@ class DefaultOutput(nn.Module):
         # Initialize output layer
         if do_bayesian:
             self.output_layer = MELTBayesianDenseFlipOut(
-                in_features=self.input_features, out_features=self.output_features
+                in_features=self.input_features,
+                out_features=self.output_features,
+                seed=self.seed,
             )
         else:
             self.output_layer = nn.Linear(
                 in_features=self.input_features, out_features=self.output_features
             )
             # Initialize the weights
+            torch.manual_seed(self.seed) if self.seed is not None else None
             self.initializer_fn(self.output_layer.weight)
 
         # Initialize activation layer
@@ -393,6 +405,7 @@ class MixtureDensityOutput(nn.Module):
         num_outputs: int,
         activation: Optional[str] = "linear",
         initializer: Optional[str] = "glorot_uniform",
+        seed: Optional[int] = None,
         **kwargs: Any,
     ):
         super(MixtureDensityOutput, self).__init__(**kwargs)
@@ -402,6 +415,7 @@ class MixtureDensityOutput(nn.Module):
         self.num_outputs = num_outputs
         self.activation = activation
         self.initializer = initializer
+        self.seed = seed
 
         # Get the initializer function
         self.initializer_fn = get_initializer(self.initializer)
@@ -420,6 +434,7 @@ class MixtureDensityOutput(nn.Module):
         )
 
         # Initialize the weights
+        torch.manual_seed(self.seed) if self.seed is not None else None
         self.initializer_fn(self.mix_coeffs_layer.weight)
         self.initializer_fn(self.mean_layer.weight)
         self.initializer_fn(self.log_var_layer.weight)
