@@ -84,9 +84,10 @@ def model_builder(config):
 
         return model, optimizer, criterion
 
-    elif arch_type == "resnet":
-        pass
-    elif arch_type == "custom":
-        pass
+    # elif arch_type == "resnet":
+    #     pass
+    # elif arch_type == "custom":
+    #     pass
+    # TODO: Add explicit support for other models in HP Tuning builder...
     else:
         raise ValueError(f"Unsupported architecture type {arch_type}")
