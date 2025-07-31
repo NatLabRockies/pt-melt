@@ -437,11 +437,10 @@ class MixtureDensityOutput(nn.Module):
         mix_coeffs = self.softmax_layer(mix_coeffs)
 
         mean = self.mean_layer(inputs)
+        # TODO: Do we ever want to apply an activation function to the mean?
         # mean = self.activation_layer(mean)
 
         log_var = self.log_var_layer(inputs)
-        # log_var = torch.clamp(log_var, min=-10, max=10)
-        # log_var = F.softplus(log_var)
 
         # return concatenated output
         return torch.cat([mix_coeffs, mean, log_var], dim=-1)

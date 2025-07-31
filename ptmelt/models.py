@@ -630,8 +630,21 @@ class BayesianNeuralNetwork(MELTModel):
             else inputs
         )
 
-        # Apply the full Bayesian block
-        x = self.layer_dict["full_bayesian_block"](x)
+        # Apply the full Bayesian block if it exists
+        if "full_bayesian_block" in self.layer_dict:
+            x = self.layer_dict["full_bayesian_block"](x)
+        else:
+            # Apply each Bayesian and Dense block in sequence
+            bayesian_index = 0
+            dense_index = 0
+
+            for is_bayesian in self.bayesian_mask:
+                if is_bayesian:
+                    x = self.layer_dict[f"bayesian_block_{bayesian_index}"](x)
+                    bayesian_index += 1
+                else:
+                    x = self.layer_dict[f"dense_block_{dense_index}"](x)
+                    dense_index += 1
 
         # Apply the output layer(s) and return
         return self.layer_dict["output"](x)
@@ -658,7 +671,22 @@ class BayesianNeuralNetwork(MELTModel):
                 loss = criterion(pred, y_in)
 
                 # Add in kl divergence for the Bayesian block
-                loss += self.layer_dict["full_bayesian_block"].kl_loss() / dataset_size
+                if "full_bayesian_block" in self.layer_dict:
+                    loss += (
+                        self.layer_dict["full_bayesian_block"].kl_loss() / dataset_size
+                    )
+                else:
+                    bayesian_index = 0
+                    # Add in kl divergence for each Bayesian block
+                    for is_bayesian in self.bayesian_mask:
+                        if is_bayesian:
+                            loss += (
+                                self.layer_dict[
+                                    f"bayesian_block_{bayesian_index}"
+                                ].kl_loss()
+                                / dataset_size
+                            )
+                            bayesian_index += 1
 
                 if training:
                     # Add L1 and L2 regularization if present
