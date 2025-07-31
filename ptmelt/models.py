@@ -485,32 +485,6 @@ class BayesianNeuralNetwork(MELTModel):
         self.aleatoric_scale_factor = aleatoric_scale_factor
         self.scale_epsilon = scale_epsilon
         self.bayesian_mask = bayesian_mask
-        # self.bayesian_mask = (
-        #     bayesian_mask if bayesian_mask is not None else [True] * self.num_layers
-        # )
-
-        # # Checks on bayesian mask and number of layers
-        # if len(self.bayesian_mask) > self.num_layers:
-        #     warnings.warn(
-        #         "Bayesian mask is longer than the number of layers, so truncating."
-        #     )
-        #     self.bayesian_mask = self.bayesian_mask[: self.num_layers]
-        # elif len(self.bayesian_mask) < self.num_layers:
-        #     raise ValueError(
-        #         "Bayesian mask is shorter than the number of layers."
-        #         "Please provide a mask for each layer."
-        #     )
-
-        # # Update config with new attributes
-        # self.config.update(
-        #     {
-        #         "num_points": self.num_points,
-        #         "do_aleatoric": self.do_aleatoric,
-        #         "aleatoric_scale_factor": self.aleatoric_scale_factor,
-        #         "scale_epsilon": self.scale_epsilon,
-        #         "bayesian_mask": self.bayesian_mask,
-        #     }
-        # )
 
     def create_output_layer(self):
         """Create output layer for the Bayesian Neural Network."""

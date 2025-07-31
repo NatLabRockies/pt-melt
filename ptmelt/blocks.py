@@ -290,19 +290,6 @@ class BayesianBlock(MELTBlock):
             }
         )
 
-        # # Initialize Bayesian layers
-        # self.layer_dict.update(
-        #     {
-        #         f"bayesian_{i}": BayesianDenseLayer(
-        #             in_features=(
-        #                 self.input_features if i == 0 else self.node_list[i - 1]
-        #             ),
-        #             out_features=self.node_list[i],
-        #         )
-        #         for i in range(self.num_layers)
-        #     }
-        # )
-
     def forward(self, inputs: torch.Tensor):
         """Perform the forward pass of the Bayesian block."""
         x = inputs
