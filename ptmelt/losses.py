@@ -39,6 +39,7 @@ class MixtureDensityLoss(torch.nn.Module):
         mean_preds = mean_preds.view(-1, self.num_mixtures, self.num_outputs)
         # Reshape log variance predictions -> (batch_size, num_mixtures, num_outputs)
         log_var_preds = log_var_preds.view(-1, self.num_mixtures, self.num_outputs)
+        log_var_preds = torch.clamp(log_var_preds, min=-10.0, max=10.0)
 
         # Ensure mixture coefficients sum to 1
         m_coeffs = F.softmax(m_coeffs, dim=1)
@@ -53,7 +54,7 @@ class MixtureDensityLoss(torch.nn.Module):
         # Compute log probabilities terms
         const_term = -0.5 * self.num_outputs * torch.log(torch.tensor(2 * torch.pi))
         var_log_term = -0.5 * log_var_preds
-        exp_term = -0.5 * torch.square(diff) / var_preds
+        exp_term = -0.5 * torch.square(diff) / torch.clamp(var_preds, min=1e-10)
         log_probs = const_term + var_log_term + exp_term
 
         # Sum over output dimensions to get log probabilities for each mixture
@@ -61,12 +62,20 @@ class MixtureDensityLoss(torch.nn.Module):
         log_probs = log_probs.sum(dim=2)
 
         # Compute mixture weighted log probabilities and add eps to prevent log(0)
-        weighted_log_probs = log_probs + torch.log(m_coeffs + 1e-8)
+        # weighted_log_probs = log_probs + torch.log(m_coeffs + 1e-8)
+        weighted_log_probs = log_probs + torch.log(torch.clamp(m_coeffs, min=1e-8))
 
         # Log-Sum-Exp trick for numerical stability -> (batch_size,)
         log_sum_exp = torch.logsumexp(weighted_log_probs, dim=1)
 
         # Compute final negative log-likelihood loss -> scalar
         loss = -torch.mean(log_sum_exp)
+
+        # add in the mse as well
+        # TODO: Make this an option
+        mse_loss = F.mse_loss(
+            y_pred[:, end_mixture:end_log_var], y_true, reduction="mean"
+        )
+        loss += mse_loss
 
         return loss
