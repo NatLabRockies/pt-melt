@@ -5,6 +5,7 @@ from typing import List, Optional
 
 import torch
 import torch.nn as nn
+import torch.optim.lr_scheduler as lr_scheduler
 from tqdm import tqdm
 
 from ptmelt.blocks import (
@@ -211,10 +212,48 @@ class MELTModel(nn.Module):
             return MixtureDensityLoss(
                 num_mixtures=self.num_mixtures, num_outputs=self.num_outputs
             )
-        elif loss == "mse":
-            return nn.MSELoss(reduction=reduction)
         else:
-            raise ValueError(f"Loss function {loss} not recognized.")
+            # mappings for common loss functions
+            common_mappings = {
+                "mse": "MSELoss",
+                "mae": "L1Loss",
+                "huber": "SmoothL1Loss",
+                "nll": "NLLLoss",
+                "poisson": "PoissonNLLLoss",
+                "kl_div": "KLDivLoss",
+            }
+            loss = common_mappings.get(loss.lower(), loss)
+
+            return getattr(nn, loss)(reduction=reduction)
+        # elif loss == "mse":
+        #     return nn.MSELoss(reduction=reduction)
+        # else:
+        #     raise ValueError(f"Loss function {loss} not recognized.")
+
+    def get_optimizer(self, optimizer_name: str, **kwargs):
+        """
+        Get the optimizer for the model. Used in the training loop.
+
+        Args:
+            optimizer_name (str): The name of the optimizer to use.
+        """
+        return getattr(torch.optim, optimizer_name.capitalize())(
+            self.parameters(), **kwargs
+        )
+
+    def get_scheduler(self, scheduler_name: str, optimizer, **kwargs):
+        """
+        Get the learning rate scheduler for the model. Used in the training loop.
+
+        Args:
+            scheduler_name (str): The name of the scheduler to use.
+            optimizer: The optimizer to attach the scheduler to.
+        """
+
+        if "min_lr" in kwargs:
+            self.min_lr = kwargs.pop("min_lr")
+
+        return getattr(lr_scheduler, scheduler_name)(optimizer, **kwargs)
 
     def step(self, dataloader, optimizer, criterion, device="cpu", training=True):
         """
@@ -264,8 +303,9 @@ class MELTModel(nn.Module):
         val_dl,
         optimizer,
         criterion,
-        num_epochs: int,
-        device="cpu",
+        num_epochs: Optional[int] = 100,
+        device: Optional[str] = "cpu",
+        scheduler: Optional[torch.optim.lr_scheduler._LRScheduler] = None,
         verbose=False,
     ):
         """
@@ -278,6 +318,7 @@ class MELTModel(nn.Module):
             criterion (Loss): The loss function to use.
             num_epochs (int): The number of epochs to train the model.
             device (str, optional): The device to use for training. Defaults to 'cpu'.
+
             verbose (bool, optional): Whether to print training statistics. Defaults to
                                       False.
         """
@@ -286,7 +327,7 @@ class MELTModel(nn.Module):
 
         # Create history dictionary
         if not hasattr(self, "history"):
-            self.history = {"loss": [], "val_loss": []}
+            self.history = {"loss": [], "val_loss": [], "lr": [], "epoch": []}
 
         for epoch in tqdm(range(num_epochs), disable=not verbose):
             # Perform a training and validation step
@@ -296,6 +337,13 @@ class MELTModel(nn.Module):
             val_loss = self.step(
                 val_dl, optimizer, criterion, device=device, training=False
             )
+            # Step the scheduler if provided
+            if scheduler:
+                scheduler.step(
+                    val_loss
+                    if isinstance(scheduler, torch.optim.lr_scheduler.ReduceLROnPlateau)
+                    else None
+                )
 
             # Print statistics
             if (epoch + 1) % 10 == 0 and verbose:
@@ -307,6 +355,27 @@ class MELTModel(nn.Module):
             # Save history
             self.history["loss"].append(train_loss)
             self.history["val_loss"].append(val_loss)
+            self.history["lr"].append(
+                scheduler.get_last_lr()[0]
+                if scheduler and hasattr(scheduler, "get_last_lr")
+                else (
+                    optimizer.param_groups[0]["lr"]
+                    if isinstance(optimizer, torch.optim.Optimizer)
+                    else optimizer.defaults["lr"]
+                )
+            )
+            self.history["epoch"].append(epoch + 1)
+
+            if self.min_lr:
+                # Check if the last learning rate is less than or equal to the minimum learning rate
+                if scheduler and hasattr(scheduler, "get_last_lr"):
+                    if scheduler.get_last_lr()[0] <= self.min_lr:
+                        if verbose:
+                            print(
+                                f"Stopping training at epoch {epoch + 1} due to "
+                                f"learning rate reaching minimum {self.min_lr}."
+                            )
+                        break
 
 
 class ArtificialNeuralNetwork(MELTModel):
