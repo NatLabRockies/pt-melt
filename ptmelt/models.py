@@ -193,7 +193,10 @@ class MELTModel(nn.Module):
         return 0.5 * lambda_l2 * l2_norm
 
     def get_loss_fn(
-        self, loss: Optional[str] = "mse", reduction: Optional[str] = "mean"
+        self,
+        loss: Optional[str] = "mse",
+        reduction: Optional[str] = "mean",
+        mse_weight: Optional[float] = None,
     ):
         """
         Get the loss function for the model. Used in the training loop.
@@ -210,7 +213,9 @@ class MELTModel(nn.Module):
             )
 
             return MixtureDensityLoss(
-                num_mixtures=self.num_mixtures, num_outputs=self.num_outputs
+                num_mixtures=self.num_mixtures,
+                num_outputs=self.num_outputs,
+                mse_weight=mse_weight if mse_weight else 0.0,
             )
         else:
             # mappings for common loss functions
@@ -306,6 +311,7 @@ class MELTModel(nn.Module):
         num_epochs: Optional[int] = 100,
         device: Optional[str] = "cpu",
         scheduler: Optional[torch.optim.lr_scheduler._LRScheduler] = None,
+        stopping: Optional[bool] = True,
         verbose=False,
     ):
         """
@@ -366,7 +372,7 @@ class MELTModel(nn.Module):
             )
             self.history["epoch"].append(epoch + 1)
 
-            if self.min_lr:
+            if self.min_lr and stopping:
                 # Check if the last learning rate is less than or equal to the minimum learning rate
                 if scheduler and hasattr(scheduler, "get_last_lr"):
                     if scheduler.get_last_lr()[0] <= self.min_lr:

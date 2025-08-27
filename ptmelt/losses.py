@@ -17,10 +17,11 @@ class MixtureDensityLoss(torch.nn.Module):
         num_outputs (int): Number of output dimensions.
     """
 
-    def __init__(self, num_mixtures, num_outputs):
+    def __init__(self, num_mixtures, num_outputs, mse_weight=1.0):
         super(MixtureDensityLoss, self).__init__()
         self.num_mixtures = num_mixtures
         self.num_outputs = num_outputs
+        self.mse_weight = mse_weight
 
     def forward(self, y_pred, y_true):
         # Extract the mixture coefficients, means, and log-variances
@@ -72,10 +73,13 @@ class MixtureDensityLoss(torch.nn.Module):
         loss = -torch.mean(log_sum_exp)
 
         # add in the mse as well
-        # TODO: Make this an option
-        mse_loss = F.mse_loss(
-            y_pred[:, end_mixture:end_log_var], y_true, reduction="mean"
-        )
-        loss += mse_loss
+        if self.mse_weight > 0.0:
+            # mse_loss = F.mse_loss(
+            #     y_pred[:, end_mixture:end_log_var], y_true, reduction="mean"
+            # )
+            # loss += mse_loss
+            mix_mean = (m_coeffs.unsqueeze(-1) * mean_preds).sum(dim=1)
+            mse_loss = F.mse_loss(mix_mean, y_true, reduction="mean")
+            loss += self.mse_weight * mse_loss
 
         return loss

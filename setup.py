@@ -7,7 +7,7 @@ install_requires = [
     "tqdm",
     "scikit-learn",
     "matplotlib",
-    "ray[data,train,tune,serve]",
+    "ray[data,train,tune,serve]==2.22",
     "hyperopt",
     "optuna",
     "hpbandster",
