@@ -17,11 +17,18 @@ class MixtureDensityLoss(torch.nn.Module):
         num_outputs (int): Number of output dimensions.
     """
 
-    def __init__(self, num_mixtures, num_outputs, mse_weight=1.0):
+    def __init__(self, num_mixtures, num_outputs, mse_weight=1.0, reduction="mean"):
         super(MixtureDensityLoss, self).__init__()
         self.num_mixtures = num_mixtures
         self.num_outputs = num_outputs
         self.mse_weight = mse_weight
+
+        assert reduction in (
+            "mean",
+            "sum",
+            "none",
+        ), "Reduction must be 'mean', 'sum', or 'none'"
+        self.reduction = reduction
 
     def forward(self, y_pred, y_true):
         # Extract the mixture coefficients, means, and log-variances
@@ -70,16 +77,26 @@ class MixtureDensityLoss(torch.nn.Module):
         log_sum_exp = torch.logsumexp(weighted_log_probs, dim=1)
 
         # Compute final negative log-likelihood loss -> scalar
-        loss = -torch.mean(log_sum_exp)
+        # loss = -torch.mean(log_sum_exp)
+        loss = log_sum_exp
 
         # add in the mse as well
         if self.mse_weight > 0.0:
-            # mse_loss = F.mse_loss(
-            #     y_pred[:, end_mixture:end_log_var], y_true, reduction="mean"
-            # )
-            # loss += mse_loss
             mix_mean = (m_coeffs.unsqueeze(-1) * mean_preds).sum(dim=1)
-            mse_loss = F.mse_loss(mix_mean, y_true, reduction="mean")
+            mse_loss = F.mse_loss(mix_mean, y_true, reduction="none").mean(dim=-1)
             loss += self.mse_weight * mse_loss
+
+        # Apply reduction to the loss
+        if self.reduction == "mean":
+            loss = -torch.mean(loss)
+        elif self.reduction == "sum":
+            loss = -torch.sum(loss)
+        # else no reduction, return the full loss tensor
+
+        # loss = -torch.mean(log_sum_exp)
+        # if self.mse_weight > 0.0:
+        #     mix_mean = (m_coeffs.unsqueeze(-1) * mean_preds).sum(dim=1)
+        #     mse_loss = F.mse_loss(mix_mean, y_true, reduction="mean")
+        #     loss += self.mse_weight * mse_loss
 
         return loss

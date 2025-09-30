@@ -7,13 +7,14 @@ install_requires = [
     "tqdm",
     "scikit-learn",
     "matplotlib",
-    "ray[data,train,tune,serve]==2.22",
+    "ray[data,train,tune,serve]",
     "hyperopt",
     "optuna",
     "hpbandster",
     "ConfigSpace",
     "bayesian-optimization",
     "ax-platform",
+    "safetensors",
 ]
 print(f"Platform: {platform.system()}")
 
@@ -33,7 +34,7 @@ else:
 
 setup(
     name="ptmelt",
-    version="0.1.3",
+    version="0.1.4",
     description="PyTorch Machine Learning Toolbox (PT-MELT)",
     url="https://github.com/NREL/pt-melt",
     author="Nicholas T. Wimer",

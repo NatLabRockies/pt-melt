@@ -6,6 +6,40 @@ import torch.nn.functional as F
 from torch.distributions import Normal, kl_divergence
 
 
+class AttentionPool(nn.Module):
+    """
+    Attention Pooling Layer.
+
+    Args:
+        hidden_size (int): Size of the hidden state from the RNN.
+    """
+
+    def __init__(self, hidden_size):
+        super().__init__()
+        self.w = nn.Linear(hidden_size, hidden_size, bias=True)
+        self.v = nn.Linear(hidden_size, 1, bias=False)
+
+    def forward(self, rnn_out, lengths=None):  # rnn_out: [B,T,H]
+        """
+        Perform the forward pass of the attention pooling layer.
+
+        Args:
+            rnn_out (torch.Tensor): Output from the RNN layer of shape [B, T, H].
+            lengths (torch.Tensor, optional): Lengths of the sequences in the batch.
+                                              Defaults to None.
+        """
+        scores = self.v(torch.tanh(self.w(rnn_out))).squeeze(-1)  # [B,T]
+        if lengths is not None:
+            T = rnn_out.size(1)
+            mask = torch.arange(T, device=rnn_out.device).unsqueeze(
+                0
+            ) < lengths.unsqueeze(1)
+            scores = scores.masked_fill(~mask, float("-inf"))
+        attn = torch.softmax(scores, dim=1)  # [B,T]
+        pooled = torch.bmm(attn.unsqueeze(1), rnn_out).squeeze(1)  # [B,H]
+        return pooled
+
+
 class MELTBayesianDenseFlipOut(nn.Module):
     """
     Custom Bayesian Layer for PT-MELT.

@@ -41,7 +41,9 @@ def _get_activation(act_name: str, **kwargs: Any):
         "swish": "SiLU",
         "linear": "Identity",
     }
-    act_name = common_mappings.get(act_name.lower(), act_name)
+    act_name = (
+        common_mappings.get(act_name.lower(), act_name) if act_name else "Identity"
+    )
 
     if hasattr(nn, act_name):
         return getattr(nn, act_name)(**kwargs)
@@ -477,6 +479,7 @@ class MixtureDensityOutput(nn.Module):
 
         mean = self.mean_layer(inputs)
         # TODO: Do we ever want to apply an activation function to the mean?
+        # Maybe to the mean, but never to the log variance?
         # mean = self.activation_layer(mean)
 
         log_var = self.log_var_layer(inputs)
