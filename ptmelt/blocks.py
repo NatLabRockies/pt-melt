@@ -7,7 +7,48 @@ import torch.nn.functional as F
 from torch.distributions import Normal
 
 from ptmelt.layers import MELTBatchNorm, MELTBayesianDenseFlipOut
-from ptmelt.nn_utils import get_activation, get_initializer
+
+
+def _get_initializer(initializer: str):
+    """Get the initializer function."""
+
+    if not initializer.endswith("_"):
+        initializer += "_"
+
+    if initializer == "glorot_uniform_":
+        initializer = "xavier_uniform_"
+
+    if hasattr(nn.init, initializer):
+        return getattr(nn.init, initializer)
+    else:
+        raise ValueError(f"Initializer {initializer} not recognized.")
+
+
+def _get_activation(act_name: str, **kwargs: Any):
+    """Get the activation function based on its name."""
+
+    # Do some common activation string mapping
+    common_mappings = {
+        "relu": "ReLU",
+        "leaky_relu": "LeakyReLU",
+        "sigmoid": "Sigmoid",
+        "tanh": "Tanh",
+        "softmax": "Softmax",
+        "softplus": "Softplus",
+        "elu": "ELU",
+        "selu": "SELU",
+        "gelu": "GELU",
+        "swish": "SiLU",
+        "linear": "Identity",
+    }
+    act_name = (
+        common_mappings.get(act_name.lower(), act_name) if act_name else "Identity"
+    )
+
+    if hasattr(nn, act_name):
+        return getattr(nn, act_name)(**kwargs)
+    else:
+        raise ValueError(f"Activation function {act_name} not recognized.")
 
 
 class MELTBlock(nn.Module):
@@ -56,7 +97,7 @@ class MELTBlock(nn.Module):
         self.seed = seed
 
         # Get the initializer function
-        self.initializer_fn = get_initializer(self.initializer)
+        self.initializer_fn = _get_initializer(self.initializer)
 
         # Create layer dictionary
         self.layer_dict = nn.ModuleDict()
@@ -72,7 +113,7 @@ class MELTBlock(nn.Module):
         if self.activation:
             self.layer_dict.update(
                 {
-                    f"activation_{i}": get_activation(self.activation)
+                    f"activation_{i}": _get_activation(self.activation)
                     for i in range(self.num_layers)
                 }
             )
@@ -226,7 +267,7 @@ class ResidualBlock(MELTBlock):
         if self.post_add_activation:
             self.layer_dict.update(
                 {
-                    f"post_add_act_{i}": get_activation(self.activation)
+                    f"post_add_act_{i}": _get_activation(self.activation)
                     for i in range(self.num_layers // 2)
                 }
             )
@@ -342,7 +383,7 @@ class DefaultOutput(nn.Module):
         self.seed = seed
 
         # Get the initializer function
-        self.initializer_fn = get_initializer(self.initializer)
+        self.initializer_fn = _get_initializer(self.initializer)
 
         # Initialize output layer
         if do_bayesian:
@@ -360,7 +401,7 @@ class DefaultOutput(nn.Module):
             self.initializer_fn(self.output_layer.weight)
 
         # Initialize activation layer
-        self.activation_layer = get_activation(self.activation)
+        self.activation_layer = _get_activation(self.activation)
 
     def forward(self, inputs: torch.Tensor):
         """Perform the forward pass of the default output layer."""
@@ -405,7 +446,7 @@ class MixtureDensityOutput(nn.Module):
         self.seed = seed
 
         # Get the initializer function
-        self.initializer_fn = get_initializer(self.initializer)
+        self.initializer_fn = _get_initializer(self.initializer)
 
         # Initialize output layers
         self.mix_coeffs_layer = nn.Linear(
@@ -427,8 +468,8 @@ class MixtureDensityOutput(nn.Module):
         self.initializer_fn(self.log_var_layer.weight)
 
         # Initialize activation layer
-        self.activation_layer = get_activation(self.activation)
-        self.softmax_layer = get_activation("softmax")
+        self.activation_layer = _get_activation(self.activation)
+        self.softmax_layer = _get_activation("softmax")
 
     def forward(self, inputs: torch.Tensor):
         """Perform the forward pass of the multiple mixture output layer."""
@@ -438,6 +479,7 @@ class MixtureDensityOutput(nn.Module):
 
         mean = self.mean_layer(inputs)
         # TODO: Do we ever want to apply an activation function to the mean?
+        # Maybe to the mean, but never to the log variance?
         # mean = self.activation_layer(mean)
 
         log_var = self.log_var_layer(inputs)

@@ -5,6 +5,8 @@ from typing import List, Optional
 
 import torch
 import torch.nn as nn
+import torch.optim.lr_scheduler as lr_scheduler
+from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
 from tqdm import tqdm
 
 from ptmelt.blocks import (
@@ -14,6 +16,7 @@ from ptmelt.blocks import (
     MixtureDensityOutput,
     ResidualBlock,
 )
+from ptmelt.layers import AttentionPool
 from ptmelt.losses import MixtureDensityLoss
 
 
@@ -192,7 +195,10 @@ class MELTModel(nn.Module):
         return 0.5 * lambda_l2 * l2_norm
 
     def get_loss_fn(
-        self, loss: Optional[str] = "mse", reduction: Optional[str] = "mean"
+        self,
+        loss: Optional[str] = "mse",
+        reduction: Optional[str] = "mean",
+        mse_weight: Optional[float] = None,
     ):
         """
         Get the loss function for the model. Used in the training loop.
@@ -209,12 +215,60 @@ class MELTModel(nn.Module):
             )
 
             return MixtureDensityLoss(
-                num_mixtures=self.num_mixtures, num_outputs=self.num_outputs
+                num_mixtures=self.num_mixtures,
+                num_outputs=self.num_outputs,
+                mse_weight=mse_weight if mse_weight else 0.0,
             )
-        elif loss == "mse":
-            return nn.MSELoss(reduction=reduction)
         else:
-            raise ValueError(f"Loss function {loss} not recognized.")
+            # mappings for common loss functions
+            common_mappings = {
+                "mse": "MSELoss",
+                "mae": "L1Loss",
+                "huber": "SmoothL1Loss",
+                "nll": "NLLLoss",
+                "poisson": "PoissonNLLLoss",
+                "kl_div": "KLDivLoss",
+            }
+            loss = common_mappings.get(loss.lower(), loss)
+
+            return getattr(nn, loss)(reduction=reduction)
+
+    def get_optimizer(self, optimizer_name: str, **kwargs):
+        """
+        Get the optimizer for the model. Used in the training loop.
+
+        Args:
+            optimizer_name (str): The name of the optimizer to use.
+        """
+        name = optimizer_name.lower()
+        mapping = {
+            "sgd": torch.optim.SGD,
+            "adam": torch.optim.Adam,
+            "adamw": torch.optim.AdamW,
+            "rmsprop": torch.optim.RMSprop,
+            "adadelta": torch.optim.Adadelta,
+            "adagrad": torch.optim.Adagrad,
+            "adamax": torch.optim.Adamax,
+            "nadam": torch.optim.NAdam,
+            "radam": torch.optim.RAdam,
+        }
+        if name not in mapping:
+            raise ValueError(f"Unknown optimizer '{optimizer_name}'.")
+        return mapping[name](self.parameters(), **kwargs)
+
+    def get_scheduler(self, scheduler_name: str, optimizer, **kwargs):
+        """
+        Get the learning rate scheduler for the model. Used in the training loop.
+
+        Args:
+            scheduler_name (str): The name of the scheduler to use.
+            optimizer: The optimizer to attach the scheduler to.
+        """
+
+        if "min_lr" in kwargs:
+            self.min_lr = kwargs.pop("min_lr")
+
+        return getattr(lr_scheduler, scheduler_name)(optimizer, **kwargs)
 
     def step(self, dataloader, optimizer, criterion, device="cpu", training=True):
         """
@@ -264,8 +318,10 @@ class MELTModel(nn.Module):
         val_dl,
         optimizer,
         criterion,
-        num_epochs: int,
-        device="cpu",
+        num_epochs: Optional[int] = 100,
+        device: Optional[str] = "cpu",
+        scheduler: Optional[torch.optim.lr_scheduler._LRScheduler] = None,
+        stopping: Optional[bool] = True,
         verbose=False,
     ):
         """
@@ -278,6 +334,7 @@ class MELTModel(nn.Module):
             criterion (Loss): The loss function to use.
             num_epochs (int): The number of epochs to train the model.
             device (str, optional): The device to use for training. Defaults to 'cpu'.
+
             verbose (bool, optional): Whether to print training statistics. Defaults to
                                       False.
         """
@@ -286,7 +343,7 @@ class MELTModel(nn.Module):
 
         # Create history dictionary
         if not hasattr(self, "history"):
-            self.history = {"loss": [], "val_loss": []}
+            self.history = {"loss": [], "val_loss": [], "lr": [], "epoch": []}
 
         for epoch in tqdm(range(num_epochs), disable=not verbose):
             # Perform a training and validation step
@@ -296,6 +353,13 @@ class MELTModel(nn.Module):
             val_loss = self.step(
                 val_dl, optimizer, criterion, device=device, training=False
             )
+            # Step the scheduler if provided
+            if scheduler:
+                scheduler.step(
+                    val_loss
+                    if isinstance(scheduler, torch.optim.lr_scheduler.ReduceLROnPlateau)
+                    else None
+                )
 
             # Print statistics
             if (epoch + 1) % 10 == 0 and verbose:
@@ -307,6 +371,27 @@ class MELTModel(nn.Module):
             # Save history
             self.history["loss"].append(train_loss)
             self.history["val_loss"].append(val_loss)
+            self.history["lr"].append(
+                scheduler.get_last_lr()[0]
+                if scheduler and hasattr(scheduler, "get_last_lr")
+                else (
+                    optimizer.param_groups[0]["lr"]
+                    if isinstance(optimizer, torch.optim.Optimizer)
+                    else optimizer.defaults["lr"]
+                )
+            )
+            self.history["epoch"].append(epoch + 1)
+
+            if self.min_lr and stopping:
+                # Check if the last learning rate is less than or equal to the minimum learning rate
+                if scheduler and hasattr(scheduler, "get_last_lr"):
+                    if scheduler.get_last_lr()[0] <= self.min_lr:
+                        if verbose:
+                            print(
+                                f"Stopping training at epoch {epoch + 1} due to "
+                                f"learning rate reaching minimum {self.min_lr}."
+                            )
+                        break
 
 
 class ArtificialNeuralNetwork(MELTModel):
@@ -708,4 +793,330 @@ class BayesianNeuralNetwork(MELTModel):
         # Normalize loss
         running_loss /= len(dataloader)
 
+        return running_loss
+
+
+class RecurrentNeuralNetwork(MELTModel):
+    """
+    Recurrent Neural Network (RNN) model.
+
+    Bidirectional is not supported in this implementation as it is intended for
+    forecasting tasks.
+
+
+    Args:
+        rnn_type (str, optional): The type of RNN to use ('rnn', 'lstm', 'gru').
+        return_sequences (bool, optional): Whether to return the full sequence or
+                                           just the last output.
+        **kwargs: Additional keyword arguments.
+    """
+
+    def __init__(
+        self,
+        rnn_type: Optional[str] = "lstm",
+        return_sequences: Optional[bool] = False,
+        head_type: str = "last",
+        **kwargs,
+    ):
+        super(RecurrentNeuralNetwork, self).__init__(**kwargs)
+
+        self.rnn_type = rnn_type.lower()
+        if self.rnn_type not in ["rnn", "lstm", "gru"]:
+            raise ValueError(f"RNN type must be 'rnn', 'lstm', or 'gru'.")
+
+        self.return_sequences = return_sequences
+
+        if self.return_sequences:
+            warnings.warn(
+                "Returning sequences is not implemented for RNNs. Please set return_sequences=False."
+            )
+            raise NotImplementedError(
+                "Returning sequences is not implemented for RNNs."
+            )
+
+        self.head_type = head_type.lower()
+        if self.head_type not in ["last", "attn", "mean", "max"]:
+            raise ValueError("head_type must be one of: 'last', 'attn', 'mean', 'max'.")
+
+        if self.node_list is not None:
+            warnings.warn(
+                "Warning: node_list for RNN must be uniform per layer;"
+                " using width and depth to define layers."
+            )
+
+        self.hidden_size = self.width
+        self.num_layers = self.depth
+
+        self.recurrent_out_dim = self.hidden_size
+
+    def create_output_layer(self):
+        """
+        Override to use recurrent_out_dim as input_features instead of layer_width.
+        """
+        if self.num_mixtures > 0:
+            head = MixtureDensityOutput(
+                input_features=self.recurrent_out_dim,
+                num_mixtures=self.num_mixtures,
+                num_outputs=self.num_outputs,
+                activation=self.output_activation,
+                initializer=self.initializer,
+                seed=self.seed,
+            )
+        else:
+            head = DefaultOutput(
+                input_features=self.recurrent_out_dim,
+                output_features=self.num_outputs,
+                activation=self.output_activation,
+                initializer=self.initializer,
+                seed=self.seed,
+            )
+
+        # TODO: Implement return sequences as option for many-to-many tasks
+        if self.return_sequences:
+            warnings.warn(
+                "Returning sequences is not implemented for RNNs. Please set return_sequences=False."
+            )
+            raise NotImplementedError(
+                "Returning sequences is not implemented for RNNs."
+            )
+        else:
+            self.layer_dict.update({"output": head})
+        self.sub_layer_names.append("output")
+
+    def initialize_layers(self):
+        """
+        Initialize dropout, rnn block, and output layers.
+        """
+        super(RecurrentNeuralNetwork, self).initialize_layers()
+
+        # Create the RNN layer (use PyTorch built-in)
+        rnn_class = {
+            "rnn": nn.RNN,
+            "lstm": nn.LSTM,
+            "gru": nn.GRU,
+        }[self.rnn_type]
+
+        self.layer_dict.update(
+            {
+                "rnn_block": rnn_class(
+                    input_size=self.num_features,
+                    hidden_size=self.hidden_size,
+                    num_layers=self.num_layers,
+                    batch_first=True,
+                    dropout=self.dropout if self.num_layers > 1 else 0.0,
+                    bidirectional=False,  # Needs to be False for forecasting
+                )
+            }
+        )
+        self.sub_layer_names.append("rnn_block")
+
+        if not self.return_sequences:
+            if self.head_type == "attn":
+                self.layer_dict["pool_head"] = AttentionPool(self.hidden_size)
+            else:
+                self.layer_dict["pool_head"] = None
+
+    def _select_last_timestep(self, rnn_out, lengths):
+        """
+        Select the output from the last time step for each sequence in the batch. Used
+        when attention is not selected. Classic many-to-one.
+
+        Args:
+            rnn_out (torch.Tensor): The output from the RNN layer.
+            lengths (torch.Tensor): The lengths of the sequences in the batch.
+        """
+        batch_size, time_steps, features = rnn_out.size()
+        # Create a mask to select the last valid time step for each sequence
+        idx = (lengths - 1).view(-1, 1).expand(batch_size, features).unsqueeze(1)
+        return rnn_out.gather(1, idx).squeeze(1)
+
+    def _compute_mean_timestep(self, rnn_out, lengths):
+        """
+        Compute the mean over valid time steps for each sequence in the batch. Used
+        when head_type is 'mean'. Useful for some tasks.
+
+        Args:
+            rnn_out (torch.Tensor): The output from the RNN layer.
+            lengths (torch.Tensor): The lengths of the sequences in the batch.
+        """
+        batch_size, time_steps, features = rnn_out.size()
+        mask = (
+            torch.arange(time_steps, device=rnn_out.device)
+            .unsqueeze(0)
+            .expand(batch_size, time_steps)
+            < lengths.unsqueeze(1)
+        ).float()
+        summed = (rnn_out * mask.unsqueeze(-1)).sum(dim=1)
+        counts = mask.sum(dim=1).clamp_min(1.0).unsqueeze(-1)
+        return summed / counts
+
+    def _compute_max_timestep(self, rnn_out, lengths):
+        """
+        Compute the max over valid time steps for each sequence in the batch. Used
+        when head_type is 'max'. Useful for some tasks.
+
+        Args:
+            rnn_out (torch.Tensor): The output from the RNN layer.
+            lengths (torch.Tensor): The lengths of the sequences in the batch.
+        """
+        batch_size, time_steps, features = rnn_out.size()
+        mask = torch.arange(time_steps, device=rnn_out.device).unsqueeze(0).expand(
+            batch_size, time_steps
+        ) < lengths.unsqueeze(1)
+        masked_rnn_out = rnn_out.masked_fill(~mask.unsqueeze(-1), float("-inf"))
+        return masked_rnn_out.max(dim=1).values
+
+    def _random_suffix_crop(self, x, y, lengths, min_length=32):
+        """
+        Randomly crops sequences from the end with varying lengths.
+        This function is used for data augmentation during training which can help
+        improve model robustness.
+
+        Args:
+            x (torch.Tensor): Input tensor of shape [batch_size, seq_length, feature_dim],
+                where batch_size is the batch size, seq_length is the sequence length,
+                and feature_dim is the feature dimension.
+            y (torch.Tensor): Corresponding labels tensor of shape [batch_size, ...].
+            lengths (torch.Tensor): Tensor of shape [batch_size] representing the original
+                lengths of each sequence in the batch.
+            min_length (int, optional): Minimum length for the random crop. Defaults to 32.
+        """
+        # x: [batch_size, seq_length, feature_dim]
+        # y: [batch_size, ...]
+        # lengths: [batch_size]
+        batch_size, seq_length, feature_dim = x.shape
+        new_lengths = torch.randint(
+            low=min_length, high=seq_length + 1, size=(batch_size,)
+        )
+        # build per-sample crops ending at seq_length
+        x_out = torch.zeros_like(x)
+        for i, crop_length in enumerate(new_lengths):
+            x_out[i, :crop_length] = x[i, seq_length - crop_length : seq_length]
+        return x_out, y, new_lengths
+
+    def forward(self, inputs: torch.Tensor, lengths: Optional[torch.Tensor] = None):
+        """
+        Perform the forward pass of the RNN. If lengths are provided, the input
+        sequences will be packed and unpacked to handle variable-length sequences.
+        Performs optional pooling based on head_type setting.
+
+        Args:
+            inputs (torch.Tensor): The input data.
+            lengths (torch.Tensor, optional): The lengths of the sequences in the batch.
+        """
+        # Apply input dropout
+        x = (
+            self.layer_dict["input_dropout"](inputs)
+            if self.input_dropout > 0
+            else inputs
+        )
+
+        # Pack the sequences if lengths are provided
+        if lengths is not None:
+            x = pack_padded_sequence(
+                x, lengths.cpu(), batch_first=True, enforce_sorted=False
+            )
+
+        # Apply RNN block
+        rnn_out, _ = self.layer_dict["rnn_block"](x)
+
+        # Unpack the sequences if they were packed
+        if lengths is not None:
+            rnn_out, _ = pad_packed_sequence(
+                rnn_out, batch_first=True, total_length=inputs.size(1)
+            )
+
+        if self.return_sequences:
+            warnings.warn(
+                "Returning sequences is not implemented for RNNs. Please set return_sequences=False."
+            )
+            raise NotImplementedError(
+                "Returning sequences is not implemented for RNNs."
+            )
+            # return self.layer_dict["output"](rnn_out)
+
+        if self.head_type == "attn":
+            feat = self.layer_dict["pool_head"](rnn_out, lengths=lengths)
+        elif self.head_type == "mean":
+            if lengths is None:
+                feat = rnn_out.mean(dim=1)
+            else:
+                feat = self._compute_mean_timestep(rnn_out, lengths)
+
+        elif self.head_type == "max":
+            if lengths is None:
+                feat = rnn_out.max(dim=1).values
+            else:
+                feat = self._compute_max_timestep(rnn_out, lengths)
+        else:
+            # Sequence-to-one style where we take the last valid time step
+            feat = (
+                self._select_last_timestep(rnn_out, lengths)
+                if lengths is not None
+                else rnn_out[:, -1, :]
+            )
+
+        return self.layer_dict["output"](feat)
+
+    def step(self, dataloader, optimizer, criterion, device="cpu", training=True):
+        """
+        Perform a single step either in training or validation mode.
+
+        """
+        self.train() if training else self.eval()
+
+        context_manager = torch.no_grad() if not training else nullcontext()
+
+        running_loss = 0.0
+        with context_manager:
+            for batch in dataloader:
+                if len(batch) == 3:
+                    x_in, y_in, lengths = batch
+                    lengths = lengths.to(device)
+                else:
+                    x_in, y_in = batch
+                    lengths = None
+
+                # If training, perform random suffix cropping for data augmentation
+                if training and lengths is not None and x_in.size(1) >= 32:
+                    x_in, y_in, lengths = self._random_suffix_crop(
+                        x_in, y_in, lengths, min_length=32
+                    )
+
+                # Move data to device
+                x_in, y_in = x_in.to(device), y_in.to(device)
+
+                # Forward pass
+                pred = self(x_in, lengths=lengths)
+
+                if not self.return_sequences:
+                    # Standard loss calculation for sequence-to-one
+                    loss = criterion(pred, y_in)
+                else:
+                    # TODO: Implement loss calculation for sequence-to-sequence
+                    raise NotImplementedError(
+                        "Loss calculation for sequence-to-sequence is not implemented."
+                    )
+
+                if training:
+                    # Add L1 and L2 regularization if present
+                    if self.l1_reg > 0:
+                        loss += self.l1_regularization(lambda_l1=self.l1_reg)
+                    if self.l2_reg > 0:
+                        loss += self.l2_regularization(lambda_l2=self.l2_reg)
+
+                    # Zero the parameter gradients
+                    optimizer.zero_grad()
+                    # Backward pass
+                    loss.backward()
+                    # Clip gradients
+                    torch.nn.utils.clip_grad_norm_(self.parameters(), max_norm=1.0)
+                    # Optimize
+                    optimizer.step()
+
+                # Accumulate running loss
+                running_loss += loss.item()
+
+        # Normalize loss
+        running_loss /= len(dataloader)
         return running_loss
