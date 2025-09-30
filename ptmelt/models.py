@@ -232,10 +232,6 @@ class MELTModel(nn.Module):
             loss = common_mappings.get(loss.lower(), loss)
 
             return getattr(nn, loss)(reduction=reduction)
-        # elif loss == "mse":
-        #     return nn.MSELoss(reduction=reduction)
-        # else:
-        #     raise ValueError(f"Loss function {loss} not recognized.")
 
     def get_optimizer(self, optimizer_name: str, **kwargs):
         """
