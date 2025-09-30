@@ -93,10 +93,4 @@ class MixtureDensityLoss(torch.nn.Module):
             loss = -torch.sum(loss)
         # else no reduction, return the full loss tensor
 
-        # loss = -torch.mean(log_sum_exp)
-        # if self.mse_weight > 0.0:
-        #     mix_mean = (m_coeffs.unsqueeze(-1) * mean_preds).sum(dim=1)
-        #     mse_loss = F.mse_loss(mix_mean, y_true, reduction="mean")
-        #     loss += self.mse_weight * mse_loss
-
         return loss
