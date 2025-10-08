@@ -16,8 +16,8 @@ from ptmelt.blocks import (
     MixtureDensityOutput,
     ResidualBlock,
 )
-from ptmelt.layers import AttentionPool
-from ptmelt.losses import MixtureDensityLoss
+from ptmelt.layers import AttentionPool, Reparameterization
+from ptmelt.losses import MixtureDensityLoss, VAELoss
 
 
 class MELTModel(nn.Module):
@@ -91,6 +91,8 @@ class MELTModel(nn.Module):
         self.num_mixtures = num_mixtures
         self.node_list = node_list
         self.seed = seed
+
+        self.custom_loss = None
 
         # Determine if network should be defined based on depth/width or node_list
         if self.node_list:
@@ -1057,6 +1059,95 @@ class RecurrentNeuralNetwork(MELTModel):
             )
 
         return self.layer_dict["output"](feat)
+class VariationalAutoencoder(MELTModel):
+    def __init__(self, latent_dims, encoder_node_list, decoder_node_list, **kwargs):
+        super(VariationalAutoencoder, self).__init__(**kwargs)
+        self.latent_dims = latent_dims
+        self.encoder_node_list = encoder_node_list
+        self.decoder_node_list = decoder_node_list
+
+        self.custom_loss = VAELoss()
+
+        # Encoder
+        self.layer_dict.update(
+            {
+                "encoder_block": DenseBlock(
+                    input_features=self.num_features,
+                    node_list=self.encoder_node_list,
+                    activation=self.act_fun,
+                    dropout=self.dropout,
+                    batch_norm=self.batch_norm,
+                )
+            }
+        )
+
+        # Encoder output
+        self.layer_dict.update(
+            {
+                "encoder_output": MixtureDensityOutput(
+                    input_features=self.encoder_node_list[-1],
+                    num_mixtures=self.num_mixtures,
+                    num_outputs=self.latent_dims,
+                    activation="linear",
+                )
+            }
+        )
+
+        # Reparameterization Layer
+        self.layer_dict.update({"reparameterization_layer": Reparameterization()})
+
+        # Decoder
+        self.layer_dict.update(
+            {
+                "decoder_block": DenseBlock(
+                    input_features=self.latent_dims,
+                    node_list=self.decoder_node_list,
+                    activation=self.act_fun,
+                    dropout=self.dropout,
+                    batch_norm=self.batch_norm,
+                )
+            }
+        )
+
+        # Output layer
+        self.layer_dict.update(
+            {
+                "decoder_output": DefaultOutput(
+                    input_features=self.decoder_node_list[-1],
+                    output_features=self.num_outputs,
+                    activation=self.output_activation,
+                )
+            }
+        )
+
+    def forward(self, inputs: torch.Tensor):
+        # Encoder
+        x_encoded = self.layer_dict["encoder_block"](inputs)
+        mdn_output = self.layer_dict["encoder_output"](x_encoded)
+
+        mix_coeffs, means, log_vars = self.split_mdn_output(mdn_output)
+
+        # Sample z using the reparameterization trick
+        z = self.layer_dict["reparameterization_layer"](mix_coeffs, means, log_vars)
+
+        # Decoder
+        x_reconstructed = self.layer_dict["decoder_block"](z)
+        x_reconstructed = self.layer_dict["decoder_output"](x_reconstructed)
+
+        return x_reconstructed, mix_coeffs, means, log_vars
+
+    def split_mdn_output(self, mdn_output):
+        """Split the MDN output into mixture components."""
+        num_components = self.num_mixtures * self.latent_dims
+        mix_coeffs = mdn_output[:, : self.num_mixtures]
+        means = mdn_output[
+            :, self.num_mixtures : self.num_mixtures + num_components
+        ].view(-1, self.num_mixtures, self.latent_dims)
+        log_vars = mdn_output[:, self.num_mixtures + num_components :].view(
+            -1, self.num_mixtures, self.latent_dims
+        )
+
+        return mix_coeffs, means, log_vars
 
     def step(self, dataloader, optimizer, criterion, device="cpu", training=True):
         """
@@ -1065,38 +1156,18 @@ class RecurrentNeuralNetwork(MELTModel):
         """
         self.train() if training else self.eval()
 
+        # Use torch.no_grad() only if not training
         context_manager = torch.no_grad() if not training else nullcontext()
 
         running_loss = 0.0
         with context_manager:
-            for batch in dataloader:
-                if len(batch) == 3:
-                    x_in, y_in, lengths = batch
-                    lengths = lengths.to(device)
-                else:
-                    x_in, y_in = batch
-                    lengths = None
-
-                # If training, perform random suffix cropping for data augmentation
-                if training and lengths is not None and x_in.size(1) >= 32:
-                    x_in, y_in, lengths = self._random_suffix_crop(
-                        x_in, y_in, lengths, min_length=32
-                    )
-
+            for x_in, y_in in dataloader:
                 # Move data to device
                 x_in, y_in = x_in.to(device), y_in.to(device)
 
                 # Forward pass
-                pred = self(x_in, lengths=lengths)
-
-                if not self.return_sequences:
-                    # Standard loss calculation for sequence-to-one
-                    loss = criterion(pred, y_in)
-                else:
-                    # TODO: Implement loss calculation for sequence-to-sequence
-                    raise NotImplementedError(
-                        "Loss calculation for sequence-to-sequence is not implemented."
-                    )
+                pred_reconstructed, mix_coeffs, means, log_vars = self(x_in)
+                loss = criterion(x_in, pred_reconstructed, mix_coeffs, means, log_vars)
 
                 if training:
                     # Add L1 and L2 regularization if present
@@ -1109,8 +1180,6 @@ class RecurrentNeuralNetwork(MELTModel):
                     optimizer.zero_grad()
                     # Backward pass
                     loss.backward()
-                    # Clip gradients
-                    torch.nn.utils.clip_grad_norm_(self.parameters(), max_norm=1.0)
                     # Optimize
                     optimizer.step()
 
@@ -1119,4 +1188,5 @@ class RecurrentNeuralNetwork(MELTModel):
 
         # Normalize loss
         running_loss /= len(dataloader)
+
         return running_loss
