@@ -3,6 +3,152 @@ from typing import Optional
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from torch.distributions import Normal, kl_divergence
+
+
+class AttentionPool(nn.Module):
+    """
+    Attention Pooling Layer.
+
+    Args:
+        hidden_size (int): Size of the hidden state from the RNN.
+    """
+
+    def __init__(self, hidden_size):
+        super().__init__()
+        self.w = nn.Linear(hidden_size, hidden_size, bias=True)
+        self.v = nn.Linear(hidden_size, 1, bias=False)
+
+    def forward(self, rnn_out, lengths=None):  # rnn_out: [B,T,H]
+        """
+        Perform the forward pass of the attention pooling layer.
+
+        Args:
+            rnn_out (torch.Tensor): Output from the RNN layer of shape [B, T, H].
+            lengths (torch.Tensor, optional): Lengths of the sequences in the batch.
+                                              Defaults to None.
+        """
+        scores = self.v(torch.tanh(self.w(rnn_out))).squeeze(-1)  # [B,T]
+        if lengths is not None:
+            T = rnn_out.size(1)
+            mask = torch.arange(T, device=rnn_out.device).unsqueeze(
+                0
+            ) < lengths.unsqueeze(1)
+            scores = scores.masked_fill(~mask, float("-inf"))
+        attn = torch.softmax(scores, dim=1)  # [B,T]
+        pooled = torch.bmm(attn.unsqueeze(1), rnn_out).squeeze(1)  # [B,H]
+        return pooled
+
+
+class MELTBayesianDenseFlipOut(nn.Module):
+    """
+    Custom Bayesian Layer for PT-MELT.
+    """
+
+    def __init__(
+        self,
+        in_features: int,
+        out_features: int,
+        prior_mean: float = 0.0,
+        prior_std: float = 10.0,
+        perturbation_type: str = "additive",
+        seed: Optional[int] = None,
+    ):
+        """
+        Initialize the Bayesian layer using a Dense Flipout type approach.
+        Implementation based on the paper:
+            "Flipout: Efficient Pseudo-Independent Weight Perturbations on Mini-Batches"
+            by Wen et al. (2018).
+            https://doi.org/10.48550/arXiv.1803.04386
+
+        Perturbations are of the form: W = W_mu + delta_W where delta_W can take on
+            different forms depending on the perturbation type.
+        Additive perturbations are formulated like: W = W_mu + W_sigma * epsilon
+        Multiplicative perturbations are formulated like: W = W_mu * (1 + W_sigma * epsilon)
+
+        """
+        super(MELTBayesianDenseFlipOut, self).__init__()
+
+        self.in_features = in_features
+        self.out_features = out_features
+        self.prior_mean = prior_mean
+        self.prior_std = prior_std
+        self.perturbation_type = perturbation_type
+        self.seed = seed
+
+        # Initialize learnable parameters for the posterior (zeros? or random?)
+        self.weight_mu = nn.Parameter(torch.zeros(out_features, in_features))
+        self.weight_rho = nn.Parameter(torch.zeros(out_features, in_features))
+        self.bias_mu = nn.Parameter(torch.zeros(out_features))
+        self.bias_rho = nn.Parameter(torch.zeros(out_features))
+
+        # Initialize the parameters
+        torch.manual_seed(self.seed) if self.seed is not None else None
+        nn.init.xavier_uniform_(self.weight_mu)
+        nn.init.zeros_(self.bias_mu)
+        nn.init.constant_(self.weight_rho, -3.0)
+        nn.init.constant_(self.bias_rho, -3.0)
+
+        # Define prior distributions
+        self.prior = Normal(self.prior_mean, self.prior_std)
+        self.posterior_weight = None
+        self.posterior_bias = None
+
+    def forward(self, input: torch.Tensor):
+        """
+        Perform the forward pass of the Bayesian Linear Layer.
+
+        Flipout weights are perturbed like: W = W_mu + delta_W
+        delta_W has a component shared across the entire mini-batch and a component
+        that is unique to each input sample.
+
+        """
+        batch_size = input.size(0)
+
+        # Convert rho to sigma
+        weight_sigma = F.softplus(self.weight_rho)
+        bias_sigma = F.softplus(self.bias_rho)
+
+        # Compute the mini-batch delta for weights and biases
+        weight_epsilon = torch.randn_like(self.weight_mu)
+        bias_epsilon = torch.randn(batch_size, self.out_features, device=input.device)
+
+        # delta_W shared across the mini-batch
+        delta_W = weight_sigma * weight_epsilon
+        delta_b = bias_sigma * bias_epsilon
+
+        # delta_W unique to each input sample by Flipout perturbations
+        row_sign = torch.sign(
+            torch.randn(batch_size, self.out_features, device=input.device)
+        )
+        col_sign = torch.sign(
+            torch.randn(batch_size, self.in_features, device=input.device)
+        )
+
+        # Compute the perturbed weights
+        pert_matrix = row_sign.unsqueeze(2) * col_sign.unsqueeze(1)
+        if self.perturbation_type == "additive":
+            perturbed_weights = self.weight_mu + delta_W * pert_matrix
+        elif self.perturbation_type == "multiplicative":
+            perturbed_weights = self.weight_mu * (1 + delta_W * pert_matrix)
+
+        perturbed_bias = self.bias_mu + delta_b
+
+        # Torch-based efficient way of handling the matrix multiplication
+        output = torch.einsum("bij,bj->bi", perturbed_weights, input) + perturbed_bias
+
+        return output
+
+    def _kl_divergence(self):
+        posterior_weight = Normal(self.weight_mu, F.softplus(self.weight_rho))
+        posterior_bias = Normal(self.bias_mu, F.softplus(self.bias_rho))
+        prior = Normal(self.prior_mean, self.prior_std)
+
+        # Compute KL divergence for weights and biases
+        kl_weights = kl_divergence(posterior_weight, prior).sum()
+        kl_biases = kl_divergence(posterior_bias, prior).sum()
+
+        return kl_weights + kl_biases
 
 
 class MELTBatchNorm(nn.Module):

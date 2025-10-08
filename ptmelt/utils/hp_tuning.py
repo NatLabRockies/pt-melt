@@ -34,7 +34,7 @@ def model_builder(config):
         batch_norm_type = config.get("batch_norm_type", "ema")
         use_batch_renorm = config.get("use_batch_renorm", False)
         output_activation = config.get("output_activation", None)
-        initiliazer = config.get("initializer", "glorot_uniform")
+        initializer = config.get("initializer", "glorot_uniform")
         l1_reg = config.get("l1_reg", 0.0)
         l2_reg = config.get("l2_reg", 0.0)
         num_mixtures = config.get("num_mixtures", 0)
@@ -69,7 +69,7 @@ def model_builder(config):
             batch_norm_type=batch_norm_type,
             use_batch_renorm=use_batch_renorm,
             output_activation=output_activation,
-            initializer=initiliazer,
+            initializer=initializer,
             l1_reg=l1_reg,
             l2_reg=l2_reg,
             num_mixtures=num_mixtures,
@@ -84,9 +84,10 @@ def model_builder(config):
 
         return model, optimizer, criterion
 
-    elif arch_type == "resnet":
-        pass
-    elif arch_type == "custom":
-        pass
+    # elif arch_type == "resnet":
+    #     pass
+    # elif arch_type == "custom":
+    #     pass
+    # TODO: Add explicit support for other models in HP Tuning builder...
     else:
         raise ValueError(f"Unsupported architecture type {arch_type}")

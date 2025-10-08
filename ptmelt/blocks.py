@@ -3,9 +3,52 @@ from typing import Any, List, Optional
 
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
+from torch.distributions import Normal
 
-from ptmelt.layers import MELTBatchNorm
-from ptmelt.nn_utils import get_activation, get_initializer
+from ptmelt.layers import MELTBatchNorm, MELTBayesianDenseFlipOut
+
+
+def _get_initializer(initializer: str):
+    """Get the initializer function."""
+
+    if not initializer.endswith("_"):
+        initializer += "_"
+
+    if initializer == "glorot_uniform_":
+        initializer = "xavier_uniform_"
+
+    if hasattr(nn.init, initializer):
+        return getattr(nn.init, initializer)
+    else:
+        raise ValueError(f"Initializer {initializer} not recognized.")
+
+
+def _get_activation(act_name: str, **kwargs: Any):
+    """Get the activation function based on its name."""
+
+    # Do some common activation string mapping
+    common_mappings = {
+        "relu": "ReLU",
+        "leaky_relu": "LeakyReLU",
+        "sigmoid": "Sigmoid",
+        "tanh": "Tanh",
+        "softmax": "Softmax",
+        "softplus": "Softplus",
+        "elu": "ELU",
+        "selu": "SELU",
+        "gelu": "GELU",
+        "swish": "SiLU",
+        "linear": "Identity",
+    }
+    act_name = (
+        common_mappings.get(act_name.lower(), act_name) if act_name else "Identity"
+    )
+
+    if hasattr(nn, act_name):
+        return getattr(nn, act_name)(**kwargs)
+    else:
+        raise ValueError(f"Activation function {act_name} not recognized.")
 
 
 class MELTBlock(nn.Module):
@@ -38,6 +81,7 @@ class MELTBlock(nn.Module):
         batch_norm_type: Optional[str] = "ema",
         use_batch_renorm: Optional[bool] = False,
         initializer: Optional[str] = "glorot_uniform",
+        seed: Optional[int] = None,
         **kwargs: Any,
     ):
         super(MELTBlock, self).__init__(**kwargs)
@@ -50,9 +94,10 @@ class MELTBlock(nn.Module):
         self.batch_norm_type = batch_norm_type
         self.use_batch_renorm = use_batch_renorm
         self.initializer = initializer
+        self.seed = seed
 
         # Get the initializer function
-        self.initializer_fn = get_initializer(self.initializer)
+        self.initializer_fn = _get_initializer(self.initializer)
 
         # Create layer dictionary
         self.layer_dict = nn.ModuleDict()
@@ -68,7 +113,7 @@ class MELTBlock(nn.Module):
         if self.activation:
             self.layer_dict.update(
                 {
-                    f"activation_{i}": get_activation(self.activation)
+                    f"activation_{i}": _get_activation(self.activation)
                     for i in range(self.num_layers)
                 }
             )
@@ -141,6 +186,7 @@ class DenseBlock(MELTBlock):
             }
         )
         # Initialize the weights
+        torch.manual_seed(self.seed) if self.seed is not None else None
         [
             self.initializer_fn(self.layer_dict[f"dense_{i}"].weight)
             for i in range(self.num_layers)
@@ -211,6 +257,7 @@ class ResidualBlock(MELTBlock):
             }
         )
         # Initialize the weights
+        torch.manual_seed(self.seed) if self.seed is not None else None
         [
             self.initializer_fn(self.layer_dict[f"dense_{i}"].weight)
             for i in range(self.num_layers)
@@ -220,7 +267,7 @@ class ResidualBlock(MELTBlock):
         if self.post_add_activation:
             self.layer_dict.update(
                 {
-                    f"post_add_act_{i}": get_activation(self.activation)
+                    f"post_add_act_{i}": _get_activation(self.activation)
                     for i in range(self.num_layers // 2)
                 }
             )
@@ -251,6 +298,60 @@ class ResidualBlock(MELTBlock):
         return x
 
 
+class BayesianBlock(MELTBlock):
+    """
+    Bayesian block for the MELT architecture using custom Bayesian layers.
+    """
+
+    def __init__(
+        self,
+        num_points,
+        perturbation_type="multiplicative",
+        seed: Optional[int] = None,
+        **kwargs: Any,
+    ):
+        super(BayesianBlock, self).__init__(**kwargs)
+        # self.num_points = num_points
+
+        self.perturbation_type = perturbation_type
+        self.seed = seed
+
+        # Initialize Bayesian layers
+        self.layer_dict.update(
+            {
+                f"bayesian_{i}": MELTBayesianDenseFlipOut(
+                    in_features=(
+                        self.input_features if i == 0 else self.node_list[i - 1]
+                    ),
+                    out_features=self.node_list[i],
+                    perturbation_type=self.perturbation_type,
+                    seed=self.seed,
+                )
+                for i in range(self.num_layers)
+            }
+        )
+
+    def forward(self, inputs: torch.Tensor):
+        """Perform the forward pass of the Bayesian block."""
+        x = inputs
+
+        for i in range(self.num_layers):
+            # bayesian -> batch norm -> activation -> dropout
+            x = self.layer_dict[f"bayesian_{i}"](x)
+            x = self.layer_dict[f"batch_norm_{i}"](x) if self.batch_norm else x
+            x = self.layer_dict[f"activation_{i}"](x) if self.activation else x
+            x = self.layer_dict[f"dropout_{i}"](x) if self.dropout > 0 else x
+
+        return x
+
+    def kl_loss(self):
+        """Calculate the KL divergence loss for all Bayesian layers."""
+        kl_div = 0
+        for i in range(self.num_layers):
+            kl_div += self.layer_dict[f"bayesian_{i}"]._kl_divergence()
+        return kl_div
+
+
 class DefaultOutput(nn.Module):
     """
     Default output layer with a single dense layer and optional activation function.
@@ -269,6 +370,8 @@ class DefaultOutput(nn.Module):
         output_features: int,
         activation: Optional[str] = "linear",
         initializer: Optional[str] = "glorot_uniform",
+        do_bayesian: Optional[bool] = False,
+        seed: Optional[int] = None,
         **kwargs: Any,
     ):
         super(DefaultOutput, self).__init__(**kwargs)
@@ -277,19 +380,28 @@ class DefaultOutput(nn.Module):
         self.output_features = output_features
         self.activation = activation
         self.initializer = initializer
+        self.seed = seed
 
         # Get the initializer function
-        self.initializer_fn = get_initializer(self.initializer)
+        self.initializer_fn = _get_initializer(self.initializer)
 
         # Initialize output layer
-        self.output_layer = nn.Linear(
-            in_features=self.input_features, out_features=self.output_features
-        )
-        # Initialize the weights
-        self.initializer_fn(self.output_layer.weight)
+        if do_bayesian:
+            self.output_layer = MELTBayesianDenseFlipOut(
+                in_features=self.input_features,
+                out_features=self.output_features,
+                seed=self.seed,
+            )
+        else:
+            self.output_layer = nn.Linear(
+                in_features=self.input_features, out_features=self.output_features
+            )
+            # Initialize the weights
+            torch.manual_seed(self.seed) if self.seed is not None else None
+            self.initializer_fn(self.output_layer.weight)
 
         # Initialize activation layer
-        self.activation_layer = get_activation(self.activation)
+        self.activation_layer = _get_activation(self.activation)
 
     def forward(self, inputs: torch.Tensor):
         """Perform the forward pass of the default output layer."""
@@ -321,6 +433,7 @@ class MixtureDensityOutput(nn.Module):
         num_outputs: int,
         activation: Optional[str] = "linear",
         initializer: Optional[str] = "glorot_uniform",
+        seed: Optional[int] = None,
         **kwargs: Any,
     ):
         super(MixtureDensityOutput, self).__init__(**kwargs)
@@ -330,9 +443,10 @@ class MixtureDensityOutput(nn.Module):
         self.num_outputs = num_outputs
         self.activation = activation
         self.initializer = initializer
+        self.seed = seed
 
         # Get the initializer function
-        self.initializer_fn = get_initializer(self.initializer)
+        self.initializer_fn = _get_initializer(self.initializer)
 
         # Initialize output layers
         self.mix_coeffs_layer = nn.Linear(
@@ -348,24 +462,27 @@ class MixtureDensityOutput(nn.Module):
         )
 
         # Initialize the weights
+        torch.manual_seed(self.seed) if self.seed is not None else None
         self.initializer_fn(self.mix_coeffs_layer.weight)
         self.initializer_fn(self.mean_layer.weight)
         self.initializer_fn(self.log_var_layer.weight)
 
         # Initialize activation layer
-        self.activation_layer = get_activation(self.activation)
-        self.softmax_layer = get_activation("softmax")
+        self.activation_layer = _get_activation(self.activation)
+        self.softmax_layer = _get_activation("softmax")
 
     def forward(self, inputs: torch.Tensor):
         """Perform the forward pass of the multiple mixture output layer."""
         mix_coeffs = self.mix_coeffs_layer(inputs)
+        mix_coeffs = torch.clamp(mix_coeffs, min=-10, max=10)
         mix_coeffs = self.softmax_layer(mix_coeffs)
 
         mean = self.mean_layer(inputs)
-        mean = self.activation_layer(mean)
+        # TODO: Do we ever want to apply an activation function to the mean?
+        # Maybe to the mean, but never to the log variance?
+        # mean = self.activation_layer(mean)
 
         log_var = self.log_var_layer(inputs)
-        log_var = self.activation_layer(log_var)
 
         # return concatenated output
         return torch.cat([mix_coeffs, mean, log_var], dim=-1)

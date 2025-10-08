@@ -15,6 +15,7 @@ install_requires = [
     "ConfigSpace",
     "bayesian-optimization",
     "ax-platform",
+    "safetensors",
 ]
 print(f"Platform: {platform.system()}")
 
@@ -34,7 +35,7 @@ else:
 
 setup(
     name="ptmelt",
-    version="0.1.2",
+    version="0.1.4",
     description="PyTorch Machine Learning Toolbox (PT-MELT)",
     url="https://github.com/NREL/pt-melt",
     author="Nicholas T. Wimer",
