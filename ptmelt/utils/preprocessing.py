@@ -58,6 +58,16 @@ class IdentityScaler:
         """
         return X
 
+    def get_params(self, deep: bool = True):
+        """
+        Get empty parameters. Needed to be compatible with Scikit-learn.
+
+        Args:
+            deep (bool): If True, will return the parameters for this scaler and
+            contained sub-objects that are estimators.
+        """
+        return {}
+
 
 def get_normalizers(
     norm_type: Optional[str] = "standard", n_normalizers: Optional[int] = 1, **kwargs
