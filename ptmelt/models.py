@@ -10,7 +10,8 @@ from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
 from tqdm import tqdm
 
 from ptmelt.blocks import DefaultOutput, DenseBlock, MixtureDensityOutput, ResidualBlock
-from ptmelt.losses import MixtureDensityLoss
+from ptmelt.layers import Reparameterization
+from ptmelt.losses import MixtureDensityLoss, VAELoss
 
 
 class MELTModel(nn.Module):
