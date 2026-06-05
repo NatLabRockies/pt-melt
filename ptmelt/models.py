@@ -9,15 +9,8 @@ import torch.optim.lr_scheduler as lr_scheduler
 from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
 from tqdm import tqdm
 
-from ptmelt.blocks import (
-    BayesianBlock,
-    DefaultOutput,
-    DenseBlock,
-    MixtureDensityOutput,
-    ResidualBlock,
-)
-from ptmelt.layers import AttentionPool, Reparameterization
-from ptmelt.losses import MixtureDensityLoss, VAELoss
+from ptmelt.blocks import DefaultOutput, DenseBlock, MixtureDensityOutput, ResidualBlock
+from ptmelt.losses import MixtureDensityLoss
 
 
 class MELTModel(nn.Module):
@@ -1072,6 +1065,69 @@ class RecurrentNeuralNetwork(MELTModel):
             )
 
         return self.layer_dict["output"](feat)
+
+    def step(self, dataloader, optimizer, criterion, device="cpu", training=True):
+        """
+        Perform a single step either in training or validation mode.
+
+        """
+        self.train() if training else self.eval()
+
+        context_manager = torch.no_grad() if not training else nullcontext()
+
+        running_loss = 0.0
+        with context_manager:
+            for batch in dataloader:
+                if len(batch) == 3:
+                    x_in, y_in, lengths = batch
+                    lengths = lengths.to(device)
+                else:
+                    x_in, y_in = batch
+                    lengths = None
+
+                # If training, perform random suffix cropping for data augmentation
+                if training and lengths is not None and x_in.size(1) >= 32:
+                    x_in, y_in, lengths = self._random_suffix_crop(
+                        x_in, y_in, lengths, min_length=32
+                    )
+
+                # Move data to device
+                x_in, y_in = x_in.to(device), y_in.to(device)
+
+                # Forward pass
+                pred = self(x_in, lengths=lengths)
+
+                if not self.return_sequences:
+                    # Standard loss calculation for sequence-to-one
+                    loss = criterion(pred, y_in)
+                else:
+                    # TODO: Implement loss calculation for sequence-to-sequence
+                    raise NotImplementedError(
+                        "Loss calculation for sequence-to-sequence is not implemented."
+                    )
+
+                if training:
+                    # Add L1 and L2 regularization if present
+                    if self.l1_reg > 0:
+                        loss += self.l1_regularization(lambda_l1=self.l1_reg)
+                    if self.l2_reg > 0:
+                        loss += self.l2_regularization(lambda_l2=self.l2_reg)
+
+                    # Zero the parameter gradients
+                    optimizer.zero_grad()
+                    # Backward pass
+                    loss.backward()
+                    # Clip gradients
+                    torch.nn.utils.clip_grad_norm_(self.parameters(), max_norm=1.0)
+                    # Optimize
+                    optimizer.step()
+
+                # Accumulate running loss
+                running_loss += loss.item()
+
+        # Normalize loss
+        running_loss /= len(dataloader)
+        return running_loss
 
 
 class VariationalAutoencoder(MELTModel):
