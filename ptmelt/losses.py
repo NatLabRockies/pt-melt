@@ -1,6 +1,6 @@
 import torch
-import torch.nn.functional as F
 import torch.nn as nn
+import torch.nn.functional as F
 
 
 def safe_exp(x):
@@ -51,6 +51,7 @@ class MixtureDensityLoss(nn.Module):
         log_var_preds = torch.clamp(log_var_preds, min=-10.0, max=10.0)
 
         # Ensure mixture coefficients sum to 1
+        # temperature = 1.0  # lower = sharper, higher = softer
         m_coeffs = F.softmax(m_coeffs, dim=1)
         # Convert log variance to variance
         var_preds = safe_exp(log_var_preds)
@@ -81,6 +82,13 @@ class MixtureDensityLoss(nn.Module):
         # loss = -torch.mean(log_sum_exp)
         loss = log_sum_exp
 
+        # # add in entropy regularization
+        # lambd_reg = 1e-3
+        # entropy = -torch.sum(
+        #     m_coeffs * torch.log(torch.clamp(m_coeffs, min=1e-8)), dim=1
+        # )
+        # loss += lambd_reg * entropy
+
         # add in the mse as well
         if self.mse_weight > 0.0:
             mix_mean = (m_coeffs.unsqueeze(-1) * mean_preds).sum(dim=1)
@@ -96,17 +104,28 @@ class MixtureDensityLoss(nn.Module):
 
         return loss
 
+
 class VAELoss(nn.Module):
     def __init__(self, reconstruction_loss_fn=nn.MSELoss()):
         super(VAELoss, self).__init__()
         self.reconstruction_loss_fn = reconstruction_loss_fn
 
-    def forward(self, x, x_reconstructed, mix_coeffs, means, log_vars):
-        # Reconstruction loss
-        reconstruction_loss = self.reconstruction_loss_fn(x_reconstructed, x)
+    def compute_reconstruction_loss(self, x, x_reconstructed):
+        return self.reconstruction_loss_fn(x_reconstructed, x)
 
-        # KL Divergence for Gaussian Mixtures
+    def compute_kl_divergence(self, mix_coeffs, means, log_vars):
         kl_div = -0.5 * torch.sum(1 + log_vars - means.pow(2) - log_vars.exp(), dim=-1)
         kl_div = torch.mean(torch.sum(mix_coeffs * kl_div, dim=-1))
+        return kl_div
+
+    def forward(self, x, x_reconstructed, mix_coeffs, means, log_vars):
+        # Reconstruction loss
+        # reconstruction_loss = self.reconstruction_loss_fn(x_reconstructed, x)
+        reconstruction_loss = self.compute_reconstruction_loss(x, x_reconstructed)
+
+        # KL Divergence for Gaussian Mixtures
+        # kl_div = -0.5 * torch.sum(1 + log_vars - means.pow(2) - log_vars.exp(), dim=-1)
+        # kl_div = torch.mean(torch.sum(mix_coeffs * kl_div, dim=-1))
+        kl_div = self.compute_kl_divergence(mix_coeffs, means, log_vars)
 
         return reconstruction_loss + kl_div

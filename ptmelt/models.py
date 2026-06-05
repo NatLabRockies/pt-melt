@@ -210,30 +210,33 @@ class MELTModel(nn.Module):
             reduction (str, optional): The reduction method for the loss. Defaults to
                                        'mean'.
         """
-        if self.num_mixtures > 0:
-            warnings.warn(
-                "Mixture Density Networks require the use of the MixtureDensityLoss "
-                "class. The loss function will be set to automatically."
-            )
-
-            return MixtureDensityLoss(
-                num_mixtures=self.num_mixtures,
-                num_outputs=self.num_outputs,
-                mse_weight=mse_weight if mse_weight else 0.0,
-            )
+        if self.custom_loss:
+            return self.custom_loss
         else:
-            # mappings for common loss functions
-            common_mappings = {
-                "mse": "MSELoss",
-                "mae": "L1Loss",
-                "huber": "SmoothL1Loss",
-                "nll": "NLLLoss",
-                "poisson": "PoissonNLLLoss",
-                "kl_div": "KLDivLoss",
-            }
-            loss = common_mappings.get(loss.lower(), loss)
+            if self.num_mixtures > 0:
+                warnings.warn(
+                    "Mixture Density Networks require the use of the MixtureDensityLoss "
+                    "class. The loss function will be set to automatically."
+                )
 
-            return getattr(nn, loss)(reduction=reduction)
+                return MixtureDensityLoss(
+                    num_mixtures=self.num_mixtures,
+                    num_outputs=self.num_outputs,
+                    mse_weight=mse_weight if mse_weight else 0.0,
+                )
+            else:
+                # mappings for common loss functions
+                common_mappings = {
+                    "mse": "MSELoss",
+                    "mae": "L1Loss",
+                    "huber": "SmoothL1Loss",
+                    "nll": "NLLLoss",
+                    "poisson": "PoissonNLLLoss",
+                    "kl_div": "KLDivLoss",
+                }
+                loss = common_mappings.get(loss.lower(), loss)
+
+                return getattr(nn, loss)(reduction=reduction)
 
     def get_optimizer(self, optimizer_name: str, **kwargs):
         """
@@ -365,9 +368,19 @@ class MELTModel(nn.Module):
 
             # Print statistics
             if (epoch + 1) % 10 == 0 and verbose:
+                lr_print = (
+                    scheduler.get_last_lr()[0]
+                    if scheduler and hasattr(scheduler, "get_last_lr")
+                    else (
+                        optimizer.param_groups[0]["lr"]
+                        if isinstance(optimizer, torch.optim.Optimizer)
+                        else optimizer.defaults["lr"]
+                    )
+                )
                 print(
                     f"Epoch {epoch + 1}, Loss: {train_loss:.4f}, "
-                    f"Val Loss: {val_loss:.4f}"
+                    f"Val Loss: {val_loss:.4f}, "
+                    f"LR: {lr_print:.4e}"
                 )
 
             # Save history
@@ -1059,6 +1072,8 @@ class RecurrentNeuralNetwork(MELTModel):
             )
 
         return self.layer_dict["output"](feat)
+
+
 class VariationalAutoencoder(MELTModel):
     def __init__(self, latent_dims, encoder_node_list, decoder_node_list, **kwargs):
         super(VariationalAutoencoder, self).__init__(**kwargs)
@@ -1077,6 +1092,9 @@ class VariationalAutoencoder(MELTModel):
                     activation=self.act_fun,
                     dropout=self.dropout,
                     batch_norm=self.batch_norm,
+                    batch_norm_type=self.batch_norm_type,
+                    initializer=self.initializer,
+                    seed=self.seed,
                 )
             }
         )
@@ -1089,6 +1107,8 @@ class VariationalAutoencoder(MELTModel):
                     num_mixtures=self.num_mixtures,
                     num_outputs=self.latent_dims,
                     activation="linear",
+                    initializer=self.initializer,
+                    seed=self.seed,
                 )
             }
         )
@@ -1105,6 +1125,9 @@ class VariationalAutoencoder(MELTModel):
                     activation=self.act_fun,
                     dropout=self.dropout,
                     batch_norm=self.batch_norm,
+                    batch_norm_type=self.batch_norm_type,
+                    initializer=self.initializer,
+                    seed=self.seed,
                 )
             }
         )
@@ -1116,9 +1139,22 @@ class VariationalAutoencoder(MELTModel):
                     input_features=self.decoder_node_list[-1],
                     output_features=self.num_outputs,
                     activation=self.output_activation,
+                    initializer=self.initializer,
+                    seed=self.seed,
                 )
             }
         )
+
+        # set up history dictionary
+        if not hasattr(self, "history"):
+            self.history = {
+                "loss": [],
+                "val_loss": [],
+                "lr": [],
+                "epoch": [],
+                "recon_loss": [],
+                "kl_loss": [],
+            }
 
     def forward(self, inputs: torch.Tensor):
         # Encoder
@@ -1160,6 +1196,14 @@ class VariationalAutoencoder(MELTModel):
         context_manager = torch.no_grad() if not training else nullcontext()
 
         running_loss = 0.0
+        running_recon_loss = 0.0
+        running_kl_loss = 0.0
+
+        # Additional accumulators for diagnostics
+        sum_kl_perdim = None
+        mix_entropy_sum = 0.0
+        n_batches = 0
+
         with context_manager:
             for x_in, y_in in dataloader:
                 # Move data to device
@@ -1168,6 +1212,12 @@ class VariationalAutoencoder(MELTModel):
                 # Forward pass
                 pred_reconstructed, mix_coeffs, means, log_vars = self(x_in)
                 loss = criterion(x_in, pred_reconstructed, mix_coeffs, means, log_vars)
+                recon_loss = self.custom_loss.compute_reconstruction_loss(
+                    x_in, pred_reconstructed
+                )
+                kl_loss = self.custom_loss.compute_kl_divergence(
+                    mix_coeffs, means, log_vars
+                )
 
                 if training:
                     # Add L1 and L2 regularization if present
@@ -1185,8 +1235,73 @@ class VariationalAutoencoder(MELTModel):
 
                 # Accumulate running loss
                 running_loss += loss.item()
+                running_recon_loss += recon_loss.item()
+                running_kl_loss += kl_loss.item()
+
+                # Compute additional diagnostics
+                # 1) Per-dim KL (approx.) via moment-matched Gaussian to the mixture
+                #    mix_mean = sum_k pi_k * mu_k
+                #    mix_var  = sum_k pi_k * (sigma_k^2 + mu_k^2) - mix_mean^2
+                #    KL_j = 0.5 * (mix_mean_j^2 + mix_var_j - log mix_var_j - 1)
+                if mix_coeffs.dim() == 1:
+                    mix_coeffs = mix_coeffs.unsqueeze(0)
+                pi = mix_coeffs
+                if not torch.allclose(
+                    pi.sum(dim=-1), torch.ones_like(pi.sum(dim=-1)), atol=1e-3
+                ):
+                    pi = torch.softmax(pi, dim=-1)
+
+                sigma2_k = log_vars.exp()  # [B, K, D]
+                mix_mean = (pi.unsqueeze(-1) * means).sum(dim=1)  # [B, D]
+                Ez2 = (pi.unsqueeze(-1) * (sigma2_k + means**2)).sum(dim=1)  # [B, D]
+                mix_var = (Ez2 - mix_mean**2).clamp_min(1e-12)  # [B, D]
+                batch_kl_perdim = 0.5 * (
+                    mix_mean**2 + mix_var - mix_var.log() - 1.0
+                )  # [B, D]
+                batch_kl_perdim = batch_kl_perdim.mean(dim=0)  # [D]
+                if sum_kl_perdim is None:
+                    sum_kl_perdim = torch.zeros_like(batch_kl_perdim)
+                sum_kl_perdim += batch_kl_perdim
+
+                # 2) Mixture entropy
+                eps = 1e-12
+                mix_entropy = -(pi * (pi + eps).log()).sum(dim=-1).mean()  # scalar
+                mix_entropy_sum += mix_entropy.item()
+
+                n_batches += 1
 
         # Normalize loss
         running_loss /= len(dataloader)
+        running_recon_loss /= len(dataloader)
+        running_kl_loss /= len(dataloader)
+
+        # Reduce diagnostics to epoch-level
+        if sum_kl_perdim is not None and n_batches > 0:
+            kl_per_dim_epoch = (sum_kl_perdim / n_batches).detach().cpu().tolist()
+            mix_entropy_epoch = mix_entropy_sum / n_batches
+            kl_recon_ratio_epoch = float(running_kl_loss) / max(
+                float(running_recon_loss), 1e-12
+            )
+        else:
+            kl_per_dim_epoch = None
+            mix_entropy_epoch = None
+            kl_recon_ratio_epoch = None
+
+        if training:
+            self.history["recon_loss"].append(running_recon_loss)
+            self.history["kl_loss"].append(running_kl_loss)
+
+            # Create keys if needed and store
+            if "kl_per_dim" not in self.history:
+                self.history["kl_per_dim"] = []
+            if "mix_entropy" not in self.history:
+                self.history["mix_entropy"] = []
+            if "kl_recon_ratio" not in self.history:
+                self.history["kl_recon_ratio"] = []
+
+            if kl_per_dim_epoch is not None:
+                self.history["kl_per_dim"].append(kl_per_dim_epoch)
+                self.history["mix_entropy"].append(mix_entropy_epoch)
+                self.history["kl_recon_ratio"].append(kl_recon_ratio_epoch)
 
         return running_loss
