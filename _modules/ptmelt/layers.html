@@ -1,0 +1,640 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ptmelt.layers &mdash; pt-melt  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980B9" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            pt-melt
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">pt-melt</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../ptmelt.html">PT-MELT package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ptmelt.html#module-ptmelt.blocks">Blocks Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../ptmelt.html#ptmelt.blocks.BayesianBlock"><code class="docutils literal notranslate"><span class="pre">BayesianBlock</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.blocks.BayesianBlock.forward"><code class="docutils literal notranslate"><span class="pre">BayesianBlock.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.blocks.BayesianBlock.kl_loss"><code class="docutils literal notranslate"><span class="pre">BayesianBlock.kl_loss()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../ptmelt.html#ptmelt.blocks.DefaultOutput"><code class="docutils literal notranslate"><span class="pre">DefaultOutput</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.blocks.DefaultOutput.forward"><code class="docutils literal notranslate"><span class="pre">DefaultOutput.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../ptmelt.html#ptmelt.blocks.DenseBlock"><code class="docutils literal notranslate"><span class="pre">DenseBlock</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.blocks.DenseBlock.forward"><code class="docutils literal notranslate"><span class="pre">DenseBlock.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../ptmelt.html#ptmelt.blocks.MELTBlock"><code class="docutils literal notranslate"><span class="pre">MELTBlock</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ptmelt.html#ptmelt.blocks.MixtureDensityOutput"><code class="docutils literal notranslate"><span class="pre">MixtureDensityOutput</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.blocks.MixtureDensityOutput.forward"><code class="docutils literal notranslate"><span class="pre">MixtureDensityOutput.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../ptmelt.html#ptmelt.blocks.ResidualBlock"><code class="docutils literal notranslate"><span class="pre">ResidualBlock</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.blocks.ResidualBlock.forward"><code class="docutils literal notranslate"><span class="pre">ResidualBlock.forward()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../ptmelt.html#module-ptmelt.layers">Layers Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../ptmelt.html#ptmelt.layers.AttentionPool"><code class="docutils literal notranslate"><span class="pre">AttentionPool</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.layers.AttentionPool.forward"><code class="docutils literal notranslate"><span class="pre">AttentionPool.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../ptmelt.html#ptmelt.layers.MELTBatchNorm"><code class="docutils literal notranslate"><span class="pre">MELTBatchNorm</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.layers.MELTBatchNorm.forward"><code class="docutils literal notranslate"><span class="pre">MELTBatchNorm.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.layers.MELTBatchNorm.reset_parameters"><code class="docutils literal notranslate"><span class="pre">MELTBatchNorm.reset_parameters()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../ptmelt.html#ptmelt.layers.MELTBatchRenorm"><code class="docutils literal notranslate"><span class="pre">MELTBatchRenorm</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.layers.MELTBatchRenorm.forward"><code class="docutils literal notranslate"><span class="pre">MELTBatchRenorm.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../ptmelt.html#ptmelt.layers.MELTBayesianDenseFlipOut"><code class="docutils literal notranslate"><span class="pre">MELTBayesianDenseFlipOut</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.layers.MELTBayesianDenseFlipOut.forward"><code class="docutils literal notranslate"><span class="pre">MELTBayesianDenseFlipOut.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../ptmelt.html#ptmelt.layers.Reparameterization"><code class="docutils literal notranslate"><span class="pre">Reparameterization</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.layers.Reparameterization.forward"><code class="docutils literal notranslate"><span class="pre">Reparameterization.forward()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../ptmelt.html#module-ptmelt.losses">Losses Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../ptmelt.html#ptmelt.losses.MixtureDensityLoss"><code class="docutils literal notranslate"><span class="pre">MixtureDensityLoss</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.losses.MixtureDensityLoss.forward"><code class="docutils literal notranslate"><span class="pre">MixtureDensityLoss.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../ptmelt.html#ptmelt.losses.VAELoss"><code class="docutils literal notranslate"><span class="pre">VAELoss</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.losses.VAELoss.compute_kl_divergence"><code class="docutils literal notranslate"><span class="pre">VAELoss.compute_kl_divergence()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.losses.VAELoss.compute_reconstruction_loss"><code class="docutils literal notranslate"><span class="pre">VAELoss.compute_reconstruction_loss()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.losses.VAELoss.forward"><code class="docutils literal notranslate"><span class="pre">VAELoss.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../ptmelt.html#ptmelt.losses.safe_exp"><code class="docutils literal notranslate"><span class="pre">safe_exp()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../ptmelt.html#module-ptmelt.models">Models Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.ArtificialNeuralNetwork"><code class="docutils literal notranslate"><span class="pre">ArtificialNeuralNetwork</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.ArtificialNeuralNetwork.forward"><code class="docutils literal notranslate"><span class="pre">ArtificialNeuralNetwork.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.ArtificialNeuralNetwork.initialize_layers"><code class="docutils literal notranslate"><span class="pre">ArtificialNeuralNetwork.initialize_layers()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.BayesianNeuralNetwork"><code class="docutils literal notranslate"><span class="pre">BayesianNeuralNetwork</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.BayesianNeuralNetwork.build"><code class="docutils literal notranslate"><span class="pre">BayesianNeuralNetwork.build()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.BayesianNeuralNetwork.create_output_layer"><code class="docutils literal notranslate"><span class="pre">BayesianNeuralNetwork.create_output_layer()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.BayesianNeuralNetwork.forward"><code class="docutils literal notranslate"><span class="pre">BayesianNeuralNetwork.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.BayesianNeuralNetwork.initialize_layers"><code class="docutils literal notranslate"><span class="pre">BayesianNeuralNetwork.initialize_layers()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.BayesianNeuralNetwork.step"><code class="docutils literal notranslate"><span class="pre">BayesianNeuralNetwork.step()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.MELTModel"><code class="docutils literal notranslate"><span class="pre">MELTModel</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.MELTModel.build"><code class="docutils literal notranslate"><span class="pre">MELTModel.build()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.MELTModel.compute_jacobian"><code class="docutils literal notranslate"><span class="pre">MELTModel.compute_jacobian()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.MELTModel.create_dropout_layers"><code class="docutils literal notranslate"><span class="pre">MELTModel.create_dropout_layers()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.MELTModel.create_output_layer"><code class="docutils literal notranslate"><span class="pre">MELTModel.create_output_layer()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.MELTModel.fit"><code class="docutils literal notranslate"><span class="pre">MELTModel.fit()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.MELTModel.get_loss_fn"><code class="docutils literal notranslate"><span class="pre">MELTModel.get_loss_fn()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.MELTModel.get_optimizer"><code class="docutils literal notranslate"><span class="pre">MELTModel.get_optimizer()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.MELTModel.get_scheduler"><code class="docutils literal notranslate"><span class="pre">MELTModel.get_scheduler()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.MELTModel.initialize_layers"><code class="docutils literal notranslate"><span class="pre">MELTModel.initialize_layers()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.MELTModel.l1_regularization"><code class="docutils literal notranslate"><span class="pre">MELTModel.l1_regularization()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.MELTModel.l2_regularization"><code class="docutils literal notranslate"><span class="pre">MELTModel.l2_regularization()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.MELTModel.step"><code class="docutils literal notranslate"><span class="pre">MELTModel.step()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.RecurrentNeuralNetwork"><code class="docutils literal notranslate"><span class="pre">RecurrentNeuralNetwork</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.RecurrentNeuralNetwork.create_output_layer"><code class="docutils literal notranslate"><span class="pre">RecurrentNeuralNetwork.create_output_layer()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.RecurrentNeuralNetwork.forward"><code class="docutils literal notranslate"><span class="pre">RecurrentNeuralNetwork.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.RecurrentNeuralNetwork.initialize_layers"><code class="docutils literal notranslate"><span class="pre">RecurrentNeuralNetwork.initialize_layers()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.RecurrentNeuralNetwork.step"><code class="docutils literal notranslate"><span class="pre">RecurrentNeuralNetwork.step()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.ResidualNeuralNetwork"><code class="docutils literal notranslate"><span class="pre">ResidualNeuralNetwork</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.ResidualNeuralNetwork.build"><code class="docutils literal notranslate"><span class="pre">ResidualNeuralNetwork.build()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.ResidualNeuralNetwork.forward"><code class="docutils literal notranslate"><span class="pre">ResidualNeuralNetwork.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.ResidualNeuralNetwork.initialize_layers"><code class="docutils literal notranslate"><span class="pre">ResidualNeuralNetwork.initialize_layers()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.VariationalAutoencoder"><code class="docutils literal notranslate"><span class="pre">VariationalAutoencoder</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.VariationalAutoencoder.forward"><code class="docutils literal notranslate"><span class="pre">VariationalAutoencoder.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.VariationalAutoencoder.split_mdn_output"><code class="docutils literal notranslate"><span class="pre">VariationalAutoencoder.split_mdn_output()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.VariationalAutoencoder.step"><code class="docutils literal notranslate"><span class="pre">VariationalAutoencoder.step()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../ptmelt.html#module-ptmelt.nn_utils">NN Utils Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ptmelt.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../ptmelt.utils.html">PT-MELT Utilities Subpackage</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.utils.html#module-ptmelt.utils.evaluation">Evaluation Module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.utils.html#module-ptmelt.utils.preprocessing">Preprocessing Module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.utils.html#module-ptmelt.utils.statistics">Statistics Module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.utils.html#module-ptmelt.utils.visualization">Visualization Module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html">Example Notebooks</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980B9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">pt-melt</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">ptmelt.layers</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ptmelt.layers</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn.functional</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch.distributions</span><span class="w"> </span><span class="kn">import</span> <span class="n">Normal</span><span class="p">,</span> <span class="n">kl_divergence</span>
+
+
+<div class="viewcode-block" id="AttentionPool">
+<a class="viewcode-back" href="../../ptmelt.html#ptmelt.layers.AttentionPool">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">AttentionPool</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Attention Pooling Layer.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        hidden_size (int): Size of the hidden state from the RNN.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<div class="viewcode-block" id="AttentionPool.forward">
+<a class="viewcode-back" href="../../ptmelt.html#ptmelt.layers.AttentionPool.forward">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rnn_out</span><span class="p">,</span> <span class="n">lengths</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># rnn_out: [B,T,H]</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perform the forward pass of the attention pooling layer.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            rnn_out (torch.Tensor): Output from the RNN layer of shape [B, T, H].</span>
+<span class="sd">            lengths (torch.Tensor, optional): Lengths of the sequences in the batch.</span>
+<span class="sd">                                              Defaults to None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">scores</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">(</span><span class="n">rnn_out</span><span class="p">)))</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># [B,T]</span>
+        <span class="k">if</span> <span class="n">lengths</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">T</span> <span class="o">=</span> <span class="n">rnn_out</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">rnn_out</span><span class="o">.</span><span class="n">device</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span>
+                <span class="mi">0</span>
+            <span class="p">)</span> <span class="o">&lt;</span> <span class="n">lengths</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">scores</span> <span class="o">=</span> <span class="n">scores</span><span class="o">.</span><span class="n">masked_fill</span><span class="p">(</span><span class="o">~</span><span class="n">mask</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;-inf&quot;</span><span class="p">))</span>
+        <span class="n">attn</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># [B,T]</span>
+        <span class="n">pooled</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">bmm</span><span class="p">(</span><span class="n">attn</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">rnn_out</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># [B,H]</span>
+        <span class="k">return</span> <span class="n">pooled</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="MELTBayesianDenseFlipOut">
+<a class="viewcode-back" href="../../ptmelt.html#ptmelt.layers.MELTBayesianDenseFlipOut">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">MELTBayesianDenseFlipOut</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Custom Bayesian Layer for PT-MELT.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">in_features</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">out_features</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">prior_mean</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">prior_std</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">10.0</span><span class="p">,</span>
+        <span class="n">perturbation_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;additive&quot;</span><span class="p">,</span>
+        <span class="n">seed</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the Bayesian layer using a Dense Flipout type approach.</span>
+<span class="sd">        Implementation based on the paper:</span>
+<span class="sd">            &quot;Flipout: Efficient Pseudo-Independent Weight Perturbations on Mini-Batches&quot;</span>
+<span class="sd">            by Wen et al. (2018).</span>
+<span class="sd">            https://doi.org/10.48550/arXiv.1803.04386</span>
+
+<span class="sd">        Perturbations are of the form: W = W_mu + delta_W where delta_W can take on</span>
+<span class="sd">            different forms depending on the perturbation type.</span>
+<span class="sd">        Additive perturbations are formulated like: W = W_mu + W_sigma * epsilon</span>
+<span class="sd">        Multiplicative perturbations are formulated like: W = W_mu * (1 + W_sigma * epsilon)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MELTBayesianDenseFlipOut</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">in_features</span> <span class="o">=</span> <span class="n">in_features</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">out_features</span> <span class="o">=</span> <span class="n">out_features</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prior_mean</span> <span class="o">=</span> <span class="n">prior_mean</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prior_std</span> <span class="o">=</span> <span class="n">prior_std</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">perturbation_type</span> <span class="o">=</span> <span class="n">perturbation_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span>
+
+        <span class="c1"># Initialize learnable parameters for the posterior (zeros? or random?)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weight_mu</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">out_features</span><span class="p">,</span> <span class="n">in_features</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weight_rho</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">out_features</span><span class="p">,</span> <span class="n">in_features</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bias_mu</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">out_features</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bias_rho</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">out_features</span><span class="p">))</span>
+
+        <span class="c1"># Initialize the parameters</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">nn</span><span class="o">.</span><span class="n">init</span><span class="o">.</span><span class="n">xavier_uniform_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weight_mu</span><span class="p">)</span>
+        <span class="n">nn</span><span class="o">.</span><span class="n">init</span><span class="o">.</span><span class="n">zeros_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bias_mu</span><span class="p">)</span>
+        <span class="n">nn</span><span class="o">.</span><span class="n">init</span><span class="o">.</span><span class="n">constant_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weight_rho</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.0</span><span class="p">)</span>
+        <span class="n">nn</span><span class="o">.</span><span class="n">init</span><span class="o">.</span><span class="n">constant_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bias_rho</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.0</span><span class="p">)</span>
+
+        <span class="c1"># Define prior distributions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prior</span> <span class="o">=</span> <span class="n">Normal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prior_mean</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prior_std</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">posterior_weight</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">posterior_bias</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="MELTBayesianDenseFlipOut.forward">
+<a class="viewcode-back" href="../../ptmelt.html#ptmelt.layers.MELTBayesianDenseFlipOut.forward">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perform the forward pass of the Bayesian Linear Layer.</span>
+
+<span class="sd">        Flipout weights are perturbed like: W = W_mu + delta_W</span>
+<span class="sd">        delta_W has a component shared across the entire mini-batch and a component</span>
+<span class="sd">        that is unique to each input sample.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">batch_size</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># Convert rho to sigma</span>
+        <span class="n">weight_sigma</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">softplus</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weight_rho</span><span class="p">)</span>
+        <span class="n">bias_sigma</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">softplus</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bias_rho</span><span class="p">)</span>
+
+        <span class="c1"># Compute the mini-batch delta for weights and biases</span>
+        <span class="n">weight_epsilon</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weight_mu</span><span class="p">)</span>
+        <span class="n">bias_epsilon</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">out_features</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="nb">input</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+
+        <span class="c1"># delta_W shared across the mini-batch</span>
+        <span class="n">delta_W</span> <span class="o">=</span> <span class="n">weight_sigma</span> <span class="o">*</span> <span class="n">weight_epsilon</span>
+        <span class="n">delta_b</span> <span class="o">=</span> <span class="n">bias_sigma</span> <span class="o">*</span> <span class="n">bias_epsilon</span>
+
+        <span class="c1"># delta_W unique to each input sample by Flipout perturbations</span>
+        <span class="n">row_sign</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">out_features</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="nb">input</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">col_sign</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">in_features</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="nb">input</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Compute the perturbed weights</span>
+        <span class="n">pert_matrix</span> <span class="o">=</span> <span class="n">row_sign</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">col_sign</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">perturbation_type</span> <span class="o">==</span> <span class="s2">&quot;additive&quot;</span><span class="p">:</span>
+            <span class="n">perturbed_weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight_mu</span> <span class="o">+</span> <span class="n">delta_W</span> <span class="o">*</span> <span class="n">pert_matrix</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">perturbation_type</span> <span class="o">==</span> <span class="s2">&quot;multiplicative&quot;</span><span class="p">:</span>
+            <span class="n">perturbed_weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight_mu</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">delta_W</span> <span class="o">*</span> <span class="n">pert_matrix</span><span class="p">)</span>
+
+        <span class="n">perturbed_bias</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias_mu</span> <span class="o">+</span> <span class="n">delta_b</span>
+
+        <span class="c1"># Torch-based efficient way of handling the matrix multiplication</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;bij,bj-&gt;bi&quot;</span><span class="p">,</span> <span class="n">perturbed_weights</span><span class="p">,</span> <span class="nb">input</span><span class="p">)</span> <span class="o">+</span> <span class="n">perturbed_bias</span>
+
+        <span class="k">return</span> <span class="n">output</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_kl_divergence</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">posterior_weight</span> <span class="o">=</span> <span class="n">Normal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weight_mu</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">softplus</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weight_rho</span><span class="p">))</span>
+        <span class="n">posterior_bias</span> <span class="o">=</span> <span class="n">Normal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bias_mu</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">softplus</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bias_rho</span><span class="p">))</span>
+        <span class="n">prior</span> <span class="o">=</span> <span class="n">Normal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prior_mean</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prior_std</span><span class="p">)</span>
+
+        <span class="c1"># Compute KL divergence for weights and biases</span>
+        <span class="n">kl_weights</span> <span class="o">=</span> <span class="n">kl_divergence</span><span class="p">(</span><span class="n">posterior_weight</span><span class="p">,</span> <span class="n">prior</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">kl_biases</span> <span class="o">=</span> <span class="n">kl_divergence</span><span class="p">(</span><span class="n">posterior_bias</span><span class="p">,</span> <span class="n">prior</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">kl_weights</span> <span class="o">+</span> <span class="n">kl_biases</span></div>
+
+
+
+<div class="viewcode-block" id="MELTBatchNorm">
+<a class="viewcode-back" href="../../ptmelt.html#ptmelt.layers.MELTBatchNorm">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">MELTBatchNorm</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Custom Batch Normalization Layer for PT-MELT.</span>
+
+<span class="sd">    Supports implementation of different types of moving averages for the batch norm</span>
+<span class="sd">    statistics.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        num_features (int): Number of features in the input tensor.</span>
+<span class="sd">        eps (float, optional): Small value to avoid division by zero.</span>
+<span class="sd">                               Defaults to 1e-5.</span>
+<span class="sd">        momentum (float, optional): Momentum for moving average. Defaults to 0.1.</span>
+<span class="sd">        affine (bool, optional): Apply affine transformation. Defaults to True.</span>
+<span class="sd">        track_running_stats (bool, optional): Track running statistics. Defaults to</span>
+<span class="sd">                                              True.</span>
+<span class="sd">        average_type (str, optional): Type of moving average. Defaults to &quot;ema&quot;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">num_features</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">eps</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e-5</span><span class="p">,</span>
+        <span class="n">momentum</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+        <span class="n">affine</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">track_running_stats</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">average_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;ema&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="c1"># TODO: Check that all features of PyTorch BatchNorm are implemented.</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">MELTBatchNorm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_features</span> <span class="o">=</span> <span class="n">num_features</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eps</span> <span class="o">=</span> <span class="n">eps</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">momentum</span> <span class="o">=</span> <span class="n">momentum</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">affine</span> <span class="o">=</span> <span class="n">affine</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">track_running_stats</span> <span class="o">=</span> <span class="n">track_running_stats</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">average_type</span> <span class="o">=</span> <span class="n">average_type</span>
+
+        <span class="c1"># Initialize Parameters</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">affine</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">num_features</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bias</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">num_features</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">register_parameter</span><span class="p">(</span><span class="s2">&quot;weight&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">register_parameter</span><span class="p">(</span><span class="s2">&quot;bias&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="c1"># Initialize Running Statistics</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">track_running_stats</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">&quot;running_mean&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_features</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">&quot;running_var&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">num_features</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span>
+                <span class="s2">&quot;num_batches_tracked&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">long</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">register_parameter</span><span class="p">(</span><span class="s2">&quot;running_mean&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">register_parameter</span><span class="p">(</span><span class="s2">&quot;running_var&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">register_parameter</span><span class="p">(</span><span class="s2">&quot;num_batches_tracked&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_parameters</span><span class="p">()</span>
+
+<div class="viewcode-block" id="MELTBatchNorm.reset_parameters">
+<a class="viewcode-back" href="../../ptmelt.html#ptmelt.layers.MELTBatchNorm.reset_parameters">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reset_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reset the parameters of the layer.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">track_running_stats</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">running_mean</span><span class="o">.</span><span class="n">zero_</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">running_var</span><span class="o">.</span><span class="n">fill_</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">affine</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">fill_</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bias</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">zero_</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bias</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="MELTBatchNorm.forward">
+<a class="viewcode-back" href="../../ptmelt.html#ptmelt.layers.MELTBatchNorm.forward">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perform the forward pass of the batch normalization layer.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            input (torch.Tensor): Input tensor to be normalized.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Calculate Batch Norm Statistics</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">training</span><span class="p">:</span>
+            <span class="n">mean</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">var</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">unbiased</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">mean</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">running_mean</span>
+            <span class="n">var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">running_var</span>
+
+        <span class="c1"># Update Running Statistics</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">track_running_stats</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">average_type</span> <span class="o">==</span> <span class="s2">&quot;ema&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">running_mean</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">momentum</span>
+            <span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">running_mean</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">momentum</span> <span class="o">*</span> <span class="n">mean</span>
+            <span class="c1"># self.running_mean.mul_(1 - self.momentum).add_(mean, alpha=self.momentum)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">running_var</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">momentum</span>
+            <span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">running_var</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">momentum</span> <span class="o">*</span> <span class="n">var</span>
+            <span class="c1"># self.running_var.mul_(1 - self.momentum).add_(var, alpha=self.momentum)</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">track_running_stats</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">average_type</span> <span class="o">==</span> <span class="s2">&quot;simple&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">running_mean</span> <span class="o">=</span> <span class="n">mean</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">running_var</span> <span class="o">=</span> <span class="n">var</span>
+
+        <span class="c1"># Normalize</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">training</span><span class="p">:</span>
+            <span class="nb">input</span> <span class="o">=</span> <span class="p">(</span><span class="nb">input</span> <span class="o">-</span> <span class="n">mean</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">var</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">eps</span><span class="p">)</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">input</span> <span class="o">=</span> <span class="p">(</span><span class="nb">input</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">running_mean</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">running_var</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">eps</span><span class="p">)</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span>
+
+        <span class="c1"># Scale and Shift</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">affine</span><span class="p">:</span>
+            <span class="nb">input</span> <span class="o">=</span> <span class="nb">input</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias</span>
+
+        <span class="k">return</span> <span class="nb">input</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="MELTBatchRenorm">
+<a class="viewcode-back" href="../../ptmelt.html#ptmelt.layers.MELTBatchRenorm">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">MELTBatchRenorm</span><span class="p">(</span><span class="n">MELTBatchNorm</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Custom Batch Renormalization Layer for PT-MELT.</span>
+
+<span class="sd">    Supports implementation of different types of moving averages for the batch norm</span>
+<span class="sd">    statistics.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        num_features (int): Number of features in the input tensor.</span>
+<span class="sd">        eps (float, optional): Small value to avoid division by zero. Defaults to</span>
+<span class="sd">                               1e-5.</span>
+<span class="sd">        momentum (float, optional): Momentum for moving average. Defaults to 0.1.</span>
+<span class="sd">        affine (bool, optional): Apply affine transformation. Defaults to True.</span>
+<span class="sd">        track_running_stats (bool, optional): Track running statistics. Defaults to</span>
+<span class="sd">                                              True.</span>
+<span class="sd">        average_type (str, optional): Type of moving average. Defaults to &quot;ema&quot;.</span>
+<span class="sd">        rmax (float, optional): Maximum value for r. Defaults to 1.0.</span>
+<span class="sd">        dmax (float, optional): Maximum value for d. Defaults to 0.0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">num_features</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">eps</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e-5</span><span class="p">,</span>
+        <span class="n">momentum</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+        <span class="n">affine</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">track_running_stats</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">average_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;ema&quot;</span><span class="p">,</span>
+        <span class="n">rmax</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">dmax</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="c1"># TODO: Verify accuracy of renorm implementation.</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">num_features</span><span class="p">,</span> <span class="n">eps</span><span class="p">,</span> <span class="n">momentum</span><span class="p">,</span> <span class="n">affine</span><span class="p">,</span> <span class="n">track_running_stats</span><span class="p">,</span> <span class="n">average_type</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">&quot;rmax&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">rmax</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">&quot;dmax&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">dmax</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+
+<div class="viewcode-block" id="MELTBatchRenorm.forward">
+<a class="viewcode-back" href="../../ptmelt.html#ptmelt.layers.MELTBatchRenorm.forward">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform the forward pass of the batch renormalization layer.&quot;&quot;&quot;</span>
+        <span class="c1"># Calculate Batch Norm Statistics</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">training</span><span class="p">:</span>
+            <span class="n">mean</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">var</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">unbiased</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">std</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">var</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">eps</span><span class="p">)</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">std</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">running_var</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">eps</span><span class="p">)</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">rmax</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rmax</span><span class="p">)</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="p">(</span><span class="n">mean</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">running_mean</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">running_var</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">eps</span><span class="p">)</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">dmax</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dmax</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">r</span> <span class="o">=</span> <span class="n">r</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">d</span> <span class="o">=</span> <span class="n">d</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">mean</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">running_mean</span>
+            <span class="n">var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">running_var</span>
+
+        <span class="c1"># Update Running Statistics</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">track_running_stats</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">average_type</span> <span class="o">==</span> <span class="s2">&quot;ema&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">running_mean</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">momentum</span>
+            <span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">running_mean</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">momentum</span> <span class="o">*</span> <span class="n">mean</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">running_var</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">momentum</span>
+            <span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">running_var</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">momentum</span> <span class="o">*</span> <span class="n">var</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">track_running_stats</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">average_type</span> <span class="o">==</span> <span class="s2">&quot;simple&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">running_mean</span> <span class="o">=</span> <span class="n">mean</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">running_var</span> <span class="o">=</span> <span class="n">var</span>
+
+        <span class="c1"># Apply Batch Renormalization</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">training</span><span class="p">:</span>
+            <span class="n">x_hat</span> <span class="o">=</span> <span class="p">(</span><span class="nb">input</span> <span class="o">-</span> <span class="n">mean</span><span class="p">)</span> <span class="o">*</span> <span class="n">r</span> <span class="o">/</span> <span class="n">std</span> <span class="o">+</span> <span class="n">d</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">x_hat</span> <span class="o">=</span> <span class="p">(</span><span class="nb">input</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">running_mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">torch</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">running_var</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">eps</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">*</span> <span class="n">x_hat</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="Reparameterization">
+<a class="viewcode-back" href="../../ptmelt.html#ptmelt.layers.Reparameterization">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Reparameterization</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Reparameterization trick for Gaussian Mixture Models.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Reparameterization.forward">
+<a class="viewcode-back" href="../../ptmelt.html#ptmelt.layers.Reparameterization.forward">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mix_coeffs</span><span class="p">,</span> <span class="n">means</span><span class="p">,</span> <span class="n">log_vars</span><span class="p">):</span>
+        <span class="c1"># Ensure mix_coeffs is a valid probability distribution</span>
+        <span class="n">mix_coeffs</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">mix_coeffs</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Sample component indices from the categorical distribution</span>
+        <span class="n">component_indices</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">multinomial</span><span class="p">(</span><span class="n">mix_coeffs</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Select the means and log variances of the sampled components</span>
+        <span class="n">batch_size</span> <span class="o">=</span> <span class="n">means</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">latent_dim</span> <span class="o">=</span> <span class="n">means</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Gather the means and log_vars based on sampled indices</span>
+        <span class="n">selected_means</span> <span class="o">=</span> <span class="n">means</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">batch_size</span><span class="p">),</span> <span class="n">component_indices</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="n">selected_log_vars</span> <span class="o">=</span> <span class="n">log_vars</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">batch_size</span><span class="p">),</span> <span class="n">component_indices</span><span class="p">,</span> <span class="p">:]</span>
+
+        <span class="c1"># Reparameterization trick</span>
+        <span class="n">stds</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">selected_log_vars</span><span class="p">)</span>
+        <span class="n">eps</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn_like</span><span class="p">(</span><span class="n">stds</span><span class="p">)</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">selected_means</span> <span class="o">+</span> <span class="n">eps</span> <span class="o">*</span> <span class="n">stds</span>
+
+        <span class="k">return</span> <span class="n">z</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alliance for Sustainable Energy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

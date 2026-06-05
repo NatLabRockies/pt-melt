@@ -1,0 +1,756 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ptmelt.blocks &mdash; pt-melt  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980B9" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            pt-melt
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">pt-melt</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../ptmelt.html">PT-MELT package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ptmelt.html#module-ptmelt.blocks">Blocks Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../ptmelt.html#ptmelt.blocks.BayesianBlock"><code class="docutils literal notranslate"><span class="pre">BayesianBlock</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.blocks.BayesianBlock.forward"><code class="docutils literal notranslate"><span class="pre">BayesianBlock.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.blocks.BayesianBlock.kl_loss"><code class="docutils literal notranslate"><span class="pre">BayesianBlock.kl_loss()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../ptmelt.html#ptmelt.blocks.DefaultOutput"><code class="docutils literal notranslate"><span class="pre">DefaultOutput</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.blocks.DefaultOutput.forward"><code class="docutils literal notranslate"><span class="pre">DefaultOutput.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../ptmelt.html#ptmelt.blocks.DenseBlock"><code class="docutils literal notranslate"><span class="pre">DenseBlock</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.blocks.DenseBlock.forward"><code class="docutils literal notranslate"><span class="pre">DenseBlock.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../ptmelt.html#ptmelt.blocks.MELTBlock"><code class="docutils literal notranslate"><span class="pre">MELTBlock</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ptmelt.html#ptmelt.blocks.MixtureDensityOutput"><code class="docutils literal notranslate"><span class="pre">MixtureDensityOutput</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.blocks.MixtureDensityOutput.forward"><code class="docutils literal notranslate"><span class="pre">MixtureDensityOutput.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../ptmelt.html#ptmelt.blocks.ResidualBlock"><code class="docutils literal notranslate"><span class="pre">ResidualBlock</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.blocks.ResidualBlock.forward"><code class="docutils literal notranslate"><span class="pre">ResidualBlock.forward()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../ptmelt.html#module-ptmelt.layers">Layers Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../ptmelt.html#ptmelt.layers.AttentionPool"><code class="docutils literal notranslate"><span class="pre">AttentionPool</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.layers.AttentionPool.forward"><code class="docutils literal notranslate"><span class="pre">AttentionPool.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../ptmelt.html#ptmelt.layers.MELTBatchNorm"><code class="docutils literal notranslate"><span class="pre">MELTBatchNorm</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.layers.MELTBatchNorm.forward"><code class="docutils literal notranslate"><span class="pre">MELTBatchNorm.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.layers.MELTBatchNorm.reset_parameters"><code class="docutils literal notranslate"><span class="pre">MELTBatchNorm.reset_parameters()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../ptmelt.html#ptmelt.layers.MELTBatchRenorm"><code class="docutils literal notranslate"><span class="pre">MELTBatchRenorm</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.layers.MELTBatchRenorm.forward"><code class="docutils literal notranslate"><span class="pre">MELTBatchRenorm.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../ptmelt.html#ptmelt.layers.MELTBayesianDenseFlipOut"><code class="docutils literal notranslate"><span class="pre">MELTBayesianDenseFlipOut</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.layers.MELTBayesianDenseFlipOut.forward"><code class="docutils literal notranslate"><span class="pre">MELTBayesianDenseFlipOut.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../ptmelt.html#ptmelt.layers.Reparameterization"><code class="docutils literal notranslate"><span class="pre">Reparameterization</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.layers.Reparameterization.forward"><code class="docutils literal notranslate"><span class="pre">Reparameterization.forward()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../ptmelt.html#module-ptmelt.losses">Losses Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../ptmelt.html#ptmelt.losses.MixtureDensityLoss"><code class="docutils literal notranslate"><span class="pre">MixtureDensityLoss</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.losses.MixtureDensityLoss.forward"><code class="docutils literal notranslate"><span class="pre">MixtureDensityLoss.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../ptmelt.html#ptmelt.losses.VAELoss"><code class="docutils literal notranslate"><span class="pre">VAELoss</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.losses.VAELoss.compute_kl_divergence"><code class="docutils literal notranslate"><span class="pre">VAELoss.compute_kl_divergence()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.losses.VAELoss.compute_reconstruction_loss"><code class="docutils literal notranslate"><span class="pre">VAELoss.compute_reconstruction_loss()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.losses.VAELoss.forward"><code class="docutils literal notranslate"><span class="pre">VAELoss.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../ptmelt.html#ptmelt.losses.safe_exp"><code class="docutils literal notranslate"><span class="pre">safe_exp()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../ptmelt.html#module-ptmelt.models">Models Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.ArtificialNeuralNetwork"><code class="docutils literal notranslate"><span class="pre">ArtificialNeuralNetwork</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.ArtificialNeuralNetwork.forward"><code class="docutils literal notranslate"><span class="pre">ArtificialNeuralNetwork.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.ArtificialNeuralNetwork.initialize_layers"><code class="docutils literal notranslate"><span class="pre">ArtificialNeuralNetwork.initialize_layers()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.BayesianNeuralNetwork"><code class="docutils literal notranslate"><span class="pre">BayesianNeuralNetwork</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.BayesianNeuralNetwork.build"><code class="docutils literal notranslate"><span class="pre">BayesianNeuralNetwork.build()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.BayesianNeuralNetwork.create_output_layer"><code class="docutils literal notranslate"><span class="pre">BayesianNeuralNetwork.create_output_layer()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.BayesianNeuralNetwork.forward"><code class="docutils literal notranslate"><span class="pre">BayesianNeuralNetwork.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.BayesianNeuralNetwork.initialize_layers"><code class="docutils literal notranslate"><span class="pre">BayesianNeuralNetwork.initialize_layers()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.BayesianNeuralNetwork.step"><code class="docutils literal notranslate"><span class="pre">BayesianNeuralNetwork.step()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.MELTModel"><code class="docutils literal notranslate"><span class="pre">MELTModel</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.MELTModel.build"><code class="docutils literal notranslate"><span class="pre">MELTModel.build()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.MELTModel.compute_jacobian"><code class="docutils literal notranslate"><span class="pre">MELTModel.compute_jacobian()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.MELTModel.create_dropout_layers"><code class="docutils literal notranslate"><span class="pre">MELTModel.create_dropout_layers()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.MELTModel.create_output_layer"><code class="docutils literal notranslate"><span class="pre">MELTModel.create_output_layer()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.MELTModel.fit"><code class="docutils literal notranslate"><span class="pre">MELTModel.fit()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.MELTModel.get_loss_fn"><code class="docutils literal notranslate"><span class="pre">MELTModel.get_loss_fn()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.MELTModel.get_optimizer"><code class="docutils literal notranslate"><span class="pre">MELTModel.get_optimizer()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.MELTModel.get_scheduler"><code class="docutils literal notranslate"><span class="pre">MELTModel.get_scheduler()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.MELTModel.initialize_layers"><code class="docutils literal notranslate"><span class="pre">MELTModel.initialize_layers()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.MELTModel.l1_regularization"><code class="docutils literal notranslate"><span class="pre">MELTModel.l1_regularization()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.MELTModel.l2_regularization"><code class="docutils literal notranslate"><span class="pre">MELTModel.l2_regularization()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.MELTModel.step"><code class="docutils literal notranslate"><span class="pre">MELTModel.step()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.RecurrentNeuralNetwork"><code class="docutils literal notranslate"><span class="pre">RecurrentNeuralNetwork</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.RecurrentNeuralNetwork.create_output_layer"><code class="docutils literal notranslate"><span class="pre">RecurrentNeuralNetwork.create_output_layer()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.RecurrentNeuralNetwork.forward"><code class="docutils literal notranslate"><span class="pre">RecurrentNeuralNetwork.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.RecurrentNeuralNetwork.initialize_layers"><code class="docutils literal notranslate"><span class="pre">RecurrentNeuralNetwork.initialize_layers()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.RecurrentNeuralNetwork.step"><code class="docutils literal notranslate"><span class="pre">RecurrentNeuralNetwork.step()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.ResidualNeuralNetwork"><code class="docutils literal notranslate"><span class="pre">ResidualNeuralNetwork</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.ResidualNeuralNetwork.build"><code class="docutils literal notranslate"><span class="pre">ResidualNeuralNetwork.build()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.ResidualNeuralNetwork.forward"><code class="docutils literal notranslate"><span class="pre">ResidualNeuralNetwork.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.ResidualNeuralNetwork.initialize_layers"><code class="docutils literal notranslate"><span class="pre">ResidualNeuralNetwork.initialize_layers()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.VariationalAutoencoder"><code class="docutils literal notranslate"><span class="pre">VariationalAutoencoder</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.VariationalAutoencoder.forward"><code class="docutils literal notranslate"><span class="pre">VariationalAutoencoder.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.VariationalAutoencoder.split_mdn_output"><code class="docutils literal notranslate"><span class="pre">VariationalAutoencoder.split_mdn_output()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.html#ptmelt.models.VariationalAutoencoder.step"><code class="docutils literal notranslate"><span class="pre">VariationalAutoencoder.step()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../ptmelt.html#module-ptmelt.nn_utils">NN Utils Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ptmelt.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../ptmelt.utils.html">PT-MELT Utilities Subpackage</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.utils.html#module-ptmelt.utils.evaluation">Evaluation Module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.utils.html#module-ptmelt.utils.preprocessing">Preprocessing Module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.utils.html#module-ptmelt.utils.statistics">Statistics Module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ptmelt.utils.html#module-ptmelt.utils.visualization">Visualization Module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html">Example Notebooks</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980B9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">pt-melt</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">ptmelt.blocks</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ptmelt.blocks</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn.functional</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch.distributions</span><span class="w"> </span><span class="kn">import</span> <span class="n">Normal</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">ptmelt.layers</span><span class="w"> </span><span class="kn">import</span> <span class="n">MELTBatchNorm</span><span class="p">,</span> <span class="n">MELTBayesianDenseFlipOut</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_initializer</span><span class="p">(</span><span class="n">initializer</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the initializer function.&quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">initializer</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">):</span>
+        <span class="n">initializer</span> <span class="o">+=</span> <span class="s2">&quot;_&quot;</span>
+
+    <span class="k">if</span> <span class="n">initializer</span> <span class="o">==</span> <span class="s2">&quot;glorot_uniform_&quot;</span><span class="p">:</span>
+        <span class="n">initializer</span> <span class="o">=</span> <span class="s2">&quot;xavier_uniform_&quot;</span>
+
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">init</span><span class="p">,</span> <span class="n">initializer</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">init</span><span class="p">,</span> <span class="n">initializer</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Initializer </span><span class="si">{</span><span class="n">initializer</span><span class="si">}</span><span class="s2"> not recognized.&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_activation</span><span class="p">(</span><span class="n">act_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the activation function based on its name.&quot;&quot;&quot;</span>
+
+    <span class="c1"># Do some common activation string mapping</span>
+    <span class="n">common_mappings</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;relu&quot;</span><span class="p">:</span> <span class="s2">&quot;ReLU&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;leaky_relu&quot;</span><span class="p">:</span> <span class="s2">&quot;LeakyReLU&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sigmoid&quot;</span><span class="p">:</span> <span class="s2">&quot;Sigmoid&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;tanh&quot;</span><span class="p">:</span> <span class="s2">&quot;Tanh&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;softmax&quot;</span><span class="p">:</span> <span class="s2">&quot;Softmax&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;softplus&quot;</span><span class="p">:</span> <span class="s2">&quot;Softplus&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;elu&quot;</span><span class="p">:</span> <span class="s2">&quot;ELU&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;selu&quot;</span><span class="p">:</span> <span class="s2">&quot;SELU&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;gelu&quot;</span><span class="p">:</span> <span class="s2">&quot;GELU&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;swish&quot;</span><span class="p">:</span> <span class="s2">&quot;SiLU&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;linear&quot;</span><span class="p">:</span> <span class="s2">&quot;Identity&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">act_name</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">common_mappings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">act_name</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">act_name</span><span class="p">)</span> <span class="k">if</span> <span class="n">act_name</span> <span class="k">else</span> <span class="s2">&quot;Identity&quot;</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">nn</span><span class="p">,</span> <span class="n">act_name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">nn</span><span class="p">,</span> <span class="n">act_name</span><span class="p">)(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Activation function </span><span class="si">{</span><span class="n">act_name</span><span class="si">}</span><span class="s2"> not recognized.&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="MELTBlock">
+<a class="viewcode-back" href="../../ptmelt.html#ptmelt.blocks.MELTBlock">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">MELTBlock</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Base class for a MELT block. Provides the building blocks for the MELT architecture.</span>
+<span class="sd">    Defines the common parameters for the MELT blocks with optional activation, dropout,</span>
+<span class="sd">    batch normalization, and batch renormalization layers.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        input_features (int): Number of input features.</span>
+<span class="sd">        node_list (List[int]): List of number of nodes in each layer.</span>
+<span class="sd">        activation (str, optional): Activation function. Defaults to &quot;relu&quot;.</span>
+<span class="sd">        dropout (float, optional): Dropout rate. Defaults to 0.0.</span>
+<span class="sd">        batch_norm (bool, optional): Whether to use batch normalization. Defaults to</span>
+<span class="sd">                                     False.</span>
+<span class="sd">        batch_norm_type (str, optional): Type of batch normalization. Defaults to &quot;ema&quot;.</span>
+<span class="sd">        use_batch_renorm (bool, optional): Whether to use batch renormalization.</span>
+<span class="sd">                                           Defaults to False.</span>
+<span class="sd">        initializer (str, optional): Weight initializer. Defaults to &quot;glorot_uniform&quot;.</span>
+<span class="sd">        **kwargs: Additional keyword arguments.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">input_features</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">node_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+        <span class="n">activation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;relu&quot;</span><span class="p">,</span>
+        <span class="n">dropout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">batch_norm</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">batch_norm_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;ema&quot;</span><span class="p">,</span>
+        <span class="n">use_batch_renorm</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">initializer</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;glorot_uniform&quot;</span><span class="p">,</span>
+        <span class="n">seed</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MELTBlock</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_features</span> <span class="o">=</span> <span class="n">input_features</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">node_list</span> <span class="o">=</span> <span class="n">node_list</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="n">activation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span> <span class="o">=</span> <span class="n">dropout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch_norm</span> <span class="o">=</span> <span class="n">batch_norm</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch_norm_type</span> <span class="o">=</span> <span class="n">batch_norm_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">use_batch_renorm</span> <span class="o">=</span> <span class="n">use_batch_renorm</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initializer</span> <span class="o">=</span> <span class="n">initializer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span>
+
+        <span class="c1"># Get the initializer function</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initializer_fn</span> <span class="o">=</span> <span class="n">_get_initializer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initializer</span><span class="p">)</span>
+
+        <span class="c1"># Create layer dictionary</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer_dict</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleDict</span><span class="p">()</span>
+
+        <span class="c1"># Number of layers in the block</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_layers</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node_list</span><span class="p">)</span>
+
+        <span class="c1"># Validate dropout value</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="mf">0.0</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span> <span class="o">&lt;</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s2">&quot;Dropout must be in the range [0, 1).&quot;</span>
+
+        <span class="c1"># Get the activation layers</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">layer_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="sa">f</span><span class="s2">&quot;activation_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">_get_activation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_layers</span><span class="p">)</span>
+                <span class="p">}</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Optional dropout layers</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">layer_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="sa">f</span><span class="s2">&quot;dropout_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_layers</span><span class="p">)</span>
+                <span class="p">}</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Optional batch normalization layers</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_norm</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_norm_type</span> <span class="o">==</span> <span class="s2">&quot;pytorch&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">layer_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                    <span class="p">{</span>
+                        <span class="sa">f</span><span class="s2">&quot;batch_norm_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm1d</span><span class="p">(</span>
+                            <span class="n">num_features</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">node_list</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                            <span class="n">affine</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                            <span class="n">track_running_stats</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                            <span class="n">momentum</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">,</span>
+                            <span class="n">eps</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span>
+                        <span class="p">)</span>
+                        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_layers</span><span class="p">)</span>
+                    <span class="p">}</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">layer_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                    <span class="p">{</span>
+                        <span class="sa">f</span><span class="s2">&quot;batch_norm_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">MELTBatchNorm</span><span class="p">(</span>
+                            <span class="n">num_features</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">node_list</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                            <span class="n">affine</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                            <span class="n">track_running_stats</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                            <span class="n">average_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_norm_type</span><span class="p">,</span>
+                            <span class="n">momentum</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">,</span>
+                            <span class="n">eps</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span>
+                        <span class="p">)</span>
+                        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_layers</span><span class="p">)</span>
+                    <span class="p">}</span>
+                <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="DenseBlock">
+<a class="viewcode-back" href="../../ptmelt.html#ptmelt.blocks.DenseBlock">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">DenseBlock</span><span class="p">(</span><span class="n">MELTBlock</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Dense block for the MELT architecture. The dense block consists of dense layers</span>
+<span class="sd">    with optional activation, dropout, and batch normalization layers.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        **kwargs: Additional keyword arguments.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">DenseBlock</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># Initialize dense layers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="sa">f</span><span class="s2">&quot;dense_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span>
+                    <span class="n">in_features</span><span class="o">=</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">input_features</span> <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_list</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+                    <span class="p">),</span>
+                    <span class="n">out_features</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">node_list</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="p">)</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_layers</span><span class="p">)</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+        <span class="c1"># Initialize the weights</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">initializer_fn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layer_dict</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;dense_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">weight</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_layers</span><span class="p">)</span>
+        <span class="p">]</span>
+
+<div class="viewcode-block" id="DenseBlock.forward">
+<a class="viewcode-back" href="../../ptmelt.html#ptmelt.blocks.DenseBlock.forward">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform the forward pass of the dense block.&quot;&quot;&quot;</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">inputs</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_layers</span><span class="p">):</span>
+            <span class="c1"># dense -&gt; batch norm -&gt; activation -&gt; dropout</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_dict</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;dense_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">](</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_dict</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;batch_norm_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">](</span><span class="n">x</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_norm</span> <span class="k">else</span> <span class="n">x</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_dict</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;activation_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">](</span><span class="n">x</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="k">else</span> <span class="n">x</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_dict</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;dropout_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">](</span><span class="n">x</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">x</span>
+
+        <span class="k">return</span> <span class="n">x</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ResidualBlock">
+<a class="viewcode-back" href="../../ptmelt.html#ptmelt.blocks.ResidualBlock">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ResidualBlock</span><span class="p">(</span><span class="n">MELTBlock</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Residual block for the MELT architecture. The residual block consists of residual</span>
+<span class="sd">    connections between dense layers with optional activation, dropout, and batch</span>
+<span class="sd">    normalization layers. Residual connections are added after every `layers_per_block`</span>
+<span class="sd">    layers.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        layers_per_block (int, optional): Number of layers per residual block. Defaults</span>
+<span class="sd">                                          to 2.</span>
+<span class="sd">        pre_activation (bool, optional): Whether to use pre-activation residual blocks.</span>
+<span class="sd">                                         Defaults to False.</span>
+<span class="sd">        post_add_activation (bool, optional): Whether to use post-addition activation.</span>
+<span class="sd">                                              Defaults to False.</span>
+<span class="sd">        **kwargs: Additional keyword arguments.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">layers_per_block</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="n">pre_activation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">post_add_activation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ResidualBlock</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">layers_per_block</span> <span class="o">=</span> <span class="n">layers_per_block</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pre_activation</span> <span class="o">=</span> <span class="n">pre_activation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">post_add_activation</span> <span class="o">=</span> <span class="n">post_add_activation</span>
+
+        <span class="c1"># Warning if the number of layers is not divisible by layers_per_block</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_layers</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers_per_block</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Warning: Number of layers </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">num_layers</span><span class="si">}</span><span class="s2"> is not divisible by &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;layers_per_block (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">layers_per_block</span><span class="si">}</span><span class="s2">), so the last block will &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;have </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">num_layers</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">layers_per_block</span><span class="si">}</span><span class="s2"> layers.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Initialize dense layers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="sa">f</span><span class="s2">&quot;dense_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span>
+                    <span class="n">in_features</span><span class="o">=</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">input_features</span> <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_list</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+                    <span class="p">),</span>
+                    <span class="n">out_features</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">node_list</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="p">)</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_layers</span><span class="p">)</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+        <span class="c1"># Initialize the weights</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">initializer_fn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layer_dict</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;dense_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">weight</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_layers</span><span class="p">)</span>
+        <span class="p">]</span>
+
+        <span class="c1"># Optional activation layer after addition</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">post_add_activation</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">layer_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="sa">f</span><span class="s2">&quot;post_add_act_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">_get_activation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_layers</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="p">}</span>
+            <span class="p">)</span>
+
+<div class="viewcode-block" id="ResidualBlock.forward">
+<a class="viewcode-back" href="../../ptmelt.html#ptmelt.blocks.ResidualBlock.forward">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform the forward pass of the residual block.&quot;&quot;&quot;</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">inputs</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_layers</span><span class="p">):</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">x</span>
+
+            <span class="c1"># dense -&gt; (pre-activation) -&gt; batch norm -&gt; dropout -&gt; (post-activation)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_dict</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;dense_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">](</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_dict</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;activation_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">](</span><span class="n">x</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pre_activation</span> <span class="k">else</span> <span class="n">x</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_dict</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;batch_norm_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">](</span><span class="n">x</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_norm</span> <span class="k">else</span> <span class="n">x</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_dict</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;dropout_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">](</span><span class="n">x</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">x</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_dict</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;activation_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">](</span><span class="n">x</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">pre_activation</span> <span class="k">else</span> <span class="n">x</span>
+
+            <span class="c1"># Add the residual connection when reaching the end of a residual block</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers_per_block</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">i</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_layers</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">layer_dict</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;post_add_act_</span><span class="si">{</span><span class="n">i</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">layers_per_block</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">](</span><span class="n">x</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">post_add_activation</span>
+                    <span class="k">else</span> <span class="n">x</span>
+                <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">x</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="BayesianBlock">
+<a class="viewcode-back" href="../../ptmelt.html#ptmelt.blocks.BayesianBlock">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BayesianBlock</span><span class="p">(</span><span class="n">MELTBlock</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Bayesian block for the MELT architecture using custom Bayesian layers.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">num_points</span><span class="p">,</span>
+        <span class="n">perturbation_type</span><span class="o">=</span><span class="s2">&quot;multiplicative&quot;</span><span class="p">,</span>
+        <span class="n">seed</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">BayesianBlock</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="c1"># self.num_points = num_points</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">perturbation_type</span> <span class="o">=</span> <span class="n">perturbation_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span>
+
+        <span class="c1"># Initialize Bayesian layers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="sa">f</span><span class="s2">&quot;bayesian_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">MELTBayesianDenseFlipOut</span><span class="p">(</span>
+                    <span class="n">in_features</span><span class="o">=</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">input_features</span> <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_list</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+                    <span class="p">),</span>
+                    <span class="n">out_features</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">node_list</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                    <span class="n">perturbation_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">perturbation_type</span><span class="p">,</span>
+                    <span class="n">seed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_layers</span><span class="p">)</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="BayesianBlock.forward">
+<a class="viewcode-back" href="../../ptmelt.html#ptmelt.blocks.BayesianBlock.forward">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform the forward pass of the Bayesian block.&quot;&quot;&quot;</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">inputs</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_layers</span><span class="p">):</span>
+            <span class="c1"># bayesian -&gt; batch norm -&gt; activation -&gt; dropout</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_dict</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;bayesian_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">](</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_dict</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;batch_norm_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">](</span><span class="n">x</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_norm</span> <span class="k">else</span> <span class="n">x</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_dict</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;activation_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">](</span><span class="n">x</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="k">else</span> <span class="n">x</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_dict</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;dropout_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">](</span><span class="n">x</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">x</span>
+
+        <span class="k">return</span> <span class="n">x</span></div>
+
+
+<div class="viewcode-block" id="BayesianBlock.kl_loss">
+<a class="viewcode-back" href="../../ptmelt.html#ptmelt.blocks.BayesianBlock.kl_loss">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">kl_loss</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the KL divergence loss for all Bayesian layers.&quot;&quot;&quot;</span>
+        <span class="n">kl_div</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_layers</span><span class="p">):</span>
+            <span class="n">kl_div</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_dict</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;bayesian_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">_kl_divergence</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">kl_div</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="DefaultOutput">
+<a class="viewcode-back" href="../../ptmelt.html#ptmelt.blocks.DefaultOutput">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">DefaultOutput</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Default output layer with a single dense layer and optional activation function.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        input_features (int): Number of input features.</span>
+<span class="sd">        output_features (int): Number of output features.</span>
+<span class="sd">        activation (str, optional): Activation function. Defaults to &quot;linear&quot;.</span>
+<span class="sd">        initializer (str, optional): Weight initializer. Defaults to &quot;glorot_uniform&quot;.</span>
+<span class="sd">        **kwargs: Additional keyword arguments.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">input_features</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">output_features</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">activation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span><span class="p">,</span>
+        <span class="n">initializer</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;glorot_uniform&quot;</span><span class="p">,</span>
+        <span class="n">do_bayesian</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">seed</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">DefaultOutput</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_features</span> <span class="o">=</span> <span class="n">input_features</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_features</span> <span class="o">=</span> <span class="n">output_features</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="n">activation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initializer</span> <span class="o">=</span> <span class="n">initializer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span>
+
+        <span class="c1"># Get the initializer function</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initializer_fn</span> <span class="o">=</span> <span class="n">_get_initializer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initializer</span><span class="p">)</span>
+
+        <span class="c1"># Initialize output layer</span>
+        <span class="k">if</span> <span class="n">do_bayesian</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">output_layer</span> <span class="o">=</span> <span class="n">MELTBayesianDenseFlipOut</span><span class="p">(</span>
+                <span class="n">in_features</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">input_features</span><span class="p">,</span>
+                <span class="n">out_features</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">output_features</span><span class="p">,</span>
+                <span class="n">seed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">output_layer</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span>
+                <span class="n">in_features</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">input_features</span><span class="p">,</span> <span class="n">out_features</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">output_features</span>
+            <span class="p">)</span>
+            <span class="c1"># Initialize the weights</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">initializer_fn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_layer</span><span class="o">.</span><span class="n">weight</span><span class="p">)</span>
+
+        <span class="c1"># Initialize activation layer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activation_layer</span> <span class="o">=</span> <span class="n">_get_activation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">)</span>
+
+<div class="viewcode-block" id="DefaultOutput.forward">
+<a class="viewcode-back" href="../../ptmelt.html#ptmelt.blocks.DefaultOutput.forward">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform the forward pass of the default output layer.&quot;&quot;&quot;</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_layer</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation_layer</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">x</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="MixtureDensityOutput">
+<a class="viewcode-back" href="../../ptmelt.html#ptmelt.blocks.MixtureDensityOutput">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">MixtureDensityOutput</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Output layer for mixture density networks. The output layer consists of three</span>
+<span class="sd">    dense layers for the mixture coefficients, mean, and log variance of the output</span>
+<span class="sd">    distribution.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        input_features (int): Number of input features.</span>
+<span class="sd">        num_mixtures (int): Number of mixture components.</span>
+<span class="sd">        num_outputs (int): Number of output dimensions.</span>
+<span class="sd">        activation (str, optional): Activation function. Defaults to &quot;linear&quot;.</span>
+<span class="sd">        initializer (str, optional): Weight initializer. Defaults to &quot;glorot_uniform&quot;.</span>
+<span class="sd">        **kwargs: Additional keyword arguments.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">input_features</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">num_mixtures</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">num_outputs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">activation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span><span class="p">,</span>
+        <span class="n">initializer</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;glorot_uniform&quot;</span><span class="p">,</span>
+        <span class="n">seed</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MixtureDensityOutput</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_features</span> <span class="o">=</span> <span class="n">input_features</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_mixtures</span> <span class="o">=</span> <span class="n">num_mixtures</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_outputs</span> <span class="o">=</span> <span class="n">num_outputs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="n">activation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initializer</span> <span class="o">=</span> <span class="n">initializer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span>
+
+        <span class="c1"># Get the initializer function</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initializer_fn</span> <span class="o">=</span> <span class="n">_get_initializer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initializer</span><span class="p">)</span>
+
+        <span class="c1"># Initialize output layers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mix_coeffs_layer</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span>
+            <span class="n">in_features</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">input_features</span><span class="p">,</span> <span class="n">out_features</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">num_mixtures</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mean_layer</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span>
+            <span class="n">in_features</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">input_features</span><span class="p">,</span>
+            <span class="n">out_features</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">num_mixtures</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_outputs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_var_layer</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span>
+            <span class="n">in_features</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">input_features</span><span class="p">,</span>
+            <span class="n">out_features</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">num_mixtures</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_outputs</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Initialize the weights</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initializer_fn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mix_coeffs_layer</span><span class="o">.</span><span class="n">weight</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initializer_fn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mean_layer</span><span class="o">.</span><span class="n">weight</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initializer_fn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">log_var_layer</span><span class="o">.</span><span class="n">weight</span><span class="p">)</span>
+
+        <span class="c1"># Initialize activation layer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activation_layer</span> <span class="o">=</span> <span class="n">_get_activation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">softmax_layer</span> <span class="o">=</span> <span class="n">_get_activation</span><span class="p">(</span><span class="s2">&quot;softmax&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MixtureDensityOutput.forward">
+<a class="viewcode-back" href="../../ptmelt.html#ptmelt.blocks.MixtureDensityOutput.forward">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform the forward pass of the multiple mixture output layer.&quot;&quot;&quot;</span>
+        <span class="n">mix_coeffs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mix_coeffs_layer</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+        <span class="n">mix_coeffs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="n">mix_coeffs</span><span class="p">,</span> <span class="nb">min</span><span class="o">=-</span><span class="mi">10</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+        <span class="n">mix_coeffs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">softmax_layer</span><span class="p">(</span><span class="n">mix_coeffs</span><span class="p">)</span>
+
+        <span class="n">mean</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean_layer</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+        <span class="c1"># TODO: Do we ever want to apply an activation function to the mean?</span>
+        <span class="c1"># Maybe to the mean, but never to the log variance?</span>
+        <span class="c1"># mean = self.activation_layer(mean)</span>
+
+        <span class="n">log_var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_var_layer</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+
+        <span class="c1"># return concatenated output</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">mix_coeffs</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">log_var</span><span class="p">],</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alliance for Sustainable Energy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

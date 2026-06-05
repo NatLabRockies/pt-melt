@@ -1,0 +1,239 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Overview: module code &mdash; pt-melt  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980B9" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            pt-melt
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">pt-melt</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ptmelt.html">PT-MELT package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../ptmelt.html#module-ptmelt.blocks">Blocks Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../ptmelt.html#ptmelt.blocks.BayesianBlock"><code class="docutils literal notranslate"><span class="pre">BayesianBlock</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.blocks.BayesianBlock.forward"><code class="docutils literal notranslate"><span class="pre">BayesianBlock.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.blocks.BayesianBlock.kl_loss"><code class="docutils literal notranslate"><span class="pre">BayesianBlock.kl_loss()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../ptmelt.html#ptmelt.blocks.DefaultOutput"><code class="docutils literal notranslate"><span class="pre">DefaultOutput</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.blocks.DefaultOutput.forward"><code class="docutils literal notranslate"><span class="pre">DefaultOutput.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../ptmelt.html#ptmelt.blocks.DenseBlock"><code class="docutils literal notranslate"><span class="pre">DenseBlock</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.blocks.DenseBlock.forward"><code class="docutils literal notranslate"><span class="pre">DenseBlock.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../ptmelt.html#ptmelt.blocks.MELTBlock"><code class="docutils literal notranslate"><span class="pre">MELTBlock</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ptmelt.html#ptmelt.blocks.MixtureDensityOutput"><code class="docutils literal notranslate"><span class="pre">MixtureDensityOutput</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.blocks.MixtureDensityOutput.forward"><code class="docutils literal notranslate"><span class="pre">MixtureDensityOutput.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../ptmelt.html#ptmelt.blocks.ResidualBlock"><code class="docutils literal notranslate"><span class="pre">ResidualBlock</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.blocks.ResidualBlock.forward"><code class="docutils literal notranslate"><span class="pre">ResidualBlock.forward()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../ptmelt.html#module-ptmelt.layers">Layers Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../ptmelt.html#ptmelt.layers.AttentionPool"><code class="docutils literal notranslate"><span class="pre">AttentionPool</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.layers.AttentionPool.forward"><code class="docutils literal notranslate"><span class="pre">AttentionPool.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../ptmelt.html#ptmelt.layers.MELTBatchNorm"><code class="docutils literal notranslate"><span class="pre">MELTBatchNorm</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.layers.MELTBatchNorm.forward"><code class="docutils literal notranslate"><span class="pre">MELTBatchNorm.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.layers.MELTBatchNorm.reset_parameters"><code class="docutils literal notranslate"><span class="pre">MELTBatchNorm.reset_parameters()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../ptmelt.html#ptmelt.layers.MELTBatchRenorm"><code class="docutils literal notranslate"><span class="pre">MELTBatchRenorm</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.layers.MELTBatchRenorm.forward"><code class="docutils literal notranslate"><span class="pre">MELTBatchRenorm.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../ptmelt.html#ptmelt.layers.MELTBayesianDenseFlipOut"><code class="docutils literal notranslate"><span class="pre">MELTBayesianDenseFlipOut</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.layers.MELTBayesianDenseFlipOut.forward"><code class="docutils literal notranslate"><span class="pre">MELTBayesianDenseFlipOut.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../ptmelt.html#ptmelt.layers.Reparameterization"><code class="docutils literal notranslate"><span class="pre">Reparameterization</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.layers.Reparameterization.forward"><code class="docutils literal notranslate"><span class="pre">Reparameterization.forward()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../ptmelt.html#module-ptmelt.losses">Losses Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../ptmelt.html#ptmelt.losses.MixtureDensityLoss"><code class="docutils literal notranslate"><span class="pre">MixtureDensityLoss</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.losses.MixtureDensityLoss.forward"><code class="docutils literal notranslate"><span class="pre">MixtureDensityLoss.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../ptmelt.html#ptmelt.losses.VAELoss"><code class="docutils literal notranslate"><span class="pre">VAELoss</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.losses.VAELoss.compute_kl_divergence"><code class="docutils literal notranslate"><span class="pre">VAELoss.compute_kl_divergence()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.losses.VAELoss.compute_reconstruction_loss"><code class="docutils literal notranslate"><span class="pre">VAELoss.compute_reconstruction_loss()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.losses.VAELoss.forward"><code class="docutils literal notranslate"><span class="pre">VAELoss.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../ptmelt.html#ptmelt.losses.safe_exp"><code class="docutils literal notranslate"><span class="pre">safe_exp()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../ptmelt.html#module-ptmelt.models">Models Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../ptmelt.html#ptmelt.models.ArtificialNeuralNetwork"><code class="docutils literal notranslate"><span class="pre">ArtificialNeuralNetwork</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.models.ArtificialNeuralNetwork.forward"><code class="docutils literal notranslate"><span class="pre">ArtificialNeuralNetwork.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.models.ArtificialNeuralNetwork.initialize_layers"><code class="docutils literal notranslate"><span class="pre">ArtificialNeuralNetwork.initialize_layers()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../ptmelt.html#ptmelt.models.BayesianNeuralNetwork"><code class="docutils literal notranslate"><span class="pre">BayesianNeuralNetwork</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.models.BayesianNeuralNetwork.build"><code class="docutils literal notranslate"><span class="pre">BayesianNeuralNetwork.build()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.models.BayesianNeuralNetwork.create_output_layer"><code class="docutils literal notranslate"><span class="pre">BayesianNeuralNetwork.create_output_layer()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.models.BayesianNeuralNetwork.forward"><code class="docutils literal notranslate"><span class="pre">BayesianNeuralNetwork.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.models.BayesianNeuralNetwork.initialize_layers"><code class="docutils literal notranslate"><span class="pre">BayesianNeuralNetwork.initialize_layers()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.models.BayesianNeuralNetwork.step"><code class="docutils literal notranslate"><span class="pre">BayesianNeuralNetwork.step()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../ptmelt.html#ptmelt.models.MELTModel"><code class="docutils literal notranslate"><span class="pre">MELTModel</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.models.MELTModel.build"><code class="docutils literal notranslate"><span class="pre">MELTModel.build()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.models.MELTModel.compute_jacobian"><code class="docutils literal notranslate"><span class="pre">MELTModel.compute_jacobian()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.models.MELTModel.create_dropout_layers"><code class="docutils literal notranslate"><span class="pre">MELTModel.create_dropout_layers()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.models.MELTModel.create_output_layer"><code class="docutils literal notranslate"><span class="pre">MELTModel.create_output_layer()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.models.MELTModel.fit"><code class="docutils literal notranslate"><span class="pre">MELTModel.fit()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.models.MELTModel.get_loss_fn"><code class="docutils literal notranslate"><span class="pre">MELTModel.get_loss_fn()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.models.MELTModel.get_optimizer"><code class="docutils literal notranslate"><span class="pre">MELTModel.get_optimizer()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.models.MELTModel.get_scheduler"><code class="docutils literal notranslate"><span class="pre">MELTModel.get_scheduler()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.models.MELTModel.initialize_layers"><code class="docutils literal notranslate"><span class="pre">MELTModel.initialize_layers()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.models.MELTModel.l1_regularization"><code class="docutils literal notranslate"><span class="pre">MELTModel.l1_regularization()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.models.MELTModel.l2_regularization"><code class="docutils literal notranslate"><span class="pre">MELTModel.l2_regularization()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.models.MELTModel.step"><code class="docutils literal notranslate"><span class="pre">MELTModel.step()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../ptmelt.html#ptmelt.models.RecurrentNeuralNetwork"><code class="docutils literal notranslate"><span class="pre">RecurrentNeuralNetwork</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.models.RecurrentNeuralNetwork.create_output_layer"><code class="docutils literal notranslate"><span class="pre">RecurrentNeuralNetwork.create_output_layer()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.models.RecurrentNeuralNetwork.forward"><code class="docutils literal notranslate"><span class="pre">RecurrentNeuralNetwork.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.models.RecurrentNeuralNetwork.initialize_layers"><code class="docutils literal notranslate"><span class="pre">RecurrentNeuralNetwork.initialize_layers()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.models.RecurrentNeuralNetwork.step"><code class="docutils literal notranslate"><span class="pre">RecurrentNeuralNetwork.step()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../ptmelt.html#ptmelt.models.ResidualNeuralNetwork"><code class="docutils literal notranslate"><span class="pre">ResidualNeuralNetwork</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.models.ResidualNeuralNetwork.build"><code class="docutils literal notranslate"><span class="pre">ResidualNeuralNetwork.build()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.models.ResidualNeuralNetwork.forward"><code class="docutils literal notranslate"><span class="pre">ResidualNeuralNetwork.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.models.ResidualNeuralNetwork.initialize_layers"><code class="docutils literal notranslate"><span class="pre">ResidualNeuralNetwork.initialize_layers()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../ptmelt.html#ptmelt.models.VariationalAutoencoder"><code class="docutils literal notranslate"><span class="pre">VariationalAutoencoder</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.models.VariationalAutoencoder.forward"><code class="docutils literal notranslate"><span class="pre">VariationalAutoencoder.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.models.VariationalAutoencoder.split_mdn_output"><code class="docutils literal notranslate"><span class="pre">VariationalAutoencoder.split_mdn_output()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.html#ptmelt.models.VariationalAutoencoder.step"><code class="docutils literal notranslate"><span class="pre">VariationalAutoencoder.step()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../ptmelt.html#module-ptmelt.nn_utils">NN Utils Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ptmelt.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../ptmelt.utils.html">PT-MELT Utilities Subpackage</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.utils.html#module-ptmelt.utils.evaluation">Evaluation Module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.utils.html#module-ptmelt.utils.preprocessing">Preprocessing Module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.utils.html#module-ptmelt.utils.statistics">Statistics Module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ptmelt.utils.html#module-ptmelt.utils.visualization">Visualization Module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html">Example Notebooks</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980B9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pt-melt</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Overview: module code</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>All modules for which code is available</h1>
+<ul><li><a href="ptmelt/blocks.html">ptmelt.blocks</a></li>
+<li><a href="ptmelt/layers.html">ptmelt.layers</a></li>
+<li><a href="ptmelt/losses.html">ptmelt.losses</a></li>
+<li><a href="ptmelt/models.html">ptmelt.models</a></li>
+<li><a href="ptmelt/utils/evaluation.html">ptmelt.utils.evaluation</a></li>
+<li><a href="ptmelt/utils/preprocessing.html">ptmelt.utils.preprocessing</a></li>
+<li><a href="ptmelt/utils/statistics.html">ptmelt.utils.statistics</a></li>
+<li><a href="ptmelt/utils/visualization.html">ptmelt.utils.visualization</a></li>
+</ul>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alliance for Sustainable Energy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

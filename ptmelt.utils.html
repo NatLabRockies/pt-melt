@@ -1,0 +1,865 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PT-MELT Utilities Subpackage &mdash; pt-melt  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Example Notebooks" href="examples.html" />
+    <link rel="prev" title="PT-MELT package" href="ptmelt.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980B9" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            pt-melt
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">pt-melt</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="ptmelt.html">PT-MELT package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="ptmelt.html#module-ptmelt.blocks">Blocks Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ptmelt.html#ptmelt.blocks.BayesianBlock"><code class="docutils literal notranslate"><span class="pre">BayesianBlock</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.blocks.BayesianBlock.forward"><code class="docutils literal notranslate"><span class="pre">BayesianBlock.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.blocks.BayesianBlock.kl_loss"><code class="docutils literal notranslate"><span class="pre">BayesianBlock.kl_loss()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="ptmelt.html#ptmelt.blocks.DefaultOutput"><code class="docutils literal notranslate"><span class="pre">DefaultOutput</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.blocks.DefaultOutput.forward"><code class="docutils literal notranslate"><span class="pre">DefaultOutput.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="ptmelt.html#ptmelt.blocks.DenseBlock"><code class="docutils literal notranslate"><span class="pre">DenseBlock</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.blocks.DenseBlock.forward"><code class="docutils literal notranslate"><span class="pre">DenseBlock.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="ptmelt.html#ptmelt.blocks.MELTBlock"><code class="docutils literal notranslate"><span class="pre">MELTBlock</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="ptmelt.html#ptmelt.blocks.MixtureDensityOutput"><code class="docutils literal notranslate"><span class="pre">MixtureDensityOutput</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.blocks.MixtureDensityOutput.forward"><code class="docutils literal notranslate"><span class="pre">MixtureDensityOutput.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="ptmelt.html#ptmelt.blocks.ResidualBlock"><code class="docutils literal notranslate"><span class="pre">ResidualBlock</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.blocks.ResidualBlock.forward"><code class="docutils literal notranslate"><span class="pre">ResidualBlock.forward()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ptmelt.html#module-ptmelt.layers">Layers Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ptmelt.html#ptmelt.layers.AttentionPool"><code class="docutils literal notranslate"><span class="pre">AttentionPool</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.layers.AttentionPool.forward"><code class="docutils literal notranslate"><span class="pre">AttentionPool.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="ptmelt.html#ptmelt.layers.MELTBatchNorm"><code class="docutils literal notranslate"><span class="pre">MELTBatchNorm</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.layers.MELTBatchNorm.forward"><code class="docutils literal notranslate"><span class="pre">MELTBatchNorm.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.layers.MELTBatchNorm.reset_parameters"><code class="docutils literal notranslate"><span class="pre">MELTBatchNorm.reset_parameters()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="ptmelt.html#ptmelt.layers.MELTBatchRenorm"><code class="docutils literal notranslate"><span class="pre">MELTBatchRenorm</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.layers.MELTBatchRenorm.forward"><code class="docutils literal notranslate"><span class="pre">MELTBatchRenorm.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="ptmelt.html#ptmelt.layers.MELTBayesianDenseFlipOut"><code class="docutils literal notranslate"><span class="pre">MELTBayesianDenseFlipOut</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.layers.MELTBayesianDenseFlipOut.forward"><code class="docutils literal notranslate"><span class="pre">MELTBayesianDenseFlipOut.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="ptmelt.html#ptmelt.layers.Reparameterization"><code class="docutils literal notranslate"><span class="pre">Reparameterization</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.layers.Reparameterization.forward"><code class="docutils literal notranslate"><span class="pre">Reparameterization.forward()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ptmelt.html#module-ptmelt.losses">Losses Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ptmelt.html#ptmelt.losses.MixtureDensityLoss"><code class="docutils literal notranslate"><span class="pre">MixtureDensityLoss</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.losses.MixtureDensityLoss.forward"><code class="docutils literal notranslate"><span class="pre">MixtureDensityLoss.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="ptmelt.html#ptmelt.losses.VAELoss"><code class="docutils literal notranslate"><span class="pre">VAELoss</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.losses.VAELoss.compute_kl_divergence"><code class="docutils literal notranslate"><span class="pre">VAELoss.compute_kl_divergence()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.losses.VAELoss.compute_reconstruction_loss"><code class="docutils literal notranslate"><span class="pre">VAELoss.compute_reconstruction_loss()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.losses.VAELoss.forward"><code class="docutils literal notranslate"><span class="pre">VAELoss.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="ptmelt.html#ptmelt.losses.safe_exp"><code class="docutils literal notranslate"><span class="pre">safe_exp()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ptmelt.html#module-ptmelt.models">Models Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ptmelt.html#ptmelt.models.ArtificialNeuralNetwork"><code class="docutils literal notranslate"><span class="pre">ArtificialNeuralNetwork</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.models.ArtificialNeuralNetwork.forward"><code class="docutils literal notranslate"><span class="pre">ArtificialNeuralNetwork.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.models.ArtificialNeuralNetwork.initialize_layers"><code class="docutils literal notranslate"><span class="pre">ArtificialNeuralNetwork.initialize_layers()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="ptmelt.html#ptmelt.models.BayesianNeuralNetwork"><code class="docutils literal notranslate"><span class="pre">BayesianNeuralNetwork</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.models.BayesianNeuralNetwork.build"><code class="docutils literal notranslate"><span class="pre">BayesianNeuralNetwork.build()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.models.BayesianNeuralNetwork.create_output_layer"><code class="docutils literal notranslate"><span class="pre">BayesianNeuralNetwork.create_output_layer()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.models.BayesianNeuralNetwork.forward"><code class="docutils literal notranslate"><span class="pre">BayesianNeuralNetwork.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.models.BayesianNeuralNetwork.initialize_layers"><code class="docutils literal notranslate"><span class="pre">BayesianNeuralNetwork.initialize_layers()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.models.BayesianNeuralNetwork.step"><code class="docutils literal notranslate"><span class="pre">BayesianNeuralNetwork.step()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="ptmelt.html#ptmelt.models.MELTModel"><code class="docutils literal notranslate"><span class="pre">MELTModel</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.models.MELTModel.build"><code class="docutils literal notranslate"><span class="pre">MELTModel.build()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.models.MELTModel.compute_jacobian"><code class="docutils literal notranslate"><span class="pre">MELTModel.compute_jacobian()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.models.MELTModel.create_dropout_layers"><code class="docutils literal notranslate"><span class="pre">MELTModel.create_dropout_layers()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.models.MELTModel.create_output_layer"><code class="docutils literal notranslate"><span class="pre">MELTModel.create_output_layer()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.models.MELTModel.fit"><code class="docutils literal notranslate"><span class="pre">MELTModel.fit()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.models.MELTModel.get_loss_fn"><code class="docutils literal notranslate"><span class="pre">MELTModel.get_loss_fn()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.models.MELTModel.get_optimizer"><code class="docutils literal notranslate"><span class="pre">MELTModel.get_optimizer()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.models.MELTModel.get_scheduler"><code class="docutils literal notranslate"><span class="pre">MELTModel.get_scheduler()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.models.MELTModel.initialize_layers"><code class="docutils literal notranslate"><span class="pre">MELTModel.initialize_layers()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.models.MELTModel.l1_regularization"><code class="docutils literal notranslate"><span class="pre">MELTModel.l1_regularization()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.models.MELTModel.l2_regularization"><code class="docutils literal notranslate"><span class="pre">MELTModel.l2_regularization()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.models.MELTModel.step"><code class="docutils literal notranslate"><span class="pre">MELTModel.step()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="ptmelt.html#ptmelt.models.RecurrentNeuralNetwork"><code class="docutils literal notranslate"><span class="pre">RecurrentNeuralNetwork</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.models.RecurrentNeuralNetwork.create_output_layer"><code class="docutils literal notranslate"><span class="pre">RecurrentNeuralNetwork.create_output_layer()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.models.RecurrentNeuralNetwork.forward"><code class="docutils literal notranslate"><span class="pre">RecurrentNeuralNetwork.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.models.RecurrentNeuralNetwork.initialize_layers"><code class="docutils literal notranslate"><span class="pre">RecurrentNeuralNetwork.initialize_layers()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.models.RecurrentNeuralNetwork.step"><code class="docutils literal notranslate"><span class="pre">RecurrentNeuralNetwork.step()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="ptmelt.html#ptmelt.models.ResidualNeuralNetwork"><code class="docutils literal notranslate"><span class="pre">ResidualNeuralNetwork</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.models.ResidualNeuralNetwork.build"><code class="docutils literal notranslate"><span class="pre">ResidualNeuralNetwork.build()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.models.ResidualNeuralNetwork.forward"><code class="docutils literal notranslate"><span class="pre">ResidualNeuralNetwork.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.models.ResidualNeuralNetwork.initialize_layers"><code class="docutils literal notranslate"><span class="pre">ResidualNeuralNetwork.initialize_layers()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="ptmelt.html#ptmelt.models.VariationalAutoencoder"><code class="docutils literal notranslate"><span class="pre">VariationalAutoencoder</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.models.VariationalAutoencoder.forward"><code class="docutils literal notranslate"><span class="pre">VariationalAutoencoder.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.models.VariationalAutoencoder.split_mdn_output"><code class="docutils literal notranslate"><span class="pre">VariationalAutoencoder.split_mdn_output()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.html#ptmelt.models.VariationalAutoencoder.step"><code class="docutils literal notranslate"><span class="pre">VariationalAutoencoder.step()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ptmelt.html#module-ptmelt.nn_utils">NN Utils Module</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="ptmelt.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">PT-MELT Utilities Subpackage</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#module-ptmelt.utils.evaluation">Evaluation Module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-ptmelt.utils.preprocessing">Preprocessing Module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-ptmelt.utils.statistics">Statistics Module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-ptmelt.utils.visualization">Visualization Module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html">Example Notebooks</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980B9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pt-melt</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">pt-melt</a></li>
+          <li class="breadcrumb-item"><a href="ptmelt.html">PT-MELT package</a></li>
+      <li class="breadcrumb-item active">PT-MELT Utilities Subpackage</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/ptmelt.utils.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pt-melt-utilities-subpackage">
+<span id="ptmelt-utils"></span><h1>PT-MELT Utilities Subpackage<a class="headerlink" href="#pt-melt-utilities-subpackage" title="Link to this heading"></a></h1>
+<p>This package contains utility functions for data processing, evaluation, visualization,
+and other common tasks in machine learning. The subpackage is organized into the
+following modules:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#ptmelt-utils-evaluation"><span class="std std-ref">Evaluation Module</span></a>: Functions for evaluating model
+performance. Includes functions for making predictions for standard and ensemble
+models.</p></li>
+<li><p><a class="reference internal" href="#ptmelt-utils-preprocessing"><span class="std std-ref">Preprocessing Module</span></a>: Functions for data
+preprocessing. Includes functions for normalizing data built on <cite>Scikit-learn</cite>
+normalizers.</p></li>
+<li><p><a class="reference internal" href="#ptmelt-utils-statistics"><span class="std std-ref">Statistics Module</span></a>: Functions for computing statistics
+on data. Includes functions for computing metrics for uncertainty quantification.</p></li>
+<li><p><a class="reference internal" href="#ptmelt-utils-visualization"><span class="std std-ref">Visualization Module</span></a>: Functions for visualizing
+data. Includes functions for plotting data, model predictions, and uncertainty
+metrics.</p></li>
+</ul>
+<section id="module-ptmelt.utils.evaluation">
+<span id="evaluation-module"></span><span id="ptmelt-utils-evaluation"></span><h2>Evaluation Module<a class="headerlink" href="#module-ptmelt.utils.evaluation" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="ptmelt.utils.evaluation.ensemble_predictions">
+<span class="sig-prename descclassname"><span class="pre">ptmelt.utils.evaluation.</span></span><span class="sig-name descname"><span class="pre">ensemble_predictions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_normalizer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unnormalize</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_iter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">training</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/utils/evaluation.html#ensemble_predictions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.utils.evaluation.ensemble_predictions" title="Link to this definition"></a></dt>
+<dd><p>Make ensemble predictions using the provided model and optionally unscaling the
+results. The ensemble predictions are computed by making multiple predictions and
+calculating the mean and standard deviation of the predictions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (<em>torch.nn.Module</em>) – A PyTorch model.</p></li>
+<li><p><strong>x_data</strong> (<em>np.ndarray</em><em> or </em><em>torch.Tensor</em>) – Input data.</p></li>
+<li><p><strong>y_normalizer</strong> (<em>scaler</em><em>, </em><em>optional</em>) – Scikit-learn like scaler object. Defaults to
+None.</p></li>
+<li><p><strong>unnormalize</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to unnormalize the predictions. Defaults
+to False.</p></li>
+<li><p><strong>n_iter</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of iterations for making predictions. Defaults
+to 100.</p></li>
+<li><p><strong>training</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to use training mode for making predictions.
+Defaults to False.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ptmelt.utils.evaluation.make_predictions">
+<span class="sig-prename descclassname"><span class="pre">ptmelt.utils.evaluation.</span></span><span class="sig-name descname"><span class="pre">make_predictions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_normalizer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unnormalize</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">training</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/utils/evaluation.html#make_predictions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.utils.evaluation.make_predictions" title="Link to this definition"></a></dt>
+<dd><p>Make predictions using the provided model and optionally unscaling the results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (<em>torch.nn.Module</em>) – A PyTorch model.</p></li>
+<li><p><strong>x_data</strong> (<em>np.ndarray</em><em> or </em><em>torch.Tensor</em>) – Input data.</p></li>
+<li><p><strong>y_normalizer</strong> (<em>scaler</em><em>, </em><em>optional</em>) – Scikit-learn like scaler object. Defaults to
+None.</p></li>
+<li><p><strong>unnormalize</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to unnormalize the predictions. Defaults
+to False.</p></li>
+<li><p><strong>training</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to use training mode for making predictions.
+Defaults to False.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-ptmelt.utils.preprocessing">
+<span id="preprocessing-module"></span><span id="ptmelt-utils-preprocessing"></span><h2>Preprocessing Module<a class="headerlink" href="#module-ptmelt.utils.preprocessing" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ptmelt.utils.preprocessing.IdentityScaler">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ptmelt.utils.preprocessing.</span></span><span class="sig-name descname"><span class="pre">IdentityScaler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/utils/preprocessing.html#IdentityScaler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.utils.preprocessing.IdentityScaler" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A scaler that performs no scaling, behaving like an identity function.</p>
+<p>This class is useful for pipelines where a scaler is optional, but the pipeline
+expects a fit and transform method to be present like in Scikit-learn.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.utils.preprocessing.IdentityScaler.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/utils/preprocessing.html#IdentityScaler.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.utils.preprocessing.IdentityScaler.fit" title="Link to this definition"></a></dt>
+<dd><p>Dummy fit method that does nothing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>array-like</em>) – Input data.</p></li>
+<li><p><strong>y</strong> (<em>array-like</em>) – Ignored.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.utils.preprocessing.IdentityScaler.fit_transform">
+<span class="sig-name descname"><span class="pre">fit_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/utils/preprocessing.html#IdentityScaler.fit_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.utils.preprocessing.IdentityScaler.fit_transform" title="Link to this definition"></a></dt>
+<dd><p>Dummy fit_transform method that returns the input data unchanged.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>array-like</em>) – Input data.</p></li>
+<li><p><strong>y</strong> (<em>array-like</em>) – Ignored.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.utils.preprocessing.IdentityScaler.get_params">
+<span class="sig-name descname"><span class="pre">get_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/utils/preprocessing.html#IdentityScaler.get_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.utils.preprocessing.IdentityScaler.get_params" title="Link to this definition"></a></dt>
+<dd><p>Get empty parameters. Needed to be compatible with Scikit-learn.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>deep</strong> (<em>bool</em>) – If True, will return the parameters for this scaler and</p></li>
+<li><p><strong>estimators.</strong> (<em>contained sub-objects that are</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.utils.preprocessing.IdentityScaler.inverse_transform">
+<span class="sig-name descname"><span class="pre">inverse_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/utils/preprocessing.html#IdentityScaler.inverse_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.utils.preprocessing.IdentityScaler.inverse_transform" title="Link to this definition"></a></dt>
+<dd><p>Dummy inverse_transform method that returns the input data unchanged.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>array-like</em>) – Input data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.utils.preprocessing.IdentityScaler.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/utils/preprocessing.html#IdentityScaler.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.utils.preprocessing.IdentityScaler.transform" title="Link to this definition"></a></dt>
+<dd><p>Dummy transform method that returns the input data unchanged.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>array-like</em>) – Input data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ptmelt.utils.preprocessing.get_normalizers">
+<span class="sig-prename descclassname"><span class="pre">ptmelt.utils.preprocessing.</span></span><span class="sig-name descname"><span class="pre">get_normalizers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">norm_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'standard'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_normalizers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/utils/preprocessing.html#get_normalizers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.utils.preprocessing.get_normalizers" title="Link to this definition"></a></dt>
+<dd><p>Get a list of normalizers based on the specified normalization type and number of
+normalizers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>norm_type</strong> (<em>str</em><em>, </em><em>optional</em>) – Type of normalization (‘standard’, ‘minmax’,</p></li>
+<li><p><strong>'robust'</strong></p></li>
+<li><p><strong>'power'</strong></p></li>
+<li><p><strong>'standard'.</strong> (<em>'quantile'</em><em>)</em><em>. Defaults to</em>)</p></li>
+<li><p><strong>n_normalizers</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of normalizers to create. Defaults to 1.</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments for the specific scaler.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of normalizers.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-ptmelt.utils.statistics">
+<span id="statistics-module"></span><span id="ptmelt-utils-statistics"></span><h2>Statistics Module<a class="headerlink" href="#module-ptmelt.utils.statistics" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="ptmelt.utils.statistics.compute_crps">
+<span class="sig-prename descclassname"><span class="pre">ptmelt.utils.statistics.</span></span><span class="sig-name descname"><span class="pre">compute_crps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">truth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">std</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/utils/statistics.html#compute_crps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.utils.statistics.compute_crps" title="Link to this definition"></a></dt>
+<dd><p>Compute the continuous ranked probability score (CRPS) assuming a Gaussian
+distribution.</p>
+<p>The CRPS is calculated as the mean of the continuous ranked probability score for
+each sample. For a Gaussian distribution, the CRPS is defined as:</p>
+<div class="math notranslate nohighlight">
+\[\text{CRPS} = \frac{1}{n} \sum_{i=1}^{n} \left\{\sigma_i \left[z_i
+\left(2\Phi(z_i) - 1\right) + 2 \phi(z_i) -
+\pi^{-1/2} \right]\right\}\]</div>
+<p>where <span class="math notranslate nohighlight">\(y_i\)</span> are the true values, <span class="math notranslate nohighlight">\(\mu_i\)</span> are the predicted means,
+<span class="math notranslate nohighlight">\(\sigma_i\)</span> are the predicted standard deviations, <span class="math notranslate nohighlight">\(z_i\)</span> is the z-score,
+<span class="math notranslate nohighlight">\(\Phi\)</span> is the cumulative distribution function of the standard normal
+distribution, and <span class="math notranslate nohighlight">\(\phi\)</span> is the probability density function of the standard
+normal distribution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>truth</strong> (<em>array-like</em>) – Actual values from data.</p></li>
+<li><p><strong>mean</strong> (<em>array-like</em>) – Predicted means from model.</p></li>
+<li><p><strong>std</strong> (<em>array-like</em>) – Predicted standard deviations from model.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>CRPS value.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ptmelt.utils.statistics.compute_cwc">
+<span class="sig-prename descclassname"><span class="pre">ptmelt.utils.statistics.</span></span><span class="sig-name descname"><span class="pre">compute_cwc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">truth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">std</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.95</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">penalty_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'linear'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/utils/statistics.html#compute_cwc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.utils.statistics.compute_cwc" title="Link to this definition"></a></dt>
+<dd><p>Compute the coverage width criterion (CWC).</p>
+<p>The CWC combines the mean prediction interval width (MPIW) and the prediction
+interval coverage probability (PICP) to penalize models that have poor coverage. The
+CWC can use different penalty types. The CWC is defined as:</p>
+<div class="math notranslate nohighlight">
+\[\text{CWC} = \text{MPIW} \times \left(1 + \text{penalty}\right)\]</div>
+<p>where the penalty is defined as:</p>
+<div class="math notranslate nohighlight">
+\[\text{penalty} = \max\left(0, \gamma \times (\alpha - \text{PICP})
+\right)\]</div>
+<p>for a linear penalty, and:</p>
+<div class="math notranslate nohighlight">
+\[\text{penalty} = \gamma \times \exp\left(\alpha - \text{PICP}
+\right) - 1\]</div>
+<p>for an exponential penalty. Where <span class="math notranslate nohighlight">\(\alpha\)</span> is the desired coverage
+probability, <span class="math notranslate nohighlight">\(\gamma\)</span> is the penalty weight, <span class="math notranslate nohighlight">\(\text{MPIW}\)</span> is the mean
+prediction interval width, and <span class="math notranslate nohighlight">\(\text{PICP}\)</span> is the prediction interval
+coverage probability.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>truth</strong> (<em>array-like</em>) – Actual values from data.</p></li>
+<li><p><strong>mean</strong> (<em>array-like</em>) – Predicted means from model.</p></li>
+<li><p><strong>std</strong> (<em>array-like</em>) – Predicted standard deviations from model.</p></li>
+<li><p><strong>alpha</strong> (<em>float</em><em>, </em><em>optional</em>) – Desired coverage probability. Defaults to 0.95.</p></li>
+<li><p><strong>gamma</strong> (<em>float</em><em>, </em><em>optional</em>) – Penalty weight. Defaults to 1.0.</p></li>
+<li><p><strong>penalty_type</strong> (<em>str</em><em>, </em><em>optional</em>) – Type of penalty (‘linear’, ‘exponential’).
+Defaults to ‘linear’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>CWC value.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ptmelt.utils.statistics.compute_metrics">
+<span class="sig-prename descclassname"><span class="pre">ptmelt.utils.statistics.</span></span><span class="sig-name descname"><span class="pre">compute_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_real</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_std</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics_to_compute</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/utils/statistics.html#compute_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.utils.statistics.compute_metrics" title="Link to this definition"></a></dt>
+<dd><p>Compute various metrics between real and predicted values.</p>
+<p>The function computes the following metrics based on an optional input list:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(R^2\)</span>: Coefficient of determination.</p></li>
+<li><p>RMSE: Root mean squared error.</p></li>
+<li><p>NRMSE: Normalized root mean squared error.</p></li>
+<li><p>PICP: Prediction interval coverage probability.</p></li>
+<li><p>MPIW: Mean prediction interval width.</p></li>
+<li><p>NLL: Negative log-likelihood.</p></li>
+<li><p>CRPS: Continuous ranked probability score.</p></li>
+<li><p>CWC: Coverage width criterion.</p></li>
+<li><p>PINAW: Prediction interval normalized average width.</p></li>
+<li><p>Winkler Score: Winkler score.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_real</strong> (<em>array-like</em>) – Actual values.</p></li>
+<li><p><strong>y_pred</strong> (<em>array-like</em>) – Predicted values.</p></li>
+<li><p><strong>y_std</strong> (<em>array-like</em>) – Standard deviation of predictions.</p></li>
+<li><p><strong>metrics_to_compute</strong> (<em>list</em><em>, </em><em>optional</em>) – List of metrics to compute.
+If None, all metrics are computed.
+Defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary of computed metrics.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ptmelt.utils.statistics.compute_mpiw">
+<span class="sig-prename descclassname"><span class="pre">ptmelt.utils.statistics.</span></span><span class="sig-name descname"><span class="pre">compute_mpiw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">std</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/utils/statistics.html#compute_mpiw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.utils.statistics.compute_mpiw" title="Link to this definition"></a></dt>
+<dd><p>Compute the mean prediction interval width (MPIW).</p>
+<p>The MPIW is calculated as the average width of the 95% prediction interval. The
+MPIW is defined as:</p>
+<div class="math notranslate nohighlight">
+\[\text{MPIW} = \frac{1}{n} \sum_{i=1}^{n} (2 \times 1.96 \times
+\sigma_i)\]</div>
+<p>where <span class="math notranslate nohighlight">\(\sigma_i\)</span> is the standard deviation of the <span class="math notranslate nohighlight">\(i\)</span>-th sample.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>std</strong> (<em>array-like</em>) – Predicted standard deviations from model.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>MPIW value.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ptmelt.utils.statistics.compute_normalized_rmse">
+<span class="sig-prename descclassname"><span class="pre">ptmelt.utils.statistics.</span></span><span class="sig-name descname"><span class="pre">compute_normalized_rmse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">truth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pred</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/utils/statistics.html#compute_normalized_rmse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.utils.statistics.compute_normalized_rmse" title="Link to this definition"></a></dt>
+<dd><p>Compute the normalized root mean squared error (NRMSE).</p>
+<p>The NRMSE is calculated as:</p>
+<div class="math notranslate nohighlight">
+\[NRMSE = \frac{\text{RMSE}}{y_{\text{max}} - y_{\text{min}}}\]</div>
+<p>where RMSE is the root mean squared error, and <span class="math notranslate nohighlight">\(y_{\text{max}}\)</span> and
+<span class="math notranslate nohighlight">\(y_{\text{min}}\)</span> are the maximum and minimum values of the true values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>truth</strong> (<em>array-like</em>) – Truth values from data.</p></li>
+<li><p><strong>pred</strong> (<em>array-like</em>) – Predicted values from model.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>NRMSE value.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ptmelt.utils.statistics.compute_picp">
+<span class="sig-prename descclassname"><span class="pre">ptmelt.utils.statistics.</span></span><span class="sig-name descname"><span class="pre">compute_picp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">truth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">std</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/utils/statistics.html#compute_picp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.utils.statistics.compute_picp" title="Link to this definition"></a></dt>
+<dd><p>Compute the prediction interval coverage probability (PICP).</p>
+<p>The PICP is calculated as the proportion of true values that fall within the
+95% prediction interval. The prediction interval (PI) is defined as:</p>
+<div class="math notranslate nohighlight">
+\[\text{PI} = [\mu - 1.96 \times \sigma, \mu + 1.96
+\times \sigma]\]</div>
+<p>The PICP is calculated as:</p>
+<div class="math notranslate nohighlight">
+\[\text{PICP} = \frac{1}{n} \sum_{i=1}^{n} I(y_i \in \text{PI}_i)\]</div>
+<p>where <span class="math notranslate nohighlight">\(y_i\)</span> are the true values, <span class="math notranslate nohighlight">\(\mu\)</span> is the predicted mean,
+<span class="math notranslate nohighlight">\(\sigma\)</span> is the predicted standard deviation, <span class="math notranslate nohighlight">\(\text{PI}_i\)</span> is the
+prediction interval for the <span class="math notranslate nohighlight">\(i\)</span>-th sample, and <span class="math notranslate nohighlight">\(I(\cdot)\)</span> is the
+indicator function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>truth</strong> (<em>array-like</em>) – Truth values from data.</p></li>
+<li><p><strong>mean</strong> (<em>array-like</em>) – Predicted means from model.</p></li>
+<li><p><strong>std</strong> (<em>array-like</em>) – Predicted standard deviations from model.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>PICP value.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ptmelt.utils.statistics.compute_pinaw">
+<span class="sig-prename descclassname"><span class="pre">ptmelt.utils.statistics.</span></span><span class="sig-name descname"><span class="pre">compute_pinaw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">truth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">std</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/utils/statistics.html#compute_pinaw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.utils.statistics.compute_pinaw" title="Link to this definition"></a></dt>
+<dd><p>Compute the prediction interval normalized average width (PINAW).</p>
+<p>The PINAW is calculated as the mean prediction interval width normalized by the
+range of the true values. The PINAW is defined as:</p>
+<div class="math notranslate nohighlight">
+\[\text{PINAW} = \frac{\text{MPIW}}{y_{\text{max}} - y_{\text{min}}}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\text{MPIW}\)</span> is the mean prediction interval width, and
+<span class="math notranslate nohighlight">\(y_{\text{max}}\)</span> and <span class="math notranslate nohighlight">\(y_{\text{min}}\)</span> are the maximum and minimum
+values of the true values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>truth</strong> (<em>array-like</em>) – Actual values from data.</p></li>
+<li><p><strong>std</strong> (<em>array-like</em>) – Predicted standard deviations from model.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>PINAW value.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ptmelt.utils.statistics.compute_rmse">
+<span class="sig-prename descclassname"><span class="pre">ptmelt.utils.statistics.</span></span><span class="sig-name descname"><span class="pre">compute_rmse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">truth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pred</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/utils/statistics.html#compute_rmse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.utils.statistics.compute_rmse" title="Link to this definition"></a></dt>
+<dd><p>Compute the root mean squared error (RMSE).</p>
+<p>The RMSE is calculated as:</p>
+<div class="math notranslate nohighlight">
+\[RMSE = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2}\]</div>
+<p>where <span class="math notranslate nohighlight">\(y_i\)</span> are the true values and <span class="math notranslate nohighlight">\(\hat{y}_i\)</span> are the predicted
+values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>truth</strong> (<em>array-like</em>) – Truth values from data.</p></li>
+<li><p><strong>pred</strong> (<em>array-like</em>) – Predicted values from model.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>RMSE value.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ptmelt.utils.statistics.compute_rsquared">
+<span class="sig-prename descclassname"><span class="pre">ptmelt.utils.statistics.</span></span><span class="sig-name descname"><span class="pre">compute_rsquared</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">truth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pred</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/utils/statistics.html#compute_rsquared"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.utils.statistics.compute_rsquared" title="Link to this definition"></a></dt>
+<dd><p>Compute the coefficient of determination (<span class="math notranslate nohighlight">\(R^2\)</span>).</p>
+<p>The <span class="math notranslate nohighlight">\(R^2\)</span> value is calculated as:</p>
+<div class="math notranslate nohighlight">
+\[R^2 = 1 - \frac{\text{RSS}}{\text{TSS}}\]</div>
+<p>where RSS is the residual sum of squares and TSS is the total sum of squares.</p>
+<div class="math notranslate nohighlight">
+\[\text{RSS} = \sum_{i=1}^{n} (y_i - \hat{y}_i)^2\]</div>
+<div class="math notranslate nohighlight">
+\[\text{TSS} = \sum_{i=1}^{n} (y_i - \bar{y})^2\]</div>
+<p>where <span class="math notranslate nohighlight">\(y_i\)</span> are the true values, <span class="math notranslate nohighlight">\(\hat{y}_i\)</span> are the predicted values,
+and <span class="math notranslate nohighlight">\(\bar{y}\)</span> is the mean of the true values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>truth</strong> (<em>array-like</em>) – Truth values from data.</p></li>
+<li><p><strong>pred</strong> (<em>array-like</em>) – Predicted values from model.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="math notranslate nohighlight">\(R^2\)</span> value.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ptmelt.utils.statistics.compute_winkler_score">
+<span class="sig-prename descclassname"><span class="pre">ptmelt.utils.statistics.</span></span><span class="sig-name descname"><span class="pre">compute_winkler_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">truth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">std</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.05</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/utils/statistics.html#compute_winkler_score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.utils.statistics.compute_winkler_score" title="Link to this definition"></a></dt>
+<dd><p>Compute the Winkler score.</p>
+<p>The Winkler score evaluates the quality of prediction intervals by considering both
+the width of the intervals and whether the true value falls within the interval.
+Here, we assume a gaussian distribution with <span class="math notranslate nohighlight">\(\alpha\)</span> equal to the
+significance level for the prediction interval. The Winkler score is defined as:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\mathcal{W_i} = \begin{cases}
+\text{width} + \frac{2}{\alpha} (\mathcal{L} - y_i), &amp; \text{if } y_i &lt;
+\mathcal{L} \\
+\text{width} + \frac{2}{\alpha} (y_i - \mathcal{U}), &amp; \text{if } y_i &gt;
+\mathcal{U} \\
+\text{width}, &amp; \text{otherwise}
+\end{cases}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathcal{L}\)</span> and <span class="math notranslate nohighlight">\(\mathcal{U}\)</span> are the lower and upper bounds
+of the prediction interval, respectively, <span class="math notranslate nohighlight">\(\text{width}\)</span> is the width of the
+prediction interval, and <span class="math notranslate nohighlight">\(y_i\)</span> is the true value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>truth</strong> (<em>array-like</em>) – Actual values from data.</p></li>
+<li><p><strong>mean</strong> (<em>array-like</em>) – Predicted means from model.</p></li>
+<li><p><strong>std</strong> (<em>array-like</em>) – Predicted standard deviations from model.</p></li>
+<li><p><strong>alpha</strong> (<em>float</em><em>, </em><em>optional</em>) – Significance level for the prediction interval.
+Defaults to 0.05.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Winkler score.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ptmelt.utils.statistics.pdf_based_nll">
+<span class="sig-prename descclassname"><span class="pre">ptmelt.utils.statistics.</span></span><span class="sig-name descname"><span class="pre">pdf_based_nll</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">std</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/utils/statistics.html#pdf_based_nll"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.utils.statistics.pdf_based_nll" title="Link to this definition"></a></dt>
+<dd><p>Compute the PDF-based negative log-likelihood (NLL).</p>
+<p>The PDF-based NLL is calculated as the negative log-likelihood of the true values
+given the predicted means and standard deviations. The PDF-based NLL is defined as:</p>
+<div class="math notranslate nohighlight">
+\[\text{NLL} = -\frac{1}{n} \sum_{i=1}^{n} \log(\mathcal{N}(y_i |
+\mu_i, \sigma_i^2))\]</div>
+<p>where <span class="math notranslate nohighlight">\(y_i\)</span> are the true values, <span class="math notranslate nohighlight">\(\mathcal{N}\)</span> is the normal
+distribution, <span class="math notranslate nohighlight">\(\mu_i\)</span> are the predicted means, and <span class="math notranslate nohighlight">\(\sigma_i\)</span> are the
+predicted standard deviations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>array-like</em>) – Actual values from data.</p></li>
+<li><p><strong>y_pred</strong> (<em>array-like</em>) – Predicted means from model.</p></li>
+<li><p><strong>std</strong> (<em>array-like</em>) – Predicted standard deviations from model.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>PDF-based negative log-likelihood.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-ptmelt.utils.visualization">
+<span id="visualization-module"></span><span id="ptmelt-utils-visualization"></span><h2>Visualization Module<a class="headerlink" href="#module-ptmelt.utils.visualization" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="ptmelt.utils.visualization.plot_history">
+<span class="sig-prename descclassname"><span class="pre">ptmelt.utils.visualization.</span></span><span class="sig-name descname"><span class="pre">plot_history</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">history</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">['loss']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_log</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/utils/visualization.html#plot_history"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.utils.visualization.plot_history" title="Link to this definition"></a></dt>
+<dd><p>Plot training history for specified metrics and optionally save the plot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>history</strong> (<em>dict</em>) – Dictionary containing training history.</p></li>
+<li><p><strong>metrics</strong> (<em>list</em>) – List of metrics to plot. Defaults to [“loss”].</p></li>
+<li><p><strong>plot_log</strong> (<em>bool</em>) – Whether to plot the metrics on a log scale. Defaults to False.</p></li>
+<li><p><strong>savename</strong> (<em>str</em>) – Full path to save the plot. Defaults to None.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ptmelt.utils.visualization.plot_predictions">
+<span class="sig-prename descclassname"><span class="pre">ptmelt.utils.visualization.</span></span><span class="sig-name descname"><span class="pre">plot_predictions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pred_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_train_real</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pred_val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_val_real</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pred_test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_test_real</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_targets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/utils/visualization.html#plot_predictions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.utils.visualization.plot_predictions" title="Link to this definition"></a></dt>
+<dd><p>Plot predictions for specified output indices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pred_train</strong> (<em>array-like</em>) – Predicted training values.</p></li>
+<li><p><strong>y_train_real</strong> (<em>array-like</em>) – Actual training values.</p></li>
+<li><p><strong>pred_val</strong> (<em>array-like</em>) – Predicted validation values.</p></li>
+<li><p><strong>y_val_real</strong> (<em>array-like</em>) – Actual validation values.</p></li>
+<li><p><strong>pred_test</strong> (<em>array-like</em>) – Predicted test values.</p></li>
+<li><p><strong>y_test_real</strong> (<em>array-like</em>) – Actual test values.</p></li>
+<li><p><strong>output_indices</strong> (<em>list</em><em> of </em><em>int</em><em>, </em><em>optional</em>) – List of output indices to plot.
+Defaults to None.</p></li>
+<li><p><strong>max_targets</strong> (<em>int</em><em>, </em><em>optional</em>) – Maximum number of targets to plot. Defaults to 3.</p></li>
+<li><p><strong>savename</strong> (<em>str</em><em>, </em><em>optional</em>) – Full path to save the plot image. If None, the plot
+will not be saved. Defaults to None.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ptmelt.utils.visualization.plot_predictions_with_uncertainty">
+<span class="sig-prename descclassname"><span class="pre">ptmelt.utils.visualization.</span></span><span class="sig-name descname"><span class="pre">plot_predictions_with_uncertainty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mean_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">std_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_train_real</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean_val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">std_val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_val_real</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean_test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">std_test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_test_real</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics_to_display</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/utils/visualization.html#plot_predictions_with_uncertainty"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.utils.visualization.plot_predictions_with_uncertainty" title="Link to this definition"></a></dt>
+<dd><p>Plot predictions with uncertainty for training, validation, and test data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mean_train</strong> (<em>array-like</em>) – Training data.</p></li>
+<li><p><strong>std_train</strong> (<em>array-like</em>) – Training data.</p></li>
+<li><p><strong>y_train_real</strong> (<em>array-like</em>) – Training data.</p></li>
+<li><p><strong>mean_val</strong> (<em>array-like</em>) – Validation data.</p></li>
+<li><p><strong>std_val</strong> (<em>array-like</em>) – Validation data.</p></li>
+<li><p><strong>y_val_real</strong> (<em>array-like</em>) – Validation data.</p></li>
+<li><p><strong>mean_test</strong> (<em>array-like</em>) – Test data.</p></li>
+<li><p><strong>std_test</strong> (<em>array-like</em>) – Test data.</p></li>
+<li><p><strong>y_test_real</strong> (<em>array-like</em>) – Test data.</p></li>
+<li><p><strong>metrics_to_display</strong> (<em>list</em><em> of </em><em>str</em><em>, </em><em>optional</em>) – List of metrics to display in the
+text annotation. If None, all
+metrics in compute_metrics() are
+show. Defaults to None.</p></li>
+<li><p><strong>savename</strong> (<em>str</em><em>, </em><em>optional</em>) – Full path to save the plot image. If None, the plot
+will not be saved. Defaults to None.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ptmelt.utils.visualization.point_cloud_plot">
+<span class="sig-prename descclassname"><span class="pre">ptmelt.utils.visualization.</span></span><span class="sig-name descname"><span class="pre">point_cloud_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_real</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_squared</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rmse</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">marker</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'o'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'blue'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_pos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(0.3,</span> <span class="pre">0.01)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/utils/visualization.html#point_cloud_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.utils.visualization.point_cloud_plot" title="Link to this definition"></a></dt>
+<dd><p>Create a point cloud plot on the given axes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ax</strong> – Matplotlib axes object.</p></li>
+<li><p><strong>y_real</strong> (<em>array-like</em>) – Actual values.</p></li>
+<li><p><strong>y_pred</strong> (<em>array-like</em>) – Predicted values.</p></li>
+<li><p><strong>r_squared</strong> (<em>float</em>) – R-squared value.</p></li>
+<li><p><strong>rmse</strong> (<em>float</em>) – RMSE value.</p></li>
+<li><p><strong>label</strong> (<em>str</em><em>, </em><em>optional</em>) – Label for the plot. Defaults to None.</p></li>
+<li><p><strong>marker</strong> (<em>str</em><em>, </em><em>optional</em>) – Marker style. Defaults to “o”.</p></li>
+<li><p><strong>color</strong> (<em>str</em><em>, </em><em>optional</em>) – Marker color. Defaults to “blue”.</p></li>
+<li><p><strong>text_pos</strong> (<em>tuple</em><em>, </em><em>optional</em>) – Position for the RMSE text annotation (x, y).
+Defaults to (0.3, 0.01).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ptmelt.utils.visualization.point_cloud_plot_with_uncertainty">
+<span class="sig-prename descclassname"><span class="pre">ptmelt.utils.visualization.</span></span><span class="sig-name descname"><span class="pre">point_cloud_plot_with_uncertainty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_real</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_std</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_pos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(0.05,</span> <span class="pre">0.95)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics_to_display</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/utils/visualization.html#point_cloud_plot_with_uncertainty"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.utils.visualization.point_cloud_plot_with_uncertainty" title="Link to this definition"></a></dt>
+<dd><p>Create a point cloud plot with uncertainty on the given axes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ax</strong> – Matplotlib axes object.</p></li>
+<li><p><strong>y_real</strong> (<em>array-like</em>) – Actual values.</p></li>
+<li><p><strong>y_pred</strong> (<em>array-like</em>) – Predicted values.</p></li>
+<li><p><strong>y_std</strong> (<em>array-like</em>) – Standard deviation of predictions.</p></li>
+<li><p><strong>text_pos</strong> (<em>tuple</em><em>, </em><em>optional</em>) – Position for the text annotation (x, y). Defaults to
+(0.05, 0.95).</p></li>
+<li><p><strong>metrics_to_display</strong> (<em>list</em><em> of </em><em>str</em><em>, </em><em>optional</em>) – List of metrics to display in the
+text annotation. If None, all
+metrics in compute_metrics() are
+show. Defaults to None.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ptmelt.html" class="btn btn-neutral float-left" title="PT-MELT package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="examples.html" class="btn btn-neutral float-right" title="Example Notebooks" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alliance for Sustainable Energy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

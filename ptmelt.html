@@ -1,0 +1,1008 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PT-MELT package &mdash; pt-melt  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="PT-MELT Utilities Subpackage" href="ptmelt.utils.html" />
+    <link rel="prev" title="pt-melt" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980B9" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            pt-melt
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">pt-melt</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">PT-MELT package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-ptmelt.blocks">Blocks Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ptmelt.blocks.BayesianBlock"><code class="docutils literal notranslate"><span class="pre">BayesianBlock</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.blocks.BayesianBlock.forward"><code class="docutils literal notranslate"><span class="pre">BayesianBlock.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.blocks.BayesianBlock.kl_loss"><code class="docutils literal notranslate"><span class="pre">BayesianBlock.kl_loss()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#ptmelt.blocks.DefaultOutput"><code class="docutils literal notranslate"><span class="pre">DefaultOutput</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.blocks.DefaultOutput.forward"><code class="docutils literal notranslate"><span class="pre">DefaultOutput.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#ptmelt.blocks.DenseBlock"><code class="docutils literal notranslate"><span class="pre">DenseBlock</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.blocks.DenseBlock.forward"><code class="docutils literal notranslate"><span class="pre">DenseBlock.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#ptmelt.blocks.MELTBlock"><code class="docutils literal notranslate"><span class="pre">MELTBlock</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ptmelt.blocks.MixtureDensityOutput"><code class="docutils literal notranslate"><span class="pre">MixtureDensityOutput</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.blocks.MixtureDensityOutput.forward"><code class="docutils literal notranslate"><span class="pre">MixtureDensityOutput.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#ptmelt.blocks.ResidualBlock"><code class="docutils literal notranslate"><span class="pre">ResidualBlock</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.blocks.ResidualBlock.forward"><code class="docutils literal notranslate"><span class="pre">ResidualBlock.forward()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-ptmelt.layers">Layers Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ptmelt.layers.AttentionPool"><code class="docutils literal notranslate"><span class="pre">AttentionPool</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.layers.AttentionPool.forward"><code class="docutils literal notranslate"><span class="pre">AttentionPool.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#ptmelt.layers.MELTBatchNorm"><code class="docutils literal notranslate"><span class="pre">MELTBatchNorm</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.layers.MELTBatchNorm.forward"><code class="docutils literal notranslate"><span class="pre">MELTBatchNorm.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.layers.MELTBatchNorm.reset_parameters"><code class="docutils literal notranslate"><span class="pre">MELTBatchNorm.reset_parameters()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#ptmelt.layers.MELTBatchRenorm"><code class="docutils literal notranslate"><span class="pre">MELTBatchRenorm</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.layers.MELTBatchRenorm.forward"><code class="docutils literal notranslate"><span class="pre">MELTBatchRenorm.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#ptmelt.layers.MELTBayesianDenseFlipOut"><code class="docutils literal notranslate"><span class="pre">MELTBayesianDenseFlipOut</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.layers.MELTBayesianDenseFlipOut.forward"><code class="docutils literal notranslate"><span class="pre">MELTBayesianDenseFlipOut.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#ptmelt.layers.Reparameterization"><code class="docutils literal notranslate"><span class="pre">Reparameterization</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.layers.Reparameterization.forward"><code class="docutils literal notranslate"><span class="pre">Reparameterization.forward()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-ptmelt.losses">Losses Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ptmelt.losses.MixtureDensityLoss"><code class="docutils literal notranslate"><span class="pre">MixtureDensityLoss</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.losses.MixtureDensityLoss.forward"><code class="docutils literal notranslate"><span class="pre">MixtureDensityLoss.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#ptmelt.losses.VAELoss"><code class="docutils literal notranslate"><span class="pre">VAELoss</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.losses.VAELoss.compute_kl_divergence"><code class="docutils literal notranslate"><span class="pre">VAELoss.compute_kl_divergence()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.losses.VAELoss.compute_reconstruction_loss"><code class="docutils literal notranslate"><span class="pre">VAELoss.compute_reconstruction_loss()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.losses.VAELoss.forward"><code class="docutils literal notranslate"><span class="pre">VAELoss.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#ptmelt.losses.safe_exp"><code class="docutils literal notranslate"><span class="pre">safe_exp()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-ptmelt.models">Models Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ptmelt.models.ArtificialNeuralNetwork"><code class="docutils literal notranslate"><span class="pre">ArtificialNeuralNetwork</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.models.ArtificialNeuralNetwork.forward"><code class="docutils literal notranslate"><span class="pre">ArtificialNeuralNetwork.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.models.ArtificialNeuralNetwork.initialize_layers"><code class="docutils literal notranslate"><span class="pre">ArtificialNeuralNetwork.initialize_layers()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#ptmelt.models.BayesianNeuralNetwork"><code class="docutils literal notranslate"><span class="pre">BayesianNeuralNetwork</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.models.BayesianNeuralNetwork.build"><code class="docutils literal notranslate"><span class="pre">BayesianNeuralNetwork.build()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.models.BayesianNeuralNetwork.create_output_layer"><code class="docutils literal notranslate"><span class="pre">BayesianNeuralNetwork.create_output_layer()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.models.BayesianNeuralNetwork.forward"><code class="docutils literal notranslate"><span class="pre">BayesianNeuralNetwork.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.models.BayesianNeuralNetwork.initialize_layers"><code class="docutils literal notranslate"><span class="pre">BayesianNeuralNetwork.initialize_layers()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.models.BayesianNeuralNetwork.step"><code class="docutils literal notranslate"><span class="pre">BayesianNeuralNetwork.step()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#ptmelt.models.MELTModel"><code class="docutils literal notranslate"><span class="pre">MELTModel</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.models.MELTModel.build"><code class="docutils literal notranslate"><span class="pre">MELTModel.build()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.models.MELTModel.compute_jacobian"><code class="docutils literal notranslate"><span class="pre">MELTModel.compute_jacobian()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.models.MELTModel.create_dropout_layers"><code class="docutils literal notranslate"><span class="pre">MELTModel.create_dropout_layers()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.models.MELTModel.create_output_layer"><code class="docutils literal notranslate"><span class="pre">MELTModel.create_output_layer()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.models.MELTModel.fit"><code class="docutils literal notranslate"><span class="pre">MELTModel.fit()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.models.MELTModel.get_loss_fn"><code class="docutils literal notranslate"><span class="pre">MELTModel.get_loss_fn()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.models.MELTModel.get_optimizer"><code class="docutils literal notranslate"><span class="pre">MELTModel.get_optimizer()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.models.MELTModel.get_scheduler"><code class="docutils literal notranslate"><span class="pre">MELTModel.get_scheduler()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.models.MELTModel.initialize_layers"><code class="docutils literal notranslate"><span class="pre">MELTModel.initialize_layers()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.models.MELTModel.l1_regularization"><code class="docutils literal notranslate"><span class="pre">MELTModel.l1_regularization()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.models.MELTModel.l2_regularization"><code class="docutils literal notranslate"><span class="pre">MELTModel.l2_regularization()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.models.MELTModel.step"><code class="docutils literal notranslate"><span class="pre">MELTModel.step()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#ptmelt.models.RecurrentNeuralNetwork"><code class="docutils literal notranslate"><span class="pre">RecurrentNeuralNetwork</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.models.RecurrentNeuralNetwork.create_output_layer"><code class="docutils literal notranslate"><span class="pre">RecurrentNeuralNetwork.create_output_layer()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.models.RecurrentNeuralNetwork.forward"><code class="docutils literal notranslate"><span class="pre">RecurrentNeuralNetwork.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.models.RecurrentNeuralNetwork.initialize_layers"><code class="docutils literal notranslate"><span class="pre">RecurrentNeuralNetwork.initialize_layers()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.models.RecurrentNeuralNetwork.step"><code class="docutils literal notranslate"><span class="pre">RecurrentNeuralNetwork.step()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#ptmelt.models.ResidualNeuralNetwork"><code class="docutils literal notranslate"><span class="pre">ResidualNeuralNetwork</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.models.ResidualNeuralNetwork.build"><code class="docutils literal notranslate"><span class="pre">ResidualNeuralNetwork.build()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.models.ResidualNeuralNetwork.forward"><code class="docutils literal notranslate"><span class="pre">ResidualNeuralNetwork.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.models.ResidualNeuralNetwork.initialize_layers"><code class="docutils literal notranslate"><span class="pre">ResidualNeuralNetwork.initialize_layers()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#ptmelt.models.VariationalAutoencoder"><code class="docutils literal notranslate"><span class="pre">VariationalAutoencoder</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.models.VariationalAutoencoder.forward"><code class="docutils literal notranslate"><span class="pre">VariationalAutoencoder.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.models.VariationalAutoencoder.split_mdn_output"><code class="docutils literal notranslate"><span class="pre">VariationalAutoencoder.split_mdn_output()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#ptmelt.models.VariationalAutoencoder.step"><code class="docutils literal notranslate"><span class="pre">VariationalAutoencoder.step()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-ptmelt.nn_utils">NN Utils Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ptmelt.utils.html">PT-MELT Utilities Subpackage</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.utils.html#module-ptmelt.utils.evaluation">Evaluation Module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.utils.html#module-ptmelt.utils.preprocessing">Preprocessing Module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.utils.html#module-ptmelt.utils.statistics">Statistics Module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="ptmelt.utils.html#module-ptmelt.utils.visualization">Visualization Module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html">Example Notebooks</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980B9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pt-melt</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">pt-melt</a></li>
+      <li class="breadcrumb-item active">PT-MELT package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/ptmelt.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pt-melt-package">
+<span id="ptmelt-package"></span><h1>PT-MELT package<a class="headerlink" href="#pt-melt-package" title="Link to this heading"></a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">PT-MELT</span></code> is composed of a series of modules that form the basis for building a
+variety of machine learning models. The structure of the packages is to encourage
+modularity and reusability of the code. The main modules are:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#ptmelt-blocks"><span class="std std-ref">Blocks Module</span></a>: Each of the blocks is a self-contained
+PyTorch model in itself, but can be combined with other blocks to form more complex
+models. The blocks are designed to be easily combined with other blocks, and to be
+easily extended.</p></li>
+<li><p><a class="reference internal" href="#ptmelt-layers"><span class="std std-ref">Layers Module</span></a>: The layers are redefined PyTorch layers that
+are used in some of the blocks. The layers are designed to be plug-in replacements for
+some of the default PyTorch layers, but with additional functionality.</p></li>
+<li><p><a class="reference internal" href="#ptmelt-losses"><span class="std std-ref">Losses Module</span></a>: The losses are custom loss functions that should
+be used with their respective models. Certain loss functions are designed to be used
+with specific models, but others can be used with any model.</p></li>
+<li><p><a class="reference internal" href="#ptmelt-models"><span class="std std-ref">Models Module</span></a>: The models are the main machine learning models
+that are built using the blocks and losses. The models serve a dual purpose of being a
+standalone model, and also as a template for building more complex models with the
+<code class="docutils literal notranslate"><span class="pre">PT-MELT</span></code> blocks.</p></li>
+<li><p><a class="reference internal" href="#ptmelt-nn-utils"><span class="std std-ref">NN Utils Module</span></a>: The nn_utils module contains utility
+functions that are used in the main modules. These functions are used for retrieving
+activation functions and initilizer functions via their string names.</p></li>
+</ul>
+<p>Following is a detailed description of the modules and subpackages in the <code class="docutils literal notranslate"><span class="pre">PT-MELT</span></code>.</p>
+<section id="module-ptmelt.blocks">
+<span id="blocks-module"></span><span id="ptmelt-blocks"></span><h2>Blocks Module<a class="headerlink" href="#module-ptmelt.blocks" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ptmelt.blocks.BayesianBlock">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ptmelt.blocks.</span></span><span class="sig-name descname"><span class="pre">BayesianBlock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perturbation_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'multiplicative'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/blocks.html#BayesianBlock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.blocks.BayesianBlock" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ptmelt.blocks.MELTBlock" title="ptmelt.blocks.MELTBlock"><code class="xref py py-class docutils literal notranslate"><span class="pre">MELTBlock</span></code></a></p>
+<p>Bayesian block for the MELT architecture using custom Bayesian layers.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.blocks.BayesianBlock.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/blocks.html#BayesianBlock.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.blocks.BayesianBlock.forward" title="Link to this definition"></a></dt>
+<dd><p>Perform the forward pass of the Bayesian block.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.blocks.BayesianBlock.kl_loss">
+<span class="sig-name descname"><span class="pre">kl_loss</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/blocks.html#BayesianBlock.kl_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.blocks.BayesianBlock.kl_loss" title="Link to this definition"></a></dt>
+<dd><p>Calculate the KL divergence loss for all Bayesian layers.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ptmelt.blocks.DefaultOutput">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ptmelt.blocks.</span></span><span class="sig-name descname"><span class="pre">DefaultOutput</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_features</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_features</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initializer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'glorot_uniform'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">do_bayesian</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/blocks.html#DefaultOutput"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.blocks.DefaultOutput" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<p>Default output layer with a single dense layer and optional activation function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_features</strong> (<em>int</em>) – Number of input features.</p></li>
+<li><p><strong>output_features</strong> (<em>int</em>) – Number of output features.</p></li>
+<li><p><strong>activation</strong> (<em>str</em><em>, </em><em>optional</em>) – Activation function. Defaults to “linear”.</p></li>
+<li><p><strong>initializer</strong> (<em>str</em><em>, </em><em>optional</em>) – Weight initializer. Defaults to “glorot_uniform”.</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.blocks.DefaultOutput.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/blocks.html#DefaultOutput.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.blocks.DefaultOutput.forward" title="Link to this definition"></a></dt>
+<dd><p>Perform the forward pass of the default output layer.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ptmelt.blocks.DenseBlock">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ptmelt.blocks.</span></span><span class="sig-name descname"><span class="pre">DenseBlock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/blocks.html#DenseBlock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.blocks.DenseBlock" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ptmelt.blocks.MELTBlock" title="ptmelt.blocks.MELTBlock"><code class="xref py py-class docutils literal notranslate"><span class="pre">MELTBlock</span></code></a></p>
+<p>Dense block for the MELT architecture. The dense block consists of dense layers
+with optional activation, dropout, and batch normalization layers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>**kwargs</strong> – Additional keyword arguments.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.blocks.DenseBlock.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/blocks.html#DenseBlock.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.blocks.DenseBlock.forward" title="Link to this definition"></a></dt>
+<dd><p>Perform the forward pass of the dense block.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ptmelt.blocks.MELTBlock">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ptmelt.blocks.</span></span><span class="sig-name descname"><span class="pre">MELTBlock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_features</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'relu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_norm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_norm_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'ema'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_batch_renorm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initializer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'glorot_uniform'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/blocks.html#MELTBlock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.blocks.MELTBlock" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<p>Base class for a MELT block. Provides the building blocks for the MELT architecture.
+Defines the common parameters for the MELT blocks with optional activation, dropout,
+batch normalization, and batch renormalization layers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_features</strong> (<em>int</em>) – Number of input features.</p></li>
+<li><p><strong>node_list</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) – List of number of nodes in each layer.</p></li>
+<li><p><strong>activation</strong> (<em>str</em><em>, </em><em>optional</em>) – Activation function. Defaults to “relu”.</p></li>
+<li><p><strong>dropout</strong> (<em>float</em><em>, </em><em>optional</em>) – Dropout rate. Defaults to 0.0.</p></li>
+<li><p><strong>batch_norm</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to use batch normalization. Defaults to
+False.</p></li>
+<li><p><strong>batch_norm_type</strong> (<em>str</em><em>, </em><em>optional</em>) – Type of batch normalization. Defaults to “ema”.</p></li>
+<li><p><strong>use_batch_renorm</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to use batch renormalization.
+Defaults to False.</p></li>
+<li><p><strong>initializer</strong> (<em>str</em><em>, </em><em>optional</em>) – Weight initializer. Defaults to “glorot_uniform”.</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ptmelt.blocks.MixtureDensityOutput">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ptmelt.blocks.</span></span><span class="sig-name descname"><span class="pre">MixtureDensityOutput</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_features</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_mixtures</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_outputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initializer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'glorot_uniform'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/blocks.html#MixtureDensityOutput"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.blocks.MixtureDensityOutput" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<p>Output layer for mixture density networks. The output layer consists of three
+dense layers for the mixture coefficients, mean, and log variance of the output
+distribution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_features</strong> (<em>int</em>) – Number of input features.</p></li>
+<li><p><strong>num_mixtures</strong> (<em>int</em>) – Number of mixture components.</p></li>
+<li><p><strong>num_outputs</strong> (<em>int</em>) – Number of output dimensions.</p></li>
+<li><p><strong>activation</strong> (<em>str</em><em>, </em><em>optional</em>) – Activation function. Defaults to “linear”.</p></li>
+<li><p><strong>initializer</strong> (<em>str</em><em>, </em><em>optional</em>) – Weight initializer. Defaults to “glorot_uniform”.</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.blocks.MixtureDensityOutput.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/blocks.html#MixtureDensityOutput.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.blocks.MixtureDensityOutput.forward" title="Link to this definition"></a></dt>
+<dd><p>Perform the forward pass of the multiple mixture output layer.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ptmelt.blocks.ResidualBlock">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ptmelt.blocks.</span></span><span class="sig-name descname"><span class="pre">ResidualBlock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layers_per_block</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pre_activation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">post_add_activation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/blocks.html#ResidualBlock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.blocks.ResidualBlock" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ptmelt.blocks.MELTBlock" title="ptmelt.blocks.MELTBlock"><code class="xref py py-class docutils literal notranslate"><span class="pre">MELTBlock</span></code></a></p>
+<p>Residual block for the MELT architecture. The residual block consists of residual
+connections between dense layers with optional activation, dropout, and batch
+normalization layers. Residual connections are added after every <cite>layers_per_block</cite>
+layers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>layers_per_block</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of layers per residual block. Defaults
+to 2.</p></li>
+<li><p><strong>pre_activation</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to use pre-activation residual blocks.
+Defaults to False.</p></li>
+<li><p><strong>post_add_activation</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to use post-addition activation.
+Defaults to False.</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.blocks.ResidualBlock.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/blocks.html#ResidualBlock.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.blocks.ResidualBlock.forward" title="Link to this definition"></a></dt>
+<dd><p>Perform the forward pass of the residual block.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ptmelt.layers">
+<span id="layers-module"></span><span id="ptmelt-layers"></span><h2>Layers Module<a class="headerlink" href="#module-ptmelt.layers" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ptmelt.layers.AttentionPool">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ptmelt.layers.</span></span><span class="sig-name descname"><span class="pre">AttentionPool</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/layers.html#AttentionPool"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.layers.AttentionPool" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<p>Attention Pooling Layer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>hidden_size</strong> (<em>int</em>) – Size of the hidden state from the RNN.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.layers.AttentionPool.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rnn_out</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lengths</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/layers.html#AttentionPool.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.layers.AttentionPool.forward" title="Link to this definition"></a></dt>
+<dd><p>Perform the forward pass of the attention pooling layer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rnn_out</strong> (<em>torch.Tensor</em>) – Output from the RNN layer of shape [B, T, H].</p></li>
+<li><p><strong>lengths</strong> (<em>torch.Tensor</em><em>, </em><em>optional</em>) – Lengths of the sequences in the batch.
+Defaults to None.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ptmelt.layers.MELTBatchNorm">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ptmelt.layers.</span></span><span class="sig-name descname"><span class="pre">MELTBatchNorm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_features</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">momentum</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">affine</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">track_running_stats</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">average_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'ema'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/layers.html#MELTBatchNorm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.layers.MELTBatchNorm" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<p>Custom Batch Normalization Layer for PT-MELT.</p>
+<p>Supports implementation of different types of moving averages for the batch norm
+statistics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>num_features</strong> (<em>int</em>) – Number of features in the input tensor.</p></li>
+<li><p><strong>eps</strong> (<em>float</em><em>, </em><em>optional</em>) – Small value to avoid division by zero.
+Defaults to 1e-5.</p></li>
+<li><p><strong>momentum</strong> (<em>float</em><em>, </em><em>optional</em>) – Momentum for moving average. Defaults to 0.1.</p></li>
+<li><p><strong>affine</strong> (<em>bool</em><em>, </em><em>optional</em>) – Apply affine transformation. Defaults to True.</p></li>
+<li><p><strong>track_running_stats</strong> (<em>bool</em><em>, </em><em>optional</em>) – Track running statistics. Defaults to
+True.</p></li>
+<li><p><strong>average_type</strong> (<em>str</em><em>, </em><em>optional</em>) – Type of moving average. Defaults to “ema”.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.layers.MELTBatchNorm.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/layers.html#MELTBatchNorm.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.layers.MELTBatchNorm.forward" title="Link to this definition"></a></dt>
+<dd><p>Perform the forward pass of the batch normalization layer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>input</strong> (<em>torch.Tensor</em>) – Input tensor to be normalized.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.layers.MELTBatchNorm.reset_parameters">
+<span class="sig-name descname"><span class="pre">reset_parameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/layers.html#MELTBatchNorm.reset_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.layers.MELTBatchNorm.reset_parameters" title="Link to this definition"></a></dt>
+<dd><p>Reset the parameters of the layer.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ptmelt.layers.MELTBatchRenorm">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ptmelt.layers.</span></span><span class="sig-name descname"><span class="pre">MELTBatchRenorm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_features</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">momentum</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">affine</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">track_running_stats</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">average_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'ema'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rmax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dmax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/layers.html#MELTBatchRenorm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.layers.MELTBatchRenorm" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ptmelt.layers.MELTBatchNorm" title="ptmelt.layers.MELTBatchNorm"><code class="xref py py-class docutils literal notranslate"><span class="pre">MELTBatchNorm</span></code></a></p>
+<p>Custom Batch Renormalization Layer for PT-MELT.</p>
+<p>Supports implementation of different types of moving averages for the batch norm
+statistics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>num_features</strong> (<em>int</em>) – Number of features in the input tensor.</p></li>
+<li><p><strong>eps</strong> (<em>float</em><em>, </em><em>optional</em>) – Small value to avoid division by zero. Defaults to
+1e-5.</p></li>
+<li><p><strong>momentum</strong> (<em>float</em><em>, </em><em>optional</em>) – Momentum for moving average. Defaults to 0.1.</p></li>
+<li><p><strong>affine</strong> (<em>bool</em><em>, </em><em>optional</em>) – Apply affine transformation. Defaults to True.</p></li>
+<li><p><strong>track_running_stats</strong> (<em>bool</em><em>, </em><em>optional</em>) – Track running statistics. Defaults to
+True.</p></li>
+<li><p><strong>average_type</strong> (<em>str</em><em>, </em><em>optional</em>) – Type of moving average. Defaults to “ema”.</p></li>
+<li><p><strong>rmax</strong> (<em>float</em><em>, </em><em>optional</em>) – Maximum value for r. Defaults to 1.0.</p></li>
+<li><p><strong>dmax</strong> (<em>float</em><em>, </em><em>optional</em>) – Maximum value for d. Defaults to 0.0.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.layers.MELTBatchRenorm.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/layers.html#MELTBatchRenorm.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.layers.MELTBatchRenorm.forward" title="Link to this definition"></a></dt>
+<dd><p>Perform the forward pass of the batch renormalization layer.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ptmelt.layers.MELTBayesianDenseFlipOut">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ptmelt.layers.</span></span><span class="sig-name descname"><span class="pre">MELTBayesianDenseFlipOut</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_features</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_features</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prior_mean</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prior_std</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perturbation_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'additive'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/layers.html#MELTBayesianDenseFlipOut"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.layers.MELTBayesianDenseFlipOut" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<p>Custom Bayesian Layer for PT-MELT.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.layers.MELTBayesianDenseFlipOut.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/layers.html#MELTBayesianDenseFlipOut.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.layers.MELTBayesianDenseFlipOut.forward" title="Link to this definition"></a></dt>
+<dd><p>Perform the forward pass of the Bayesian Linear Layer.</p>
+<p>Flipout weights are perturbed like: W = W_mu + delta_W
+delta_W has a component shared across the entire mini-batch and a component
+that is unique to each input sample.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ptmelt.layers.Reparameterization">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ptmelt.layers.</span></span><span class="sig-name descname"><span class="pre">Reparameterization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/layers.html#Reparameterization"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.layers.Reparameterization" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<p>Reparameterization trick for Gaussian Mixture Models.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.layers.Reparameterization.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mix_coeffs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">means</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_vars</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/layers.html#Reparameterization.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.layers.Reparameterization.forward" title="Link to this definition"></a></dt>
+<dd><p>Define the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ptmelt.losses">
+<span id="losses-module"></span><span id="ptmelt-losses"></span><h2>Losses Module<a class="headerlink" href="#module-ptmelt.losses" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ptmelt.losses.MixtureDensityLoss">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ptmelt.losses.</span></span><span class="sig-name descname"><span class="pre">MixtureDensityLoss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_mixtures</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_outputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mse_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reduction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/losses.html#MixtureDensityLoss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.losses.MixtureDensityLoss" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<p>Custom loss function for Mixture Density Network (MDN).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>num_mixtures</strong> (<em>int</em>) – Number of mixture components.</p></li>
+<li><p><strong>num_outputs</strong> (<em>int</em>) – Number of output dimensions.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.losses.MixtureDensityLoss.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/losses.html#MixtureDensityLoss.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.losses.MixtureDensityLoss.forward" title="Link to this definition"></a></dt>
+<dd><p>Define the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ptmelt.losses.VAELoss">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ptmelt.losses.</span></span><span class="sig-name descname"><span class="pre">VAELoss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reconstruction_loss_fn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MSELoss()</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/losses.html#VAELoss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.losses.VAELoss" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.losses.VAELoss.compute_kl_divergence">
+<span class="sig-name descname"><span class="pre">compute_kl_divergence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mix_coeffs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">means</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_vars</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/losses.html#VAELoss.compute_kl_divergence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.losses.VAELoss.compute_kl_divergence" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.losses.VAELoss.compute_reconstruction_loss">
+<span class="sig-name descname"><span class="pre">compute_reconstruction_loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_reconstructed</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/losses.html#VAELoss.compute_reconstruction_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.losses.VAELoss.compute_reconstruction_loss" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.losses.VAELoss.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_reconstructed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mix_coeffs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">means</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_vars</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/losses.html#VAELoss.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.losses.VAELoss.forward" title="Link to this definition"></a></dt>
+<dd><p>Define the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ptmelt.losses.safe_exp">
+<span class="sig-prename descclassname"><span class="pre">ptmelt.losses.</span></span><span class="sig-name descname"><span class="pre">safe_exp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/losses.html#safe_exp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.losses.safe_exp" title="Link to this definition"></a></dt>
+<dd><p>Prevents overflow by clipping input range to reasonable values.</p>
+</dd></dl>
+
+</section>
+<section id="module-ptmelt.models">
+<span id="models-module"></span><span id="ptmelt-models"></span><h2>Models Module<a class="headerlink" href="#module-ptmelt.models" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ptmelt.models.ArtificialNeuralNetwork">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ptmelt.models.</span></span><span class="sig-name descname"><span class="pre">ArtificialNeuralNetwork</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/models.html#ArtificialNeuralNetwork"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.models.ArtificialNeuralNetwork" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ptmelt.models.MELTModel" title="ptmelt.models.MELTModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">MELTModel</span></code></a></p>
+<p>Artificial Neural Network (ANN) model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>**kwargs</strong> – Additional keyword arguments.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.models.ArtificialNeuralNetwork.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/models.html#ArtificialNeuralNetwork.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.models.ArtificialNeuralNetwork.forward" title="Link to this definition"></a></dt>
+<dd><p>Perform the forward pass of the ANN.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inputs</strong> (<em>torch.Tensor</em>) – The input data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.models.ArtificialNeuralNetwork.initialize_layers">
+<span class="sig-name descname"><span class="pre">initialize_layers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/models.html#ArtificialNeuralNetwork.initialize_layers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.models.ArtificialNeuralNetwork.initialize_layers" title="Link to this definition"></a></dt>
+<dd><p>Initialize the layers of the ANN.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ptmelt.models.BayesianNeuralNetwork">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ptmelt.models.</span></span><span class="sig-name descname"><span class="pre">BayesianNeuralNetwork</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">do_aleatoric</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">do_bayesian_output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aleatoric_scale_factor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale_epsilon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bayesian_mask</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/models.html#BayesianNeuralNetwork"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.models.BayesianNeuralNetwork" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ptmelt.models.MELTModel" title="ptmelt.models.MELTModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">MELTModel</span></code></a></p>
+<p>Bayesian Neural Network (BNN) model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>num_points</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of Monte Carlo samples. Defaults to 1.</p></li>
+<li><p><strong>do_aleatoric</strong> (<em>bool</em><em>, </em><em>optional</em>) – Flag to perform aleatoric output. Defaults to False.</p></li>
+<li><p><strong>do_bayesian_output</strong> (<em>bool</em><em>, </em><em>optional</em>) – Flag to perform Bayesian output. Defaults to True.</p></li>
+<li><p><strong>aleatoric_scale_factor</strong> (<em>float</em><em>, </em><em>optional</em>) – Scale factor for aleatoric uncertainty. Defaults to 5e-2.</p></li>
+<li><p><strong>scale_epsilon</strong> (<em>float</em><em>, </em><em>optional</em>) – Epsilon value for the scale of the aleatoric uncertainty. Defaults to 1e-3.</p></li>
+<li><p><strong>bayesian_mask</strong> (<em>list</em><em>, </em><em>optional</em>) – List of booleans to determine which layers are Bayesian and which are Dense. Defaults to None.</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.models.BayesianNeuralNetwork.build">
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/models.html#BayesianNeuralNetwork.build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.models.BayesianNeuralNetwork.build" title="Link to this definition"></a></dt>
+<dd><p>Build the BNN.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.models.BayesianNeuralNetwork.create_output_layer">
+<span class="sig-name descname"><span class="pre">create_output_layer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/models.html#BayesianNeuralNetwork.create_output_layer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.models.BayesianNeuralNetwork.create_output_layer" title="Link to this definition"></a></dt>
+<dd><p>Create output layer for the Bayesian Neural Network.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.models.BayesianNeuralNetwork.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/models.html#BayesianNeuralNetwork.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.models.BayesianNeuralNetwork.forward" title="Link to this definition"></a></dt>
+<dd><p>Perform the forward pass of the BNN.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inputs</strong> (<em>torch.Tensor</em>) – The input data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.models.BayesianNeuralNetwork.initialize_layers">
+<span class="sig-name descname"><span class="pre">initialize_layers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/models.html#BayesianNeuralNetwork.initialize_layers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.models.BayesianNeuralNetwork.initialize_layers" title="Link to this definition"></a></dt>
+<dd><p>Initialize the layers of the BNN.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.models.BayesianNeuralNetwork.step">
+<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataloader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">criterion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cpu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">training</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/models.html#BayesianNeuralNetwork.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.models.BayesianNeuralNetwork.step" title="Link to this definition"></a></dt>
+<dd><p>Perform a single step either in training or validation mode.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ptmelt.models.MELTModel">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ptmelt.models.</span></span><span class="sig-name descname"><span class="pre">MELTModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_features</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_outputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">act_fun</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'relu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_dropout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_norm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_norm_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'ema'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_batch_renorm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_activation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initializer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'glorot_uniform'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l1_reg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l2_reg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_mixtures</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/models.html#MELTModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.models.MELTModel" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<p>PT-MELT Base model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>num_features</strong> (<em>int</em>) – The number of input features.</p></li>
+<li><p><strong>num_outputs</strong> (<em>int</em>) – The number of output units.</p></li>
+<li><p><strong>width</strong> (<em>int</em><em>, </em><em>optional</em>) – The width of the hidden layers. Defaults to 32.</p></li>
+<li><p><strong>depth</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of hidden layers. Defaults to 2.</p></li>
+<li><p><strong>act_fun</strong> (<em>str</em><em>, </em><em>optional</em>) – The activation function to use. Defaults to ‘relu’.</p></li>
+<li><p><strong>dropout</strong> (<em>float</em><em>, </em><em>optional</em>) – The dropout rate. Defaults to 0.0.</p></li>
+<li><p><strong>input_dropout</strong> (<em>float</em><em>, </em><em>optional</em>) – The input dropout rate. Defaults to 0.0.</p></li>
+<li><p><strong>batch_norm</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to use batch normalization. Defaults to
+False.</p></li>
+<li><p><strong>batch_norm_type</strong> (<em>str</em><em>, </em><em>optional</em>) – The type of batch normalization to use.
+Defaults to ‘ema’.</p></li>
+<li><p><strong>use_batch_renorm</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to use batch renormalization.
+Defaults to False.</p></li>
+<li><p><strong>output_activation</strong> (<em>str</em><em>, </em><em>optional</em>) – The activation function for the output layer.
+Defaults to None.</p></li>
+<li><p><strong>initializer</strong> (<em>str</em><em>, </em><em>optional</em>) – The weight initializer to use. Defaults to
+‘glorot_uniform’.</p></li>
+<li><p><strong>l1_reg</strong> (<em>float</em><em>, </em><em>optional</em>) – The L1 regularization strength. Defaults to 0.0.</p></li>
+<li><p><strong>l2_reg</strong> (<em>float</em><em>, </em><em>optional</em>) – The L2 regularization strength. Defaults to 0.0.</p></li>
+<li><p><strong>num_mixtures</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of mixture components for MDN. Defaults
+to 0.</p></li>
+<li><p><strong>node_list</strong> (<em>list</em><em>, </em><em>optional</em>) – The list of nodes per layer to alternately define
+layers. Defaults to None.</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.models.MELTModel.build">
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/models.html#MELTModel.build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.models.MELTModel.build" title="Link to this definition"></a></dt>
+<dd><p>Build the model.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.models.MELTModel.compute_jacobian">
+<span class="sig-name descname"><span class="pre">compute_jacobian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/models.html#MELTModel.compute_jacobian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.models.MELTModel.compute_jacobian" title="Link to this definition"></a></dt>
+<dd><p>Compute the Jacobian of the model with respect to the input.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.models.MELTModel.create_dropout_layers">
+<span class="sig-name descname"><span class="pre">create_dropout_layers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/models.html#MELTModel.create_dropout_layers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.models.MELTModel.create_dropout_layers" title="Link to this definition"></a></dt>
+<dd><p>Create the dropout layers.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.models.MELTModel.create_output_layer">
+<span class="sig-name descname"><span class="pre">create_output_layer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/models.html#MELTModel.create_output_layer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.models.MELTModel.create_output_layer" title="Link to this definition"></a></dt>
+<dd><p>Create the output layer.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.models.MELTModel.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_dl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_dl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">criterion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_epochs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'cpu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheduler</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_LRScheduler</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stopping</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/models.html#MELTModel.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.models.MELTModel.fit" title="Link to this definition"></a></dt>
+<dd><p>Perform the model training loop.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>train_dl</strong> (<em>DataLoader</em>) – The training data loader.</p></li>
+<li><p><strong>val_dl</strong> (<em>DataLoader</em>) – The validation data loader.</p></li>
+<li><p><strong>optimizer</strong> (<em>Optimizer</em>) – The optimizer to use.</p></li>
+<li><p><strong>criterion</strong> (<em>Loss</em>) – The loss function to use.</p></li>
+<li><p><strong>num_epochs</strong> (<em>int</em>) – The number of epochs to train the model.</p></li>
+<li><p><strong>device</strong> (<em>str</em><em>, </em><em>optional</em>) – The device to use for training. Defaults to ‘cpu’.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to print training statistics. Defaults to
+False.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.models.MELTModel.get_loss_fn">
+<span class="sig-name descname"><span class="pre">get_loss_fn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loss</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'mse'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reduction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'mean'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mse_weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/models.html#MELTModel.get_loss_fn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.models.MELTModel.get_loss_fn" title="Link to this definition"></a></dt>
+<dd><p>Get the loss function for the model. Used in the training loop.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>loss</strong> (<em>str</em><em>, </em><em>optional</em>) – The loss function to use. Defaults to ‘mse’.</p></li>
+<li><p><strong>reduction</strong> (<em>str</em><em>, </em><em>optional</em>) – The reduction method for the loss. Defaults to
+‘mean’.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.models.MELTModel.get_optimizer">
+<span class="sig-name descname"><span class="pre">get_optimizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">optimizer_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/models.html#MELTModel.get_optimizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.models.MELTModel.get_optimizer" title="Link to this definition"></a></dt>
+<dd><p>Get the optimizer for the model. Used in the training loop.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>optimizer_name</strong> (<em>str</em>) – The name of the optimizer to use.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.models.MELTModel.get_scheduler">
+<span class="sig-name descname"><span class="pre">get_scheduler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scheduler_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/models.html#MELTModel.get_scheduler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.models.MELTModel.get_scheduler" title="Link to this definition"></a></dt>
+<dd><p>Get the learning rate scheduler for the model. Used in the training loop.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scheduler_name</strong> (<em>str</em>) – The name of the scheduler to use.</p></li>
+<li><p><strong>optimizer</strong> – The optimizer to attach the scheduler to.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.models.MELTModel.initialize_layers">
+<span class="sig-name descname"><span class="pre">initialize_layers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/models.html#MELTModel.initialize_layers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.models.MELTModel.initialize_layers" title="Link to this definition"></a></dt>
+<dd><p>Initialize the layers of the model.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.models.MELTModel.l1_regularization">
+<span class="sig-name descname"><span class="pre">l1_regularization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lambda_l1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/models.html#MELTModel.l1_regularization"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.models.MELTModel.l1_regularization" title="Link to this definition"></a></dt>
+<dd><p>Compute the L1 regularization term for use in the loss function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>lambda_l1</strong> (<em>float</em>) – The L1 regularization strength.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.models.MELTModel.l2_regularization">
+<span class="sig-name descname"><span class="pre">l2_regularization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lambda_l2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/models.html#MELTModel.l2_regularization"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.models.MELTModel.l2_regularization" title="Link to this definition"></a></dt>
+<dd><p>Compute the L2 regularization term for use in the loss function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>lambda_l2</strong> (<em>float</em>) – The L2 regularization strength.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.models.MELTModel.step">
+<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataloader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">criterion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cpu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">training</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/models.html#MELTModel.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.models.MELTModel.step" title="Link to this definition"></a></dt>
+<dd><p>Perform a single step either in training or validation mode.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ptmelt.models.RecurrentNeuralNetwork">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ptmelt.models.</span></span><span class="sig-name descname"><span class="pre">RecurrentNeuralNetwork</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rnn_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'lstm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_sequences</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">head_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'last'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/models.html#RecurrentNeuralNetwork"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.models.RecurrentNeuralNetwork" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ptmelt.models.MELTModel" title="ptmelt.models.MELTModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">MELTModel</span></code></a></p>
+<p>Recurrent Neural Network (RNN) model.</p>
+<p>Bidirectional is not supported in this implementation as it is intended for
+forecasting tasks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rnn_type</strong> (<em>str</em><em>, </em><em>optional</em>) – The type of RNN to use (‘rnn’, ‘lstm’, ‘gru’).</p></li>
+<li><p><strong>return_sequences</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to return the full sequence or
+just the last output.</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.models.RecurrentNeuralNetwork.create_output_layer">
+<span class="sig-name descname"><span class="pre">create_output_layer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/models.html#RecurrentNeuralNetwork.create_output_layer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.models.RecurrentNeuralNetwork.create_output_layer" title="Link to this definition"></a></dt>
+<dd><p>Override to use recurrent_out_dim as input_features instead of layer_width.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.models.RecurrentNeuralNetwork.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lengths</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/models.html#RecurrentNeuralNetwork.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.models.RecurrentNeuralNetwork.forward" title="Link to this definition"></a></dt>
+<dd><p>Perform the forward pass of the RNN. If lengths are provided, the input
+sequences will be packed and unpacked to handle variable-length sequences.
+Performs optional pooling based on head_type setting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputs</strong> (<em>torch.Tensor</em>) – The input data.</p></li>
+<li><p><strong>lengths</strong> (<em>torch.Tensor</em><em>, </em><em>optional</em>) – The lengths of the sequences in the batch.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.models.RecurrentNeuralNetwork.initialize_layers">
+<span class="sig-name descname"><span class="pre">initialize_layers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/models.html#RecurrentNeuralNetwork.initialize_layers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.models.RecurrentNeuralNetwork.initialize_layers" title="Link to this definition"></a></dt>
+<dd><p>Initialize dropout, rnn block, and output layers.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.models.RecurrentNeuralNetwork.step">
+<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataloader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">criterion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cpu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">training</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/models.html#RecurrentNeuralNetwork.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.models.RecurrentNeuralNetwork.step" title="Link to this definition"></a></dt>
+<dd><p>Perform a single step either in training or validation mode.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ptmelt.models.ResidualNeuralNetwork">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ptmelt.models.</span></span><span class="sig-name descname"><span class="pre">ResidualNeuralNetwork</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layers_per_block</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pre_activation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">post_add_activation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/models.html#ResidualNeuralNetwork"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.models.ResidualNeuralNetwork" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ptmelt.models.MELTModel" title="ptmelt.models.MELTModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">MELTModel</span></code></a></p>
+<p>Residual Neural Network (ResNet) model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>layers_per_block</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of layers per residual block.
+Defaults to 2.</p></li>
+<li><p><strong>pre_activation</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to use pre-activation. Defaults to
+True.</p></li>
+<li><p><strong>post_add_activation</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to use activation after
+addition. Defaults to False.</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.models.ResidualNeuralNetwork.build">
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/models.html#ResidualNeuralNetwork.build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.models.ResidualNeuralNetwork.build" title="Link to this definition"></a></dt>
+<dd><p>Build the model.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.models.ResidualNeuralNetwork.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/models.html#ResidualNeuralNetwork.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.models.ResidualNeuralNetwork.forward" title="Link to this definition"></a></dt>
+<dd><p>Perform the forward pass of the ResNet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inputs</strong> (<em>torch.Tensor</em>) – The input data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.models.ResidualNeuralNetwork.initialize_layers">
+<span class="sig-name descname"><span class="pre">initialize_layers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/models.html#ResidualNeuralNetwork.initialize_layers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.models.ResidualNeuralNetwork.initialize_layers" title="Link to this definition"></a></dt>
+<dd><p>Initialize the layers of the ResNet.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ptmelt.models.VariationalAutoencoder">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ptmelt.models.</span></span><span class="sig-name descname"><span class="pre">VariationalAutoencoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">latent_dims</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoder_node_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decoder_node_list</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/models.html#VariationalAutoencoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.models.VariationalAutoencoder" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ptmelt.models.MELTModel" title="ptmelt.models.MELTModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">MELTModel</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.models.VariationalAutoencoder.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/models.html#VariationalAutoencoder.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.models.VariationalAutoencoder.forward" title="Link to this definition"></a></dt>
+<dd><p>Define the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.models.VariationalAutoencoder.split_mdn_output">
+<span class="sig-name descname"><span class="pre">split_mdn_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mdn_output</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/models.html#VariationalAutoencoder.split_mdn_output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.models.VariationalAutoencoder.split_mdn_output" title="Link to this definition"></a></dt>
+<dd><p>Split the MDN output into mixture components.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ptmelt.models.VariationalAutoencoder.step">
+<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataloader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">criterion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cpu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">training</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ptmelt/models.html#VariationalAutoencoder.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ptmelt.models.VariationalAutoencoder.step" title="Link to this definition"></a></dt>
+<dd><p>Perform a single step either in training or validation mode.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ptmelt.nn_utils">
+<span id="nn-utils-module"></span><span id="ptmelt-nn-utils"></span><h2>NN Utils Module<a class="headerlink" href="#module-ptmelt.nn_utils" title="Link to this heading"></a></h2>
+</section>
+<section id="subpackages">
+<span id="ptmelt-subpackages"></span><h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading"></a></h2>
+<p>In addition to the main modules, there are subpackages that contain various utility
+functions that are used in the main modules. The subpackages are:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference internal" href="ptmelt.utils.html#ptmelt-utils"><span class="std std-ref">PT-MELT Utilities</span></a><span class="classifier">Contains utility functions that are used in</span></dt><dd><p>the main modules. These functions contain routines for data processing, model
+evaluation, visualization, and other general-purpose functions.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ptmelt.utils.html">PT-MELT Utilities Subpackage</a></li>
+</ul>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules.html" class="btn btn-neutral float-left" title="pt-melt" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ptmelt.utils.html" class="btn btn-neutral float-right" title="PT-MELT Utilities Subpackage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alliance for Sustainable Energy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
