@@ -10,7 +10,7 @@ from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
 from tqdm import tqdm
 
 from ptmelt.blocks import DefaultOutput, DenseBlock, MixtureDensityOutput, ResidualBlock
-from ptmelt.layers import Reparameterization
+from ptmelt.layers import AttentionPool, Reparameterization
 from ptmelt.losses import MixtureDensityLoss, VAELoss
 
 
@@ -269,10 +269,14 @@ class MELTModel(nn.Module):
 
         return getattr(lr_scheduler, scheduler_name)(optimizer, **kwargs)
 
-    def step(self, dataloader, optimizer, criterion, device="cpu", training=True):
+    def step(
+        self, dataloader, optimizer, criterion, device="cpu", training=True, **kwargs
+    ):
         """
         Perform a single step either in training or validation mode.
 
+        Args:
+            **kwargs: Additional keyword arguments for model-specific step logic.
         """
         self.train() if training else self.eval()
 
@@ -322,6 +326,7 @@ class MELTModel(nn.Module):
         scheduler: Optional[torch.optim.lr_scheduler._LRScheduler] = None,
         stopping: Optional[bool] = True,
         verbose=False,
+        **step_kwargs,
     ):
         """
         Perform the model training loop.
@@ -333,9 +338,9 @@ class MELTModel(nn.Module):
             criterion (Loss): The loss function to use.
             num_epochs (int): The number of epochs to train the model.
             device (str, optional): The device to use for training. Defaults to 'cpu'.
-
-            verbose (bool, optional): Whether to print training statistics. Defaults to
-                                      False.
+            **step_kwargs: Additional keyword arguments passed to the step method.
+            stopping (bool, optional): Whether to enable early stopping based on min_lr. Defaults to True.
+            verbose (bool, optional): Whether to print training statistics. Defaults to False.
         """
         # Move model to device
         self.to(device)
@@ -347,10 +352,20 @@ class MELTModel(nn.Module):
         for epoch in tqdm(range(num_epochs), disable=not verbose):
             # Perform a training and validation step
             train_loss = self.step(
-                train_dl, optimizer, criterion, device=device, training=True
+                train_dl,
+                optimizer,
+                criterion,
+                device=device,
+                training=True,
+                **step_kwargs,
             )
             val_loss = self.step(
-                val_dl, optimizer, criterion, device=device, training=False
+                val_dl,
+                optimizer,
+                criterion,
+                device=device,
+                training=False,
+                **step_kwargs,
             )
             # Step the scheduler if provided
             if scheduler:
@@ -743,10 +758,14 @@ class BayesianNeuralNetwork(MELTModel):
         # Apply the output layer(s) and return
         return self.layer_dict["output"](x)
 
-    def step(self, dataloader, optimizer, criterion, device="cpu", training=True):
+    def step(
+        self, dataloader, optimizer, criterion, device="cpu", training=True, **kwargs
+    ):
         """
         Perform a single step either in training or validation mode.
 
+        Args:
+            **kwargs: Additional keyword arguments for model-specific step logic.
         """
         self.train() if training else self.eval()
         dataset_size = len(dataloader.dataset)
@@ -1067,12 +1086,28 @@ class RecurrentNeuralNetwork(MELTModel):
 
         return self.layer_dict["output"](feat)
 
-    def step(self, dataloader, optimizer, criterion, device="cpu", training=True):
+    def step(
+        self,
+        dataloader,
+        optimizer,
+        criterion,
+        device="cpu",
+        training=True,
+        suffix_crop=False,
+        **kwargs,
+    ):
         """
         Perform a single step either in training or validation mode.
 
+        Args:
+            suffix_crop (bool): Whether to apply random suffix cropping for data augmentation.
+            **kwargs: Additional keyword arguments for model-specific step logic.
+                min_length (int): Minimum length for random suffix cropping. Defaults to 32.
         """
         self.train() if training else self.eval()
+
+        # Get min_length from kwargs with default value of 32
+        min_length = kwargs.get("min_length", 32)
 
         context_manager = torch.no_grad() if not training else nullcontext()
 
@@ -1087,9 +1122,14 @@ class RecurrentNeuralNetwork(MELTModel):
                     lengths = None
 
                 # If training, perform random suffix cropping for data augmentation
-                if training and lengths is not None and x_in.size(1) >= 32:
+                if (
+                    training
+                    and lengths is not None
+                    and x_in.size(1) >= min_length
+                    and suffix_crop
+                ):
                     x_in, y_in, lengths = self._random_suffix_crop(
-                        x_in, y_in, lengths, min_length=32
+                        x_in, y_in, lengths, min_length=min_length
                     )
 
                 # Move data to device
@@ -1242,10 +1282,14 @@ class VariationalAutoencoder(MELTModel):
 
         return mix_coeffs, means, log_vars
 
-    def step(self, dataloader, optimizer, criterion, device="cpu", training=True):
+    def step(
+        self, dataloader, optimizer, criterion, device="cpu", training=True, **kwargs
+    ):
         """
         Perform a single step either in training or validation mode.
 
+        Args:
+            **kwargs: Additional keyword arguments for model-specific step logic.
         """
         self.train() if training else self.eval()
 
