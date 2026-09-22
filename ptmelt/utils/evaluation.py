@@ -3,6 +3,35 @@ from typing import Any
 
 import numpy as np
 import torch
+from sklearn.preprocessing import MinMaxScaler, RobustScaler, StandardScaler
+
+from ptmelt.utils.preprocessing import IdentityScaler
+
+
+def _inverse_transform_std(std_pred, y_normalizer):
+    """Inverse-transform standard deviations for supported affine scalers."""
+    if isinstance(y_normalizer, IdentityScaler):
+        return std_pred
+
+    if isinstance(y_normalizer, MinMaxScaler):
+        scale = getattr(y_normalizer, "scale_", None)
+        if scale is None:
+            return std_pred
+        return std_pred / np.asarray(scale, dtype=np.float32)
+
+    if isinstance(y_normalizer, (StandardScaler, RobustScaler)):
+        scale = getattr(y_normalizer, "scale_", None)
+        if scale is None:
+            return std_pred
+        return std_pred * np.asarray(scale, dtype=np.float32)
+
+    warnings.warn(
+        "Cannot exactly inverse-transform standard deviations for "
+        f"{type(y_normalizer).__name__}; standard deviations will remain "
+        "in normalized space.",
+        stacklevel=2,
+    )
+    return std_pred
 
 
 def parse_mixture_density_predictions(pred_array, num_mixtures, num_outputs):
@@ -139,13 +168,7 @@ def make_predictions(
     if unnormalize and y_normalizer is not None:
         predictions = y_normalizer.inverse_transform(predictions)
         if std_pred is not None:
-            if hasattr(y_normalizer, "scale_"):
-                std_pred = np.float32(y_normalizer.scale_) * std_pred
-            else:
-                warnings.warn(
-                    "y_normalizer does not define scale_; standard deviations will remain in normalized space.",
-                    stacklevel=2,
-                )
+            std_pred = _inverse_transform_std(std_pred, y_normalizer)
     elif unnormalize and y_normalizer is None:
         raise ValueError("y_normalizer must be provided to unnormalize predictions.")
 
@@ -154,11 +177,7 @@ def make_predictions(
             component_outputs = {
                 key: value.detach().cpu().numpy() for key, value in mdn_outputs.items()
             }
-            if (
-                unnormalize
-                and y_normalizer is not None
-                and hasattr(y_normalizer, "scale_")
-            ):
+            if unnormalize and y_normalizer is not None:
                 component_outputs["mean_prediction"] = predictions
                 component_outputs["std_prediction"] = std_pred
             return predictions, std_pred, component_outputs
