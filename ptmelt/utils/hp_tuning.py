@@ -317,12 +317,18 @@ def _require_ray_core() -> Dict[str, Any]:
     try:
         import ray
         from ray import train, tune
-        from ray.air import RunConfig
     except ImportError as exc:
         raise ImportError(
             "Ray Tune helpers require Ray. Install PT-MELT with Ray Tune "
             "dependencies before calling run_ray_tune()."
         ) from exc
+
+    RunConfig = getattr(tune, "RunConfig", None)
+    if RunConfig is None:
+        try:
+            from ray.air import RunConfig
+        except ImportError as exc:
+            raise ImportError("Unable to locate Ray Tune RunConfig.") from exc
 
     return {"ray": ray, "train": train, "tune": tune, "RunConfig": RunConfig}
 
