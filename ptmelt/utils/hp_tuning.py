@@ -316,7 +316,7 @@ def model_builder(config: Mapping[str, Any]):
 def _require_ray_core() -> Dict[str, Any]:
     try:
         import ray
-        from ray import train, tune
+        from ray import tune
     except ImportError as exc:
         raise ImportError(
             "Ray Tune helpers require Ray. Install PT-MELT with Ray Tune "
@@ -330,7 +330,7 @@ def _require_ray_core() -> Dict[str, Any]:
         except ImportError as exc:
             raise ImportError("Unable to locate Ray Tune RunConfig.") from exc
 
-    return {"ray": ray, "train": train, "tune": tune, "RunConfig": RunConfig}
+    return {"ray": ray, "tune": tune, "RunConfig": RunConfig}
 
 
 def _build_scheduler(
