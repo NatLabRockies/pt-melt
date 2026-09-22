@@ -1,0 +1,40 @@
+name: Python quality
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7.0.1
+
+      - name: Set up Pixi
+        uses: prefix-dev/setup-pixi@v0.10.2
+        with:
+          pixi-version: v0.81.0
+          environments: dev
+          cache: true
+          locked: true
+
+      - name: Ruff
+        run: pixi run -e dev lint
+
+      - name: Black
+        run: pixi run -e dev format-check
+
+      - name: Compile Python sources
+        run: pixi run -e dev compile
+
+      - name: Tests
+        run: pixi run -e dev tests

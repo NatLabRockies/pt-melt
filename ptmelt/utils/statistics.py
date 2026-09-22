@@ -1,5 +1,3 @@
-from typing import List, Optional
-
 import numpy as np
 from scipy.stats import norm
 
@@ -195,7 +193,9 @@ def compute_crps(truth, mean, std):
         return sigma * (z * (2 * cdf_z - 1) + 2 * pdf_z - 1 / np.sqrt(np.pi))
 
     # Compute the CRPS for each sample and take the mean
-    crps = np.mean([crps_gaussian(t, m, s) for t, m, s in zip(truth, mean, std)])
+    crps = np.mean(
+        [crps_gaussian(t, m, s) for t, m, s in zip(truth, mean, std, strict=True)]
+    )
 
     return crps
 
@@ -204,9 +204,9 @@ def compute_cwc(
     truth,
     mean,
     std,
-    alpha: Optional[float] = 0.95,
-    gamma: Optional[float] = 1.0,
-    penalty_type: Optional[str] = "linear",
+    alpha: float | None = 0.95,
+    gamma: float | None = 1.0,
+    penalty_type: str | None = "linear",
 ):
     """
     Compute the coverage width criterion (CWC).
@@ -280,7 +280,7 @@ def compute_pinaw(truth, std):
     return compute_mpiw(std) / (truth.max() - truth.min())
 
 
-def compute_winkler_score(truth, mean, std, alpha: Optional[float] = 0.05):
+def compute_winkler_score(truth, mean, std, alpha: float | None = 0.05):
     """
     Compute the Winkler score.
 
@@ -329,7 +329,7 @@ def compute_winkler_score(truth, mean, std, alpha: Optional[float] = 0.05):
     return np.mean(score)
 
 
-def compute_metrics(y_real, y_pred, y_std, metrics_to_compute: Optional[List] = None):
+def compute_metrics(y_real, y_pred, y_std, metrics_to_compute: list | None = None):
     """
     Compute various metrics between real and predicted values.
 

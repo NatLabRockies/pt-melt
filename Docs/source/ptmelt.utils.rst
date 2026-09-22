@@ -66,5 +66,3 @@ Visualization Module
 ..    :exclude-members: plot_interval_width_vs_value, plot_qq, plot_residuals_vs_value,
                      plot_uncertainty_calibration, plot_uncertainty_distribution,
                      point_cloud_plot, point_cloud_plot_with_uncertainty
-
-

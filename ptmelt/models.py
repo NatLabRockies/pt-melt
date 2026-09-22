@@ -1,7 +1,6 @@
 import warnings
 from contextlib import nullcontext
 from itertools import groupby
-from typing import List, Optional
 
 import torch
 import torch.nn as nn
@@ -56,24 +55,24 @@ class MELTModel(nn.Module):
         self,
         num_features: int,
         num_outputs: int,
-        width: Optional[int] = 32,
-        depth: Optional[int] = 2,
-        act_fun: Optional[str] = "relu",
-        dropout: Optional[float] = 0.0,
-        input_dropout: Optional[float] = 0.0,
-        batch_norm: Optional[bool] = False,
-        batch_norm_type: Optional[str] = "ema",
-        use_batch_renorm: Optional[bool] = False,
-        output_activation: Optional[str] = None,
-        initializer: Optional[str] = "glorot_uniform",
-        l1_reg: Optional[float] = 0.0,
-        l2_reg: Optional[float] = 0.0,
-        num_mixtures: Optional[int] = 0,
-        node_list: Optional[list] = None,
-        seed: Optional[int] = None,
+        width: int | None = 32,
+        depth: int | None = 2,
+        act_fun: str | None = "relu",
+        dropout: float | None = 0.0,
+        input_dropout: float | None = 0.0,
+        batch_norm: bool | None = False,
+        batch_norm_type: str | None = "ema",
+        use_batch_renorm: bool | None = False,
+        output_activation: str | None = None,
+        initializer: str | None = "glorot_uniform",
+        l1_reg: float | None = 0.0,
+        l2_reg: float | None = 0.0,
+        num_mixtures: int | None = 0,
+        node_list: list | None = None,
+        seed: int | None = None,
         **kwargs,
     ):
-        super(MELTModel, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
         self.num_features = num_features
         self.num_outputs = num_outputs
@@ -200,9 +199,9 @@ class MELTModel(nn.Module):
 
     def get_loss_fn(
         self,
-        loss: Optional[str] = "mse",
-        reduction: Optional[str] = "mean",
-        mse_weight: Optional[float] = None,
+        loss: str | None = "mse",
+        reduction: str | None = "mean",
+        mse_weight: float | None = None,
     ):
         """
         Get the loss function for the model. Used in the training loop.
@@ -218,7 +217,8 @@ class MELTModel(nn.Module):
             if self.num_mixtures > 0:
                 warnings.warn(
                     "Mixture Density Networks require the use of the MixtureDensityLoss "
-                    "class. The loss function will be set to automatically."
+                    "class. The loss function will be set to automatically.",
+                    stacklevel=2,
                 )
 
                 return MixtureDensityLoss(
@@ -329,10 +329,10 @@ class MELTModel(nn.Module):
         val_dl,
         optimizer,
         criterion,
-        num_epochs: Optional[int] = 100,
-        device: Optional[str] = "cpu",
-        scheduler: Optional[torch.optim.lr_scheduler._LRScheduler] = None,
-        stopping: Optional[bool] = True,
+        num_epochs: int | None = 100,
+        device: str | None = "cpu",
+        scheduler: torch.optim.lr_scheduler._LRScheduler | None = None,
+        stopping: bool | None = True,
         verbose=False,
         **step_kwargs,
     ):
@@ -439,11 +439,11 @@ class ArtificialNeuralNetwork(MELTModel):
         self,
         **kwargs,
     ):
-        super(ArtificialNeuralNetwork, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def initialize_layers(self):
         """Initialize the layers of the ANN."""
-        super(ArtificialNeuralNetwork, self).initialize_layers()
+        super().initialize_layers()
 
         # Bulk layers
         self.layer_dict.update(
@@ -501,12 +501,12 @@ class ResidualNeuralNetwork(MELTModel):
 
     def __init__(
         self,
-        layers_per_block: Optional[int] = 2,
-        pre_activation: Optional[bool] = True,
-        post_add_activation: Optional[bool] = False,
+        layers_per_block: int | None = 2,
+        pre_activation: bool | None = True,
+        post_add_activation: bool | None = False,
         **kwargs,
     ):
-        super(ResidualNeuralNetwork, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
         self.layers_per_block = layers_per_block
         self.pre_activation = pre_activation
@@ -518,15 +518,16 @@ class ResidualNeuralNetwork(MELTModel):
             warnings.warn(
                 f"Warning: depth {self.num_layers} is not divisible by "
                 f"layers_per_block ({self.layers_per_block}), so the last block will "
-                f"have {self.depth % self.layers_per_block} layers."
+                f"have {self.depth % self.layers_per_block} layers.",
+                stacklevel=2,
             )
 
         self.initialize_layers()
-        super(ResidualNeuralNetwork, self).build()
+        super().build()
 
     def initialize_layers(self):
         """Initialize the layers of the ResNet."""
-        super(ResidualNeuralNetwork, self).initialize_layers()
+        super().initialize_layers()
 
         # Create the Residual Block
         self.layer_dict.update(
@@ -586,15 +587,15 @@ class BayesianNeuralNetwork(MELTModel):
 
     def __init__(
         self,
-        num_points: Optional[int] = 1,
-        do_aleatoric: Optional[bool] = False,
-        do_bayesian_output: Optional[bool] = True,
-        aleatoric_scale_factor: Optional[float] = 5e-2,
-        scale_epsilon: Optional[float] = 1e-3,
-        bayesian_mask: Optional[List[bool]] = None,
+        num_points: int | None = 1,
+        do_aleatoric: bool | None = False,
+        do_bayesian_output: bool | None = True,
+        aleatoric_scale_factor: float | None = 5e-2,
+        scale_epsilon: float | None = 1e-3,
+        bayesian_mask: list[bool] | None = None,
         **kwargs,
     ):
-        super(BayesianNeuralNetwork, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
         self.num_points = num_points
         self.do_aleatoric = do_aleatoric
@@ -646,11 +647,11 @@ class BayesianNeuralNetwork(MELTModel):
     def build(self):
         """Build the BNN."""
         self.initialize_layers()
-        super(BayesianNeuralNetwork, self).build()
+        super().build()
 
     def initialize_layers(self):
         """Initialize the layers of the BNN."""
-        super(BayesianNeuralNetwork, self).initialize_layers()
+        super().initialize_layers()
 
         # Create the Bayesian and Dense blocks based on the mask
         if self.bayesian_mask is None:
@@ -849,22 +850,23 @@ class RecurrentNeuralNetwork(MELTModel):
 
     def __init__(
         self,
-        rnn_type: Optional[str] = "lstm",
-        return_sequences: Optional[bool] = False,
+        rnn_type: str | None = "lstm",
+        return_sequences: bool | None = False,
         head_type: str = "last",
         **kwargs,
     ):
-        super(RecurrentNeuralNetwork, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
         self.rnn_type = rnn_type.lower()
         if self.rnn_type not in ["rnn", "lstm", "gru"]:
-            raise ValueError(f"RNN type must be 'rnn', 'lstm', or 'gru'.")
+            raise ValueError("RNN type must be 'rnn', 'lstm', or 'gru'.")
 
         self.return_sequences = return_sequences
 
         if self.return_sequences:
             warnings.warn(
-                "Returning sequences is not implemented for RNNs. Please set return_sequences=False."
+                "Returning sequences is not implemented for RNNs. Please set return_sequences=False.",
+                stacklevel=2,
             )
             raise NotImplementedError(
                 "Returning sequences is not implemented for RNNs."
@@ -877,7 +879,8 @@ class RecurrentNeuralNetwork(MELTModel):
         if self.node_list is not None:
             warnings.warn(
                 "Warning: node_list for RNN must be uniform per layer;"
-                " using width and depth to define layers."
+                " using width and depth to define layers.",
+                stacklevel=2,
             )
 
         self.hidden_size = self.width
@@ -910,7 +913,8 @@ class RecurrentNeuralNetwork(MELTModel):
         # TODO: Implement return sequences as option for many-to-many tasks
         if self.return_sequences:
             warnings.warn(
-                "Returning sequences is not implemented for RNNs. Please set return_sequences=False."
+                "Returning sequences is not implemented for RNNs. Please set return_sequences=False.",
+                stacklevel=2,
             )
             raise NotImplementedError(
                 "Returning sequences is not implemented for RNNs."
@@ -923,7 +927,7 @@ class RecurrentNeuralNetwork(MELTModel):
         """
         Initialize dropout, rnn block, and output layers.
         """
-        super(RecurrentNeuralNetwork, self).initialize_layers()
+        super().initialize_layers()
 
         # Create the RNN layer (use PyTorch built-in)
         rnn_class = {
@@ -1030,7 +1034,7 @@ class RecurrentNeuralNetwork(MELTModel):
             x_out[i, :crop_length] = x[i, seq_length - crop_length : seq_length]
         return x_out, y, new_lengths
 
-    def forward(self, inputs: torch.Tensor, lengths: Optional[torch.Tensor] = None):
+    def forward(self, inputs: torch.Tensor, lengths: torch.Tensor | None = None):
         """
         Perform the forward pass of the RNN. If lengths are provided, the input
         sequences will be packed and unpacked to handle variable-length sequences.
@@ -1064,7 +1068,8 @@ class RecurrentNeuralNetwork(MELTModel):
 
         if self.return_sequences:
             warnings.warn(
-                "Returning sequences is not implemented for RNNs. Please set return_sequences=False."
+                "Returning sequences is not implemented for RNNs. Please set return_sequences=False.",
+                stacklevel=2,
             )
             raise NotImplementedError(
                 "Returning sequences is not implemented for RNNs."
@@ -1194,14 +1199,14 @@ class TemporalTransformerNetwork(MELTModel):
 
     def __init__(
         self,
-        num_heads: Optional[int] = 4,
-        ff_dim: Optional[int] = None,
-        max_seq_len: Optional[int] = 2048,
-        head_type: Optional[str] = "last",
-        use_causal_mask: Optional[bool] = False,
+        num_heads: int | None = 4,
+        ff_dim: int | None = None,
+        max_seq_len: int | None = 2048,
+        head_type: str | None = "last",
+        use_causal_mask: bool | None = False,
         **kwargs,
     ):
-        super(TemporalTransformerNetwork, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
         if self.depth is None or self.depth <= 0:
             raise ValueError("depth must be a positive integer for transformer models.")
@@ -1213,7 +1218,8 @@ class TemporalTransformerNetwork(MELTModel):
         if self.node_list is not None:
             warnings.warn(
                 "Warning: node_list is ignored by TemporalTransformerNetwork; "
-                "using width and depth settings."
+                "using width and depth settings.",
+                stacklevel=2,
             )
 
         self.num_heads = num_heads
@@ -1254,7 +1260,7 @@ class TemporalTransformerNetwork(MELTModel):
 
     def initialize_layers(self):
         """Initialize dropout, transformer encoder, and output layers."""
-        super(TemporalTransformerNetwork, self).initialize_layers()
+        super().initialize_layers()
 
         self.layer_dict.update(
             {
@@ -1308,7 +1314,7 @@ class TemporalTransformerNetwork(MELTModel):
         masked = transformer_out.masked_fill(~mask.unsqueeze(-1), float("-inf"))
         return masked.max(dim=1).values
 
-    def forward(self, inputs: torch.Tensor, lengths: Optional[torch.Tensor] = None):
+    def forward(self, inputs: torch.Tensor, lengths: torch.Tensor | None = None):
         """Perform forward pass for sequence-to-one forecasting."""
         x = (
             self.layer_dict["input_dropout"](inputs)
@@ -1396,16 +1402,16 @@ class ForecastEnsemble(MELTModel):
 
     def __init__(
         self,
-        models: List[MELTModel],
-        aggregation: Optional[str] = "mean",
-        weights: Optional[List[float]] = None,
+        models: list[MELTModel],
+        aggregation: str | None = "mean",
+        weights: list[float] | None = None,
         **kwargs,
     ):
         if not models:
             raise ValueError("ForecastEnsemble requires at least one member model.")
 
         reference_model = models[0]
-        super(ForecastEnsemble, self).__init__(
+        super().__init__(
             num_features=reference_model.num_features,
             num_outputs=reference_model.num_outputs,
             width=reference_model.width,
@@ -1450,7 +1456,7 @@ class ForecastEnsemble(MELTModel):
                     "ForecastEnsemble currently supports deterministic member outputs only."
                 )
 
-    def _initialize_weights(self, weights: Optional[List[float]]):
+    def _initialize_weights(self, weights: list[float] | None):
         """Initialize normalized ensemble weights."""
         if weights is None:
             return torch.full((self.num_members,), 1.0 / self.num_members)
@@ -1475,7 +1481,7 @@ class ForecastEnsemble(MELTModel):
                 model.build()
 
     def _forward_member(
-        self, model: MELTModel, inputs: torch.Tensor, lengths: Optional[torch.Tensor]
+        self, model: MELTModel, inputs: torch.Tensor, lengths: torch.Tensor | None
     ):
         """Forward one member while accommodating sequence-aware and plain models."""
         try:
@@ -1494,8 +1500,8 @@ class ForecastEnsemble(MELTModel):
     def forward(
         self,
         inputs: torch.Tensor,
-        lengths: Optional[torch.Tensor] = None,
-        return_member_predictions: Optional[bool] = False,
+        lengths: torch.Tensor | None = None,
+        return_member_predictions: bool | None = False,
     ):
         """Run each member and aggregate predictions across the ensemble."""
         member_predictions = [
@@ -1544,10 +1550,10 @@ class ForecastEnsemble(MELTModel):
         val_dl,
         optimizers,
         criterion,
-        num_epochs: Optional[int] = 100,
-        device: Optional[str] = "cpu",
+        num_epochs: int | None = 100,
+        device: str | None = "cpu",
         schedulers=None,
-        stopping: Optional[bool] = True,
+        stopping: bool | None = True,
         verbose=False,
         **step_kwargs,
     ):
@@ -1581,7 +1587,7 @@ class ForecastEnsemble(MELTModel):
         self.history = {"member_histories": [], "val_loss": []}
 
         for model, optimizer, member_criterion, scheduler in zip(
-            self.models, optimizers, criteria, scheduler_list
+            self.models, optimizers, criteria, scheduler_list, strict=True
         ):
             model.min_lr = getattr(model, "min_lr", None)
             model.fit(
@@ -1614,7 +1620,7 @@ class ForecastEnsemble(MELTModel):
 
 class VariationalAutoencoder(MELTModel):
     def __init__(self, latent_dims, encoder_node_list, decoder_node_list, **kwargs):
-        super(VariationalAutoencoder, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.latent_dims = latent_dims
         self.encoder_node_list = encoder_node_list
         self.decoder_node_list = decoder_node_list

@@ -3,8 +3,8 @@
 PT-MELT package
 ===============
 
-``PT-MELT`` is composed of a series of modules that form the basis for building a 
-variety of machine learning models. The structure of the packages is to encourage 
+``PT-MELT`` is composed of a series of modules that form the basis for building a
+variety of machine learning models. The structure of the packages is to encourage
 modularity and reusability of the code. The main modules are:
 
 - :ref:`Blocks Module <ptmelt.blocks>`: Each of the blocks is a self-contained
@@ -92,8 +92,8 @@ Subpackages
 In addition to the main modules, there are subpackages that contain various utility
 functions that are used in the main modules. The subpackages are:
 
-- :ref:`PT-MELT Utilities <ptmelt.utils>` : Contains utility functions that are used in 
-   the main modules. These functions contain routines for data processing, model 
+- :ref:`PT-MELT Utilities <ptmelt.utils>` : Contains utility functions that are used in
+   the main modules. These functions contain routines for data processing, model
    evaluation, visualization, and other general-purpose functions.
 
 
@@ -102,5 +102,3 @@ functions that are used in the main modules. The subpackages are:
    :maxdepth: 1
 
    ptmelt.utils
-
-

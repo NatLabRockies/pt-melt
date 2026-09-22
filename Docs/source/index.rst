@@ -9,7 +9,7 @@ PyTorch language. The goal of this software is to enable fast start-up of machin
 learning tasks and to provide a reliable and flexible framework for development and
 deployment. The toolbox contains generalized methods for every aspect of the machine
 learning workflow while simultaneously providing routines that can be tailored to
-specific application spaces. 
+specific application spaces.
 
 ``PT-MELT`` is developed alongside the ``TF-MELT`` toolbox
 (https://github.com/NREL/tf-melt), with a similar design philosophy and structure.
@@ -50,7 +50,7 @@ The toolbox is structured with the following modules further described in the
 
    The loss functions currently available are:
 
-   - `MixtureDensityLoss` - A negative log likelihood loss function for single and 
+   - `MixtureDensityLoss` - A negative log likelihood loss function for single and
      multiple mixture models.
 
 The toolbox also includes a :ref:`Utilities Subpackage <ptmelt.utils>`, which contains a
@@ -109,4 +109,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-

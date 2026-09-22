@@ -1,7 +1,8 @@
 import tempfile
+from collections.abc import Callable, Mapping
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Callable, Dict, Mapping, Optional
+from typing import Any
 
 import torch
 
@@ -75,11 +76,11 @@ _COMMON_MODEL_KEYS = (
 class HPOResult:
     """Structured return value from :func:`run_ray_tune`."""
 
-    best_config: Dict[str, Any]
-    best_hyperparameters: Dict[str, Any]
-    metric_details: Dict[str, Any]
-    trial_history: Dict[str, Any]
-    results: Optional[Any] = None
+    best_config: dict[str, Any]
+    best_hyperparameters: dict[str, Any]
+    metric_details: dict[str, Any]
+    trial_history: dict[str, Any]
+    results: Any | None = None
 
 
 def _require_config(config: Mapping[str, Any], key: str) -> Any:
@@ -101,7 +102,7 @@ def _normalize_architecture(arch_type: Any) -> str:
 
 def _layer_widths_from_config(
     config: Mapping[str, Any], prefix: str = "layer", max_depth_key: str = "max_depth"
-) -> Optional[list]:
+) -> list | None:
     max_depth = config.get(max_depth_key)
     if max_depth is None:
         return None
@@ -116,7 +117,7 @@ def _layer_widths_from_config(
 
 def _common_model_kwargs(
     config: Mapping[str, Any], use_sampled_node_list: bool = True
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     for key in ("num_features", "num_outputs"):
         _require_config(config, key)
 
@@ -313,27 +314,33 @@ def model_builder(config: Mapping[str, Any]):
     return model, optimizer, criterion
 
 
-def _require_ray_core() -> Dict[str, Any]:
+def _require_ray_core() -> dict[str, Any]:
     try:
         import ray
-        from ray import train, tune
-        from ray.air import RunConfig
+        from ray import tune
     except ImportError as exc:
         raise ImportError(
             "Ray Tune helpers require Ray. Install PT-MELT with Ray Tune "
             "dependencies before calling run_ray_tune()."
         ) from exc
 
-    return {"ray": ray, "train": train, "tune": tune, "RunConfig": RunConfig}
+    RunConfig = getattr(tune, "RunConfig", None)
+    if RunConfig is None:
+        try:
+            from ray.air import RunConfig
+        except ImportError as exc:
+            raise ImportError("Unable to locate Ray Tune RunConfig.") from exc
+
+    return {"ray": ray, "tune": tune, "RunConfig": RunConfig}
 
 
 def _build_scheduler(
     scheduler: Any,
     metric: str,
     mode: str,
-    max_epochs: Optional[int],
+    max_epochs: int | None,
     search_space: Mapping[str, Any],
-    scheduler_kwargs: Optional[Mapping[str, Any]] = None,
+    scheduler_kwargs: Mapping[str, Any] | None = None,
 ) -> Any:
     if scheduler is None:
         return None
@@ -369,8 +376,8 @@ def _build_search_alg(
     search_alg: Any,
     metric: str,
     mode: str,
-    max_concurrent: Optional[int] = None,
-    search_alg_kwargs: Optional[Mapping[str, Any]] = None,
+    max_concurrent: int | None = None,
+    search_alg_kwargs: Mapping[str, Any] | None = None,
 ) -> Any:
     if search_alg is None:
         return None
@@ -410,10 +417,10 @@ def _ray_tune_trainable(
     val_dl: Any,
     metric: str,
     mode: str,
-    metric_fn: Optional[Callable[..., Mapping[str, Any]]] = None,
+    metric_fn: Callable[..., Mapping[str, Any]] | None = None,
     checkpoint_interval: int = 1,
-    device: Optional[str] = None,
-    step_kwargs: Optional[Mapping[str, Any]] = None,
+    device: str | None = None,
+    step_kwargs: Mapping[str, Any] | None = None,
 ) -> None:
     ray_core = _require_ray_core()
     tune_module = ray_core["tune"]
@@ -509,26 +516,26 @@ def run_ray_tune(
     train_dl: Any,
     val_dl: Any,
     search_space: Mapping[str, Any],
-    base_config: Optional[Mapping[str, Any]] = None,
+    base_config: Mapping[str, Any] | None = None,
     metric: str = "val_loss",
     mode: str = "min",
     num_samples: int = 10,
-    resources: Optional[Mapping[str, Any]] = None,
+    resources: Mapping[str, Any] | None = None,
     scheduler: Any = "asha",
     search_alg: Any = "optuna",
-    metric_fn: Optional[Callable[..., Mapping[str, Any]]] = None,
-    ray_init_kwargs: Optional[Mapping[str, Any]] = None,
-    restore_path: Optional[str] = None,
-    storage_path: Optional[str] = None,
-    name: Optional[str] = None,
-    max_concurrent: Optional[int] = None,
+    metric_fn: Callable[..., Mapping[str, Any]] | None = None,
+    ray_init_kwargs: Mapping[str, Any] | None = None,
+    restore_path: str | None = None,
+    storage_path: str | None = None,
+    name: str | None = None,
+    max_concurrent: int | None = None,
     checkpoint_interval: int = 1,
-    scheduler_kwargs: Optional[Mapping[str, Any]] = None,
-    search_alg_kwargs: Optional[Mapping[str, Any]] = None,
-    tune_config_kwargs: Optional[Mapping[str, Any]] = None,
-    run_config_kwargs: Optional[Mapping[str, Any]] = None,
-    device: Optional[str] = None,
-    step_kwargs: Optional[Mapping[str, Any]] = None,
+    scheduler_kwargs: Mapping[str, Any] | None = None,
+    search_alg_kwargs: Mapping[str, Any] | None = None,
+    tune_config_kwargs: Mapping[str, Any] | None = None,
+    run_config_kwargs: Mapping[str, Any] | None = None,
+    device: str | None = None,
+    step_kwargs: Mapping[str, Any] | None = None,
     return_raw_results: bool = False,
 ) -> HPOResult:
     """

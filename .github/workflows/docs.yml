@@ -1,78 +1,65 @@
-name: Build and Deploy Docs
+name: Documentation
 
 on:
   push:
     branches:
       - main
   pull_request:
-    types: [closed, opened, synchronize]
     branches:
       - main
 
+permissions:
+  contents: read
+
 jobs:
-  build-and-deploy:
+  build-docs:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Check out repository
+        uses: actions/checkout@v7.0.1
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Set up Pixi
+        uses: prefix-dev/setup-pixi@v0.10.2
         with:
-          python-version: "3.11.x"
+          pixi-version: v0.81.0
+          environments: doc
+          cache: true
+          locked: true
 
-      - name: Cache Python dependencies
-        uses: actions/cache@v3
+      - name: Build documentation
+        run: pixi run -e doc docs
+
+  deploy-docs:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: build-docs
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7.0.1
+
+      - name: Set up Pixi
+        uses: prefix-dev/setup-pixi@v0.10.2
         with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-
-      - name: Install package
-        run: pip install --upgrade .
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install sphinx nbsphinx nbsphinx_link sphinx_rtd_theme
-
-      - name: Install Pandoc
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y pandoc
+          pixi-version: v0.81.0
+          environments: doc
+          cache: true
+          locked: true
 
       - name: Build documentation
         run: |
-          cd Docs
-          make html
-          touch build/html/.nojekyll
+          pixi run -e doc docs
+          touch Docs/build/html/.nojekyll
 
-      - name: Set TARGET_FOLDER and CLEAN
-        run: |
-          if [ "${{ github.event_name }}" == "push" ] && [ "${{ github.ref }}" == "refs/heads/main" ]; then
-            echo "TARGET_FOLDER=/" >> $GITHUB_ENV
-            echo "CLEAN=true" >> $GITHUB_ENV
-          elif [ "${{ github.event_name }}" == "pull_request" ] && [ "${{ github.event.action }}" == "closed" ]; then
-            echo "TARGET_FOLDER=pr-preview/${{ github.event.number }}" >> $GITHUB_ENV
-            echo "CLEAN=true" >> $GITHUB_ENV
-          else
-            echo "TARGET_FOLDER=pr-preview/${{ github.event.number }}" >> $GITHUB_ENV
-            echo "CLEAN=false" >> $GITHUB_ENV
-          fi
-
-      - name: Stage Cleanup for _downloads directory (files older than 10 days)
-        if: github.event_name == 'pull_request' && github.event.action == 'closed'
-        run: |
-          find _downloads -type f -mtime +10 -delete || true
-          git add _downloads || true
-
-      - name: Deploy
+      - name: Deploy documentation
         uses: JamesIves/github-pages-deploy-action@releases/v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: gh-pages
           folder: Docs/build/html
           single-commit: true
-          target-folder: ${{ env.TARGET_FOLDER }}
-          clean: ${{ env.CLEAN }}
+          clean: true
