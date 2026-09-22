@@ -1,71 +1,116 @@
 # pt-melt
 
-PT-MELT (PyTorch Machine Learning Toolbox) is a collection of architectures, processing, and utilities that are transferable over a range of ML applications.
+PT-MELT (PyTorch Machine Learning Toolbox) is a collection of architectures,
+processing utilities, and machine-learning workflows built on PyTorch.
 
-A toolbox for researchers to use for machine learning applications in the PyTorch language. The goal of this software is to enable fast start-up of machine learning tasks and to provide a reliable and flexible framework for development and deployment. The toolbox contains generalized methods for every aspect of the machine learning workflow while simultaneously providing routines that can be tailored to specific application spaces.
+The goal of PT-MELT is to provide researchers with a flexible toolbox for
+rapidly developing, training, evaluating, and deploying machine-learning
+models across a range of applications.
 
-## Environment
+## Installation
 
-First, create a new conda environment and activate:
+PT-MELT requires Python 3.11 or newer.
 
-`conda create -n pt-melt python`
+### Python package
 
-`conda activate pt-melt`
+Install the core package from a local checkout:
 
-Finally, install the `ptmelt` as a package through pip either through a local install from a git clone
+```bash
+python -m pip install .
+```
 
-### Local git clone
+Install PT-MELT with optional hyperparameter-tuning support:
 
-If you cloned the repo and would like to install from the local git repo, navigate to the head directory where `setup.py` is located and type:
+```bash
+python -m pip install ".[hpo]"
+```
 
-`pip install .`
+PT-MELT can also be installed directly from GitHub:
 
-If you want to update the pip install to make sure dependencies are current:
+```bash
+python -m pip install \
+  "ptmelt @ git+https://github.com/NatLabRockies/pt-melt.git"
+```
 
-`pip install --upgrade .`
+For Ray Tune and Optuna support:
 
-### Directly from github
+```bash
+python -m pip install \
+  "ptmelt[hpo] @ git+https://github.com/NatLabRockies/pt-melt.git"
+```
 
-To install the `ptmelt` package directly from github simply type:
+These installation methods use the dependencies declared in `pyproject.toml`.
+They do not use the repository's Pixi lock file.
 
-pip install git+https://github.com/NREL/pt-melt.git
+## Reproducible development environment
 
-### Example Notebooks
+PT-MELT uses Pixi for reproducible development and testing environments.
 
-If you want to run the example notebooks, they require a couple additional packages which can all be pip installed:
+Install the complete development environment from the committed lock file:
 
-1. `scikit-learn`
-2. `ipykernel`
-3. `matplotlib`
+```bash
+pixi install -e dev --locked
+```
+
+Run the regression tests:
+
+```bash
+pixi run -e test tests
+```
+
+Run lint and formatting checks:
+
+```bash
+pixi run -e dev lint
+pixi run -e dev format-check
+```
+
+Build the documentation:
+
+```bash
+pixi run -e doc docs
+```
+
+The available Pixi environments are:
+
+- `default`: core PT-MELT runtime
+- `hpo`: core runtime plus Ray Tune and Optuna
+- `test`: test tooling plus HPO dependencies
+- `doc`: Sphinx documentation environment
+- `dev`: combined development environment
+
+Pixi uses the committed `pixi.lock` to reproduce reviewed dependency
+resolutions across supported platforms.
 
 ## Hyperparameter tuning
 
-PT-MELT includes native helpers for Ray Tune workflows in `ptmelt.utils.hp_tuning`.
-The builder supports `ann`, `resnet`, `bnn`, `rnn`, `temporal_transformer`, and
-`vae` model configurations.
+PT-MELT includes native helpers for Ray Tune workflows in
+`ptmelt.utils.hp_tuning`. The builder supports `ann`, `resnet`, `bnn`, `rnn`,
+`temporal_transformer`, and `vae` model configurations.
 
 ```python
 from ray import tune
+
 from ptmelt.utils.hp_tuning import run_ray_tune
 
 result = run_ray_tune(
-	train_dl=train_dl,
-	val_dl=val_dl,
-	base_config={
-		"arch_type": "ann",
-		"num_features": num_features,
-		"num_outputs": num_outputs,
-		"epochs": 25,
-		"learning_rate": 1e-3,
-		"loss_fn": "mse",
-	},
-	search_space={
-		"width": tune.choice([32, 64, 128]),
-		"depth": tune.randint(1, 5),
-	},
-	metric="val_loss",
-	mode="min",
-	num_samples=20,
+    train_dl=train_dl,
+    val_dl=val_dl,
+    base_config={
+        "arch_type": "ann",
+        "num_features": num_features,
+        "num_outputs": num_outputs,
+        "epochs": 25,
+        "learning_rate": 1e-3,
+        "loss_fn": "mse",
+    },
+    search_space={
+        "width": tune.choice([32, 64, 128]),
+        "depth": tune.randint(1, 5),
+    },
+    metric="val_loss",
+    mode="min",
+    num_samples=20,
 )
 
 print(result.best_config)
@@ -73,9 +118,5 @@ print(result.best_hyperparameters)
 print(result.metric_details)
 ```
 
-`run_ray_tune` returns best configuration details, the searched hyperparameter
-subset, selected metric details, and per-trial history dataframes.
-
-## Contributing
-
-pip install black isort flake8
+`run_ray_tune` returns the best configuration, searched hyperparameters,
+selected metric details, and per-trial histories.
