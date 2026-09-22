@@ -1,6 +1,10 @@
 import pytest
 import torch
-from ptmelt.models import ArtificialNeuralNetwork, RecurrentNeuralNetwork
+from ptmelt.models import (
+    ArtificialNeuralNetwork,
+    RecurrentNeuralNetwork,
+    TemporalTransformerNetwork,
+)
 from ptmelt.utils.hp_tuning import run_ray_tune
 from torch.utils.data import DataLoader, TensorDataset
 
@@ -170,3 +174,39 @@ def test_rnn_suffix_crop_respects_valid_sequence_lengths():
             expected,
         )
         assert torch.count_nonzero(cropped[index, crop_length:]) == 0
+
+
+@pytest.mark.parametrize("model_type", ["rnn", "transformer"])
+@pytest.mark.parametrize(
+    "lengths",
+    [
+        torch.tensor([0, 3]),
+        torch.tensor([4, 3]),
+        torch.tensor([2.5, 3.0]),
+    ],
+)
+def test_temporal_models_reject_invalid_sequence_lengths(model_type, lengths):
+    if model_type == "rnn":
+        model = RecurrentNeuralNetwork(
+            num_features=1,
+            num_outputs=1,
+            width=4,
+            depth=1,
+            seed=1,
+        )
+    else:
+        model = TemporalTransformerNetwork(
+            num_features=1,
+            num_outputs=1,
+            width=4,
+            depth=1,
+            num_heads=2,
+            max_seq_len=3,
+            seed=1,
+        )
+
+    model.build()
+    x_data = torch.ones((2, 3, 1))
+
+    with pytest.raises(ValueError, match="lengths"):
+        model(x_data, lengths=lengths)

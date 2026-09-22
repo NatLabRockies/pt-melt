@@ -20,6 +20,33 @@ from ptmelt.layers import AttentionPool, Reparameterization
 from ptmelt.losses import MixtureDensityLoss, VAELoss
 
 
+def _validate_sequence_lengths(lengths, batch_size, sequence_length, device):
+    """Validate and normalize temporal sequence lengths."""
+    if lengths is None:
+        return None
+
+    lengths = torch.as_tensor(lengths, device=device)
+
+    if lengths.ndim != 1 or lengths.shape[0] != batch_size:
+        raise ValueError("lengths must contain one value per batch sample.")
+
+    if lengths.dtype == torch.bool or torch.is_complex(lengths):
+        raise ValueError("lengths values must be integers.")
+
+    if torch.is_floating_point(lengths):
+        if not torch.all(torch.isfinite(lengths)):
+            raise ValueError("lengths values must be finite integers.")
+        if not torch.all(lengths == torch.floor(lengths)):
+            raise ValueError("lengths values must be integers.")
+
+    lengths = lengths.to(dtype=torch.long)
+
+    if torch.any(lengths < 1) or torch.any(lengths > sequence_length):
+        raise ValueError("lengths values must be between 1 and the sequence length.")
+
+    return lengths
+
+
 class MELTModel(nn.Module):
     """
     PT-MELT Base model.
@@ -1028,14 +1055,15 @@ class RecurrentNeuralNetwork(MELTModel):
         # y: [batch_size, ...]
         # lengths: [batch_size]
         batch_size, seq_length, _ = x.shape
-        lengths = lengths.to(device=x.device, dtype=torch.long)
+        if lengths is None:
+            raise ValueError("lengths are required for suffix cropping.")
+        lengths = _validate_sequence_lengths(
+            lengths,
+            batch_size=batch_size,
+            sequence_length=seq_length,
+            device=x.device,
+        )
 
-        if lengths.ndim != 1 or lengths.shape[0] != batch_size:
-            raise ValueError("lengths must contain one value per batch sample.")
-        if torch.any(lengths < 1) or torch.any(lengths > seq_length):
-            raise ValueError(
-                "lengths values must be between 1 and the padded sequence length."
-            )
         if min_length < 1 or min_length > seq_length:
             raise ValueError(
                 "min_length must be between 1 and the padded sequence length."
@@ -1073,6 +1101,13 @@ class RecurrentNeuralNetwork(MELTModel):
             inputs (torch.Tensor): The input data.
             lengths (torch.Tensor, optional): The lengths of the sequences in the batch.
         """
+        lengths = _validate_sequence_lengths(
+            lengths,
+            batch_size=inputs.shape[0],
+            sequence_length=inputs.shape[1],
+            device=inputs.device,
+        )
+
         # Apply input dropout
         x = (
             self.layer_dict["input_dropout"](inputs)
@@ -1345,6 +1380,13 @@ class TemporalTransformerNetwork(MELTModel):
 
     def forward(self, inputs: torch.Tensor, lengths: torch.Tensor | None = None):
         """Perform forward pass for sequence-to-one forecasting."""
+        lengths = _validate_sequence_lengths(
+            lengths,
+            batch_size=inputs.shape[0],
+            sequence_length=inputs.shape[1],
+            device=inputs.device,
+        )
+
         x = (
             self.layer_dict["input_dropout"](inputs)
             if self.input_dropout > 0
