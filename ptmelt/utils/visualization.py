@@ -1,5 +1,3 @@
-from typing import List, Optional
-
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -8,9 +6,9 @@ from .statistics import compute_metrics, compute_rmse, compute_rsquared
 
 def plot_history(
     history,
-    metrics: Optional[List[str]] = ["loss"],
-    plot_log: Optional[bool] = False,
-    savename: Optional[str] = None,
+    metrics: list[str] | None = None,
+    plot_log: bool | None = False,
+    savename: str | None = None,
 ):
     """
     Plot training history for specified metrics and optionally save the plot.
@@ -21,6 +19,9 @@ def plot_history(
         plot_log (bool): Whether to plot the metrics on a log scale. Defaults to False.
         savename (str): Full path to save the plot. Defaults to None.
     """
+
+    if metrics is None:
+        metrics = ["loss"]
 
     if plot_log:
         fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 4))
@@ -64,12 +65,12 @@ def point_cloud_plot(
     ax,
     y_real,
     y_pred,
-    r_squared: Optional[float] = None,
-    rmse: Optional[float] = None,
-    label: Optional[str] = None,
-    marker: Optional[str] = "o",
-    color: Optional[str] = "blue",
-    text_pos: Optional[tuple] = (0.3, 0.01),
+    r_squared: float | None = None,
+    rmse: float | None = None,
+    label: str | None = None,
+    marker: str | None = "o",
+    color: str | None = "blue",
+    text_pos: tuple | None = (0.3, 0.01),
 ):
     """
     Create a point cloud plot on the given axes.
@@ -111,9 +112,9 @@ def plot_predictions(
     y_val_real,
     pred_test,
     y_test_real,
-    output_indices: Optional[List[int]] = None,
-    max_targets: Optional[int] = 3,
-    savename: Optional[str] = None,
+    output_indices: list[int] | None = None,
+    max_targets: int | None = 3,
+    savename: str | None = None,
 ):
     """
     Plot predictions for specified output indices.
@@ -209,8 +210,8 @@ def point_cloud_plot_with_uncertainty(
     y_real,
     y_pred,
     y_std,
-    text_pos: Optional[tuple] = (0.05, 0.95),
-    metrics_to_display: Optional[List[str]] = None,
+    text_pos: tuple | None = (0.05, 0.95),
+    metrics_to_display: list[str] | None = None,
 ):
     """
     Create a point cloud plot with uncertainty on the given axes.
@@ -280,8 +281,8 @@ def plot_predictions_with_uncertainty(
     mean_test,
     std_test,
     y_test_real,
-    metrics_to_display: Optional[List[str]] = None,
-    savename: Optional[str] = None,
+    metrics_to_display: list[str] | None = None,
+    savename: str | None = None,
 ):
     """
     Plot predictions with uncertainty for training, validation, and test data.
@@ -307,7 +308,7 @@ def plot_predictions_with_uncertainty(
         "Test": (mean_test, std_test, y_test_real, axes[2]),
     }
 
-    for dataset_name, (mean, std, y_real, ax) in datasets.items():
+    for mean, std, y_real, ax in datasets.values():
         point_cloud_plot_with_uncertainty(
             ax,
             y_real,

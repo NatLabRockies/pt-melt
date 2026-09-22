@@ -1,10 +1,8 @@
 import warnings
-from typing import Any, List, Optional
+from typing import Any
 
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
-from torch.distributions import Normal
 
 from ptmelt.layers import MELTBatchNorm, MELTBayesianDenseFlipOut, PositionalEncoding
 
@@ -74,17 +72,17 @@ class MELTBlock(nn.Module):
     def __init__(
         self,
         input_features: int,
-        node_list: List[int],
-        activation: Optional[str] = "relu",
-        dropout: Optional[float] = 0.0,
-        batch_norm: Optional[bool] = False,
-        batch_norm_type: Optional[str] = "ema",
-        use_batch_renorm: Optional[bool] = False,
-        initializer: Optional[str] = "glorot_uniform",
-        seed: Optional[int] = None,
+        node_list: list[int],
+        activation: str | None = "relu",
+        dropout: float | None = 0.0,
+        batch_norm: bool | None = False,
+        batch_norm_type: str | None = "ema",
+        use_batch_renorm: bool | None = False,
+        initializer: str | None = "glorot_uniform",
+        seed: int | None = None,
         **kwargs: Any,
     ):
-        super(MELTBlock, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
         self.input_features = input_features
         self.node_list = node_list
@@ -171,7 +169,7 @@ class DenseBlock(MELTBlock):
         self,
         **kwargs: Any,
     ):
-        super(DenseBlock, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
         # Initialize dense layers
         self.layer_dict.update(
@@ -225,12 +223,12 @@ class ResidualBlock(MELTBlock):
 
     def __init__(
         self,
-        layers_per_block: Optional[int] = 2,
-        pre_activation: Optional[bool] = False,
-        post_add_activation: Optional[bool] = False,
+        layers_per_block: int | None = 2,
+        pre_activation: bool | None = False,
+        post_add_activation: bool | None = False,
         **kwargs: Any,
     ):
-        super(ResidualBlock, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
         self.layers_per_block = layers_per_block
         self.pre_activation = pre_activation
@@ -241,7 +239,8 @@ class ResidualBlock(MELTBlock):
             warnings.warn(
                 f"Warning: Number of layers {self.num_layers} is not divisible by "
                 f"layers_per_block ({self.layers_per_block}), so the last block will "
-                f"have {self.num_layers % self.layers_per_block} layers."
+                f"have {self.num_layers % self.layers_per_block} layers.",
+                stacklevel=2,
             )
 
         # Initialize dense layers
@@ -307,10 +306,10 @@ class BayesianBlock(MELTBlock):
         self,
         num_points,
         perturbation_type="multiplicative",
-        seed: Optional[int] = None,
+        seed: int | None = None,
         **kwargs: Any,
     ):
-        super(BayesianBlock, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         # self.num_points = num_points
 
         self.perturbation_type = perturbation_type
@@ -374,18 +373,18 @@ class TransformerEncoderBlock(nn.Module):
         self,
         input_features: int,
         model_dim: int,
-        num_layers: Optional[int] = 2,
-        num_heads: Optional[int] = 4,
-        ff_dim: Optional[int] = None,
-        activation: Optional[str] = "relu",
-        dropout: Optional[float] = 0.0,
-        max_seq_len: Optional[int] = 2048,
-        use_causal_mask: Optional[bool] = False,
-        initializer: Optional[str] = "glorot_uniform",
-        seed: Optional[int] = None,
+        num_layers: int | None = 2,
+        num_heads: int | None = 4,
+        ff_dim: int | None = None,
+        activation: str | None = "relu",
+        dropout: float | None = 0.0,
+        max_seq_len: int | None = 2048,
+        use_causal_mask: bool | None = False,
+        initializer: str | None = "glorot_uniform",
+        seed: int | None = None,
         **kwargs: Any,
     ):
-        super(TransformerEncoderBlock, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
         if model_dim % num_heads != 0:
             raise ValueError("model_dim must be divisible by num_heads.")
@@ -406,7 +405,8 @@ class TransformerEncoderBlock(nn.Module):
 
         if self.activation not in ["relu", "gelu"]:
             warnings.warn(
-                f"Activation '{self.activation}' is not supported by TransformerEncoderLayer; falling back to 'relu'."
+                f"Activation '{self.activation}' is not supported by TransformerEncoderLayer; falling back to 'relu'.",
+                stacklevel=2,
             )
             self.activation = "relu"
 
@@ -463,7 +463,7 @@ class TransformerEncoderBlock(nn.Module):
             diagonal=1,
         )
 
-    def forward(self, inputs: torch.Tensor, lengths: Optional[torch.Tensor] = None):
+    def forward(self, inputs: torch.Tensor, lengths: torch.Tensor | None = None):
         """Perform forward pass for a batch-first tensor [B, T, F]."""
         x = self.input_projection(inputs)
         x = self.position_encoding(x)
@@ -506,13 +506,13 @@ class DefaultOutput(nn.Module):
         self,
         input_features: int,
         output_features: int,
-        activation: Optional[str] = "linear",
-        initializer: Optional[str] = "glorot_uniform",
-        do_bayesian: Optional[bool] = False,
-        seed: Optional[int] = None,
+        activation: str | None = "linear",
+        initializer: str | None = "glorot_uniform",
+        do_bayesian: bool | None = False,
+        seed: int | None = None,
         **kwargs: Any,
     ):
-        super(DefaultOutput, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
         self.input_features = input_features
         self.output_features = output_features
@@ -569,12 +569,12 @@ class MixtureDensityOutput(nn.Module):
         input_features: int,
         num_mixtures: int,
         num_outputs: int,
-        activation: Optional[str] = "linear",
-        initializer: Optional[str] = "glorot_uniform",
-        seed: Optional[int] = None,
+        activation: str | None = "linear",
+        initializer: str | None = "glorot_uniform",
+        seed: int | None = None,
         **kwargs: Any,
     ):
-        super(MixtureDensityOutput, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
         self.input_features = input_features
         self.num_mixtures = num_mixtures

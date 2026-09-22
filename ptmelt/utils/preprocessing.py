@@ -1,4 +1,4 @@
-from typing import Any, Optional
+from typing import Any
 
 from sklearn.preprocessing import (
     MinMaxScaler,
@@ -20,7 +20,7 @@ class IdentityScaler:
     def __init__(self, **kwargs):
         self.scale_ = 1.0
 
-    def fit(self, X, y: Optional[Any] = None):
+    def fit(self, X, y: Any | None = None):
         """
         Dummy fit method that does nothing.
 
@@ -39,7 +39,7 @@ class IdentityScaler:
         """
         return X
 
-    def fit_transform(self, X, y: Optional[Any] = None):
+    def fit_transform(self, X, y: Any | None = None):
         """
         Dummy fit_transform method that returns the input data unchanged.
 
@@ -70,7 +70,7 @@ class IdentityScaler:
 
 
 def get_normalizers(
-    norm_type: Optional[str] = "standard", n_normalizers: Optional[int] = 1, **kwargs
+    norm_type: str | None = "standard", n_normalizers: int | None = 1, **kwargs
 ):
     """
     Get a list of normalizers based on the specified normalization type and number of

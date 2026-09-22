@@ -1,5 +1,5 @@
 import warnings
-from typing import Any, Optional
+from typing import Any
 
 import numpy as np
 import torch
@@ -84,12 +84,12 @@ def _forward_model(model, x_data, lengths=None):
 def make_predictions(
     model,
     x_data,
-    y_normalizer: Optional[Any] = None,
-    unnormalize: Optional[bool] = False,
-    training: Optional[bool] = False,
+    y_normalizer: Any | None = None,
+    unnormalize: bool | None = False,
+    training: bool | None = False,
     lengths=None,
-    device: Optional[str] = None,
-    return_components: Optional[bool] = False,
+    device: str | None = None,
+    return_components: bool | None = False,
 ):
     """
     Make predictions using the provided model and optionally unscaling the results.
@@ -143,7 +143,8 @@ def make_predictions(
                 std_pred = np.float32(y_normalizer.scale_) * std_pred
             else:
                 warnings.warn(
-                    "y_normalizer does not define scale_; standard deviations will remain in normalized space."
+                    "y_normalizer does not define scale_; standard deviations will remain in normalized space.",
+                    stacklevel=2,
                 )
     elif unnormalize and y_normalizer is None:
         raise ValueError("y_normalizer must be provided to unnormalize predictions.")
@@ -169,12 +170,12 @@ def make_predictions(
 def ensemble_predictions(
     model,
     x_data,
-    y_normalizer: Optional[Any] = None,
-    unnormalize: Optional[bool] = False,
-    n_iter: Optional[int] = 100,
-    training: Optional[bool] = False,
+    y_normalizer: Any | None = None,
+    unnormalize: bool | None = False,
+    n_iter: int | None = 100,
+    training: bool | None = False,
     lengths=None,
-    device: Optional[str] = None,
+    device: str | None = None,
 ):
     """
     Make ensemble predictions using the provided model and optionally unscaling the
@@ -229,7 +230,8 @@ def ensemble_predictions(
         elif not unnormalize and y_normalizer is not None:
             warnings.warn(
                 "y_normalizer provided but unnormalize set to False. "
-                "Predictions will be in normalized space."
+                "Predictions will be in normalized space.",
+                stacklevel=2,
             )
 
         predictions.append(pred)

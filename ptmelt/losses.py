@@ -19,7 +19,7 @@ class MixtureDensityLoss(nn.Module):
     """
 
     def __init__(self, num_mixtures, num_outputs, mse_weight=1.0, reduction="mean"):
-        super(MixtureDensityLoss, self).__init__()
+        super().__init__()
         self.num_mixtures = num_mixtures
         self.num_outputs = num_outputs
         self.mse_weight = mse_weight
@@ -106,9 +106,13 @@ class MixtureDensityLoss(nn.Module):
 
 
 class VAELoss(nn.Module):
-    def __init__(self, reconstruction_loss_fn=nn.MSELoss()):
-        super(VAELoss, self).__init__()
-        self.reconstruction_loss_fn = reconstruction_loss_fn
+    def __init__(self, reconstruction_loss_fn=None):
+        super().__init__()
+        self.reconstruction_loss_fn = (
+            reconstruction_loss_fn
+            if reconstruction_loss_fn is not None
+            else nn.MSELoss()
+        )
 
     def compute_reconstruction_loss(self, x, x_reconstructed):
         return self.reconstruction_loss_fn(x_reconstructed, x)

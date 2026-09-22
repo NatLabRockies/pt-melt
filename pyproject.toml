@@ -34,9 +34,11 @@ hpo = [
     "ray[tune]",
 ]
 dev = [
+    "black==26.5.1",
     "build",
     "ipython",
-    "ruff",
+    "pre-commit==4.6.2",
+    "ruff==0.16.8",
 ]
 test = [
     "pytest",
@@ -72,11 +74,48 @@ dev = { features = ["dev", "test", "hpo", "doc"], solve-group = "default" }
 
 [tool.pixi.feature.dev.tasks]
 lint = "ruff check ptmelt tests"
-format = "ruff format ptmelt tests"
-format-check = "ruff format --check ptmelt tests"
+format = "black ptmelt tests"
+format-check = "black --check ptmelt tests"
+compile = "python -m compileall -q ptmelt tests"
+precommit = "pre-commit run --all-files"
 
 [tool.pixi.feature.test.tasks]
 tests = "pytest -q tests"
 
 [tool.pixi.feature.doc.tasks]
 docs = { cmd = "make html", cwd = "Docs" }
+
+[tool.black]
+line-length = 88
+target-version = ["py311"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 88
+src = ["ptmelt", "tests"]
+
+extend-exclude = [
+    ".git",
+    ".venv",
+    "venv",
+    "__pycache__",
+    ".pytest_cache",
+    ".mypy_cache",
+]
+
+[tool.ruff.lint]
+select = [
+    "E4",
+    "E7",
+    "E9",
+    "F",
+    "B",
+    "I",
+    "UP",
+    "RUF100",
+]
+
+ignore = [
+    "E501",
+    "E731",
+]

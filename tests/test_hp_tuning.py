@@ -1,7 +1,5 @@
 import pytest
 import torch
-from torch.utils.data import DataLoader, TensorDataset
-
 from ptmelt.models import (
     ArtificialNeuralNetwork,
     BayesianNeuralNetwork,
@@ -16,6 +14,7 @@ from ptmelt.utils.hp_tuning import (
     model_builder,
     run_ray_tune,
 )
+from torch.utils.data import DataLoader, TensorDataset
 
 BASE_CONFIG = {
     "num_features": 4,

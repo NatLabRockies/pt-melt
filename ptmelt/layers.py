@@ -1,5 +1,3 @@
-from typing import Optional
-
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -53,8 +51,8 @@ class PositionalEncoding(nn.Module):
     def __init__(
         self,
         d_model: int,
-        max_len: Optional[int] = 2048,
-        dropout: Optional[float] = 0.0,
+        max_len: int | None = 2048,
+        dropout: float | None = 0.0,
     ):
         super().__init__()
 
@@ -96,7 +94,7 @@ class MELTBayesianDenseFlipOut(nn.Module):
         prior_mean: float = 0.0,
         prior_std: float = 10.0,
         perturbation_type: str = "additive",
-        seed: Optional[int] = None,
+        seed: int | None = None,
     ):
         """
         Initialize the Bayesian layer using a Dense Flipout type approach.
@@ -111,7 +109,7 @@ class MELTBayesianDenseFlipOut(nn.Module):
         Multiplicative perturbations are formulated like: W = W_mu * (1 + W_sigma * epsilon)
 
         """
-        super(MELTBayesianDenseFlipOut, self).__init__()
+        super().__init__()
 
         self.in_features = in_features
         self.out_features = out_features
@@ -216,15 +214,15 @@ class MELTBatchNorm(nn.Module):
     def __init__(
         self,
         num_features: int,
-        eps: Optional[float] = 1e-5,
-        momentum: Optional[float] = 0.1,
-        affine: Optional[bool] = True,
-        track_running_stats: Optional[bool] = True,
-        average_type: Optional[str] = "ema",
+        eps: float | None = 1e-5,
+        momentum: float | None = 0.1,
+        affine: bool | None = True,
+        track_running_stats: bool | None = True,
+        average_type: str | None = "ema",
     ):
         # TODO: Check that all features of PyTorch BatchNorm are implemented.
 
-        super(MELTBatchNorm, self).__init__()
+        super().__init__()
 
         self.num_features = num_features
         self.eps = eps
@@ -334,13 +332,13 @@ class MELTBatchRenorm(MELTBatchNorm):
     def __init__(
         self,
         num_features: int,
-        eps: Optional[float] = 1e-5,
-        momentum: Optional[float] = 0.1,
-        affine: Optional[bool] = True,
-        track_running_stats: Optional[bool] = True,
-        average_type: Optional[str] = "ema",
-        rmax: Optional[float] = 1.0,
-        dmax: Optional[float] = 0.0,
+        eps: float | None = 1e-5,
+        momentum: float | None = 0.1,
+        affine: bool | None = True,
+        track_running_stats: bool | None = True,
+        average_type: str | None = "ema",
+        rmax: float | None = 1.0,
+        dmax: float | None = 0.0,
     ):
         # TODO: Verify accuracy of renorm implementation.
 
@@ -405,7 +403,6 @@ class Reparameterization(nn.Module):
 
         # Select the means and log variances of the sampled components
         batch_size = means.size(0)
-        latent_dim = means.size(-1)
 
         # Gather the means and log_vars based on sampled indices
         selected_means = means[torch.arange(batch_size), component_indices, :]
