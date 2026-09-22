@@ -341,24 +341,34 @@ class MELTModel(nn.Module):
 
         Args:
             train_dl (DataLoader): The training data loader.
-            val_dl (DataLoader): The validation data loader.
+            val_dl (DataLoader, optional): The validation data loader. Pass None to
+                                          train without validation.
             optimizer (Optimizer): The optimizer to use.
             criterion (Loss): The loss function to use.
             num_epochs (int): The number of epochs to train the model.
             device (str, optional): The device to use for training. Defaults to 'cpu'.
+            scheduler: Optional learning-rate scheduler. ReduceLROnPlateau monitors
+                       validation loss when validation is available and training loss
+                       otherwise.
+            stopping (bool, optional): Whether to enable early stopping based on min_lr.
+                                       Defaults to True.
+            verbose (bool, optional): Whether to print training statistics.
+                                      Defaults to False.
             **step_kwargs: Additional keyword arguments passed to the step method.
-            stopping (bool, optional): Whether to enable early stopping based on min_lr. Defaults to True.
-            verbose (bool, optional): Whether to print training statistics. Defaults to False.
         """
-        # Move model to device
         self.to(device)
 
-        # Create history dictionary
         if not hasattr(self, "history"):
-            self.history = {"loss": [], "val_loss": [], "lr": [], "epoch": []}
+            self.history = {"loss": [], "lr": [], "epoch": []}
+        else:
+            for key in ("loss", "lr", "epoch"):
+                self.history.setdefault(key, [])
+
+        has_validation = val_dl is not None
+        if has_validation:
+            self.history.setdefault("val_loss", [])
 
         for epoch in tqdm(range(num_epochs), disable=not verbose):
-            # Perform a training and validation step
             train_loss = self.step(
                 train_dl,
                 optimizer,
@@ -367,43 +377,25 @@ class MELTModel(nn.Module):
                 training=True,
                 **step_kwargs,
             )
-            val_loss = self.step(
-                val_dl,
-                optimizer,
-                criterion,
-                device=device,
-                training=False,
-                **step_kwargs,
-            )
-            # Step the scheduler if provided
+
+            val_loss = None
+            if has_validation:
+                val_loss = self.step(
+                    val_dl,
+                    optimizer,
+                    criterion,
+                    device=device,
+                    training=False,
+                    **step_kwargs,
+                )
+
             if scheduler:
-                scheduler.step(
-                    val_loss
-                    if isinstance(scheduler, torch.optim.lr_scheduler.ReduceLROnPlateau)
-                    else None
-                )
+                if isinstance(scheduler, torch.optim.lr_scheduler.ReduceLROnPlateau):
+                    scheduler.step(val_loss if has_validation else train_loss)
+                else:
+                    scheduler.step()
 
-            # Print statistics
-            if (epoch + 1) % 10 == 0 and verbose:
-                lr_print = (
-                    scheduler.get_last_lr()[0]
-                    if scheduler and hasattr(scheduler, "get_last_lr")
-                    else (
-                        optimizer.param_groups[0]["lr"]
-                        if isinstance(optimizer, torch.optim.Optimizer)
-                        else optimizer.defaults["lr"]
-                    )
-                )
-                print(
-                    f"Epoch {epoch + 1}, Loss: {train_loss:.4f}, "
-                    f"Val Loss: {val_loss:.4f}, "
-                    f"LR: {lr_print:.4e}"
-                )
-
-            # Save history
-            self.history["loss"].append(train_loss)
-            self.history["val_loss"].append(val_loss)
-            self.history["lr"].append(
+            lr_current = (
                 scheduler.get_last_lr()[0]
                 if scheduler and hasattr(scheduler, "get_last_lr")
                 else (
@@ -412,10 +404,21 @@ class MELTModel(nn.Module):
                     else optimizer.defaults["lr"]
                 )
             )
+
+            if (epoch + 1) % 10 == 0 and verbose:
+                message = f"Epoch {epoch + 1}, Loss: {train_loss:.4f}"
+                if has_validation:
+                    message += f", Val Loss: {val_loss:.4f}"
+                message += f", LR: {lr_current:.4e}"
+                print(message)
+
+            self.history["loss"].append(train_loss)
+            if has_validation:
+                self.history["val_loss"].append(val_loss)
+            self.history["lr"].append(lr_current)
             self.history["epoch"].append(epoch + 1)
 
             if self.min_lr and stopping:
-                # Check if the last learning rate is less than or equal to the minimum learning rate
                 if scheduler and hasattr(scheduler, "get_last_lr"):
                     if scheduler.get_last_lr()[0] <= self.min_lr:
                         if verbose:
@@ -1584,7 +1587,9 @@ class ForecastEnsemble(MELTModel):
             raise ValueError("schedulers must match the number of ensemble members.")
 
         self.build()
-        self.history = {"member_histories": [], "val_loss": []}
+        self.history = {"member_histories": []}
+        if val_dl is not None:
+            self.history["val_loss"] = []
 
         for model, optimizer, member_criterion, scheduler in zip(
             self.models, optimizers, criteria, scheduler_list, strict=True
@@ -1693,7 +1698,6 @@ class VariationalAutoencoder(MELTModel):
         if not hasattr(self, "history"):
             self.history = {
                 "loss": [],
-                "val_loss": [],
                 "lr": [],
                 "epoch": [],
                 "recon_loss": [],

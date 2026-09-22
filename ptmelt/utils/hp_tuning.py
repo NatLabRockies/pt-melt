@@ -551,6 +551,9 @@ def run_ray_tune(
         metric_fn: Optional callback that returns extra reported metrics.
     """
 
+    if val_dl is None:
+        raise ValueError("val_dl is required for Ray Tune hyperparameter tuning.")
+
     if mode not in {"min", "max"}:
         raise ValueError("mode must be 'min' or 'max'.")
 
