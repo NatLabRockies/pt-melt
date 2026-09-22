@@ -1027,14 +1027,40 @@ class RecurrentNeuralNetwork(MELTModel):
         # x: [batch_size, seq_length, feature_dim]
         # y: [batch_size, ...]
         # lengths: [batch_size]
-        batch_size, seq_length, feature_dim = x.shape
-        new_lengths = torch.randint(
-            low=min_length, high=seq_length + 1, size=(batch_size,)
-        )
-        # build per-sample crops ending at seq_length
+        batch_size, seq_length, _ = x.shape
+        lengths = lengths.to(device=x.device, dtype=torch.long)
+
+        if lengths.ndim != 1 or lengths.shape[0] != batch_size:
+            raise ValueError("lengths must contain one value per batch sample.")
+        if torch.any(lengths < 1) or torch.any(lengths > seq_length):
+            raise ValueError(
+                "lengths values must be between 1 and the padded sequence length."
+            )
+        if min_length < 1 or min_length > seq_length:
+            raise ValueError(
+                "min_length must be between 1 and the padded sequence length."
+            )
+        if torch.any(lengths < min_length):
+            raise ValueError(
+                "All sequence lengths must be >= min_length when suffix cropping."
+            )
+
+        # Sample a crop independently within each sample's valid prefix.
+        span = lengths - min_length + 1
+        random_fraction = torch.rand(batch_size, device=x.device)
+        new_lengths = min_length + torch.floor(
+            random_fraction * span.to(dtype=random_fraction.dtype)
+        ).to(dtype=torch.long)
+
+        # Crop the suffix of each sample's valid sequence, then left-align it so
+        # the existing packed-sequence convention remains valid.
         x_out = torch.zeros_like(x)
-        for i, crop_length in enumerate(new_lengths):
-            x_out[i, :crop_length] = x[i, seq_length - crop_length : seq_length]
+        for i in range(batch_size):
+            valid_length = int(lengths[i].item())
+            crop_length = int(new_lengths[i].item())
+            start = valid_length - crop_length
+            x_out[i, :crop_length] = x[i, start:valid_length]
+
         return x_out, y, new_lengths
 
     def forward(self, inputs: torch.Tensor, lengths: torch.Tensor | None = None):

@@ -1,6 +1,6 @@
 import pytest
 import torch
-from ptmelt.models import ArtificialNeuralNetwork
+from ptmelt.models import ArtificialNeuralNetwork, RecurrentNeuralNetwork
 from ptmelt.utils.hp_tuning import run_ray_tune
 from torch.utils.data import DataLoader, TensorDataset
 
@@ -123,3 +123,50 @@ def test_ray_tune_requires_validation_data():
             val_dl=None,
             search_space={},
         )
+
+
+def test_rnn_suffix_crop_respects_valid_sequence_lengths():
+    model = RecurrentNeuralNetwork(
+        num_features=1,
+        num_outputs=1,
+        width=4,
+        depth=1,
+        seed=1,
+    )
+
+    # Values after each declared length are padding sentinels and must never
+    # become part of a cropped valid sequence.
+    x_data = torch.tensor(
+        [
+            [[1.0], [2.0], [99.0], [99.0], [99.0]],
+            [[10.0], [20.0], [30.0], [99.0], [99.0]],
+        ]
+    )
+    y_data = torch.zeros((2, 1))
+    lengths = torch.tensor([2, 3])
+
+    torch.manual_seed(0)
+    cropped, returned_y, new_lengths = model._random_suffix_crop(
+        x_data,
+        y_data,
+        lengths,
+        min_length=2,
+    )
+
+    assert returned_y is y_data
+    assert torch.all(new_lengths >= 2)
+    assert torch.all(new_lengths <= lengths)
+
+    for index in range(x_data.shape[0]):
+        valid_length = int(lengths[index])
+        crop_length = int(new_lengths[index])
+        expected = x_data[
+            index,
+            valid_length - crop_length : valid_length,
+        ]
+
+        torch.testing.assert_close(
+            cropped[index, :crop_length],
+            expected,
+        )
+        assert torch.count_nonzero(cropped[index, crop_length:]) == 0
